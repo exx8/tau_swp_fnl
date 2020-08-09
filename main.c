@@ -14,8 +14,8 @@ struct _edge {
     int lowIndex;
 } typedef edge;
 
-void *memory(int num, size_t size) {
-    void *buffer = calloc(num, size);
+void *memory(int sizeOfCell, size_t numberOfCell) {
+    void *buffer = calloc(sizeOfCell, numberOfCell);
     assert(buffer != NULL);
     return buffer;
 
@@ -36,7 +36,8 @@ int filesize(char *filePath) {
 }
 
 int readInt(const FILE *file, const int *intPointer) {
-    fscanf(file, "%d", intPointer);
+    int status=fscanf(file, "%d", intPointer);
+    assert(status!=EOF)
 }
 
 
@@ -53,11 +54,12 @@ void copyVertexNeighbor(const FILE *file, edge *edgePointer, int edgePrimaryInde
     }
 }
 
-BuildEdgeArr(const FILE *file, networkStats *networkStat) {
+buildEdgeArr(const FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
     edge *edgePointer = edgeArr;
+    int edgePrimaryIndex = 0;
     while (feof(file) == 0) {
-        int edgePrimaryIndex = 0, verticesLeft;
+        int verticesLeft;
         readInt(file, &verticesLeft);
         copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
@@ -71,7 +73,7 @@ void readInputFile(char *filePath) {
     const FILE *file = fopen(filePath, "r");
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
-    BuildEdgeArr(file, &networkStat);
+    buildEdgeArr(file, &networkStat);
     fclose(file);
 }
 
