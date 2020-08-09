@@ -36,8 +36,8 @@ int filesize(char *filePath) {
 }
 
 int readInt( FILE *file,  int *intPointer) {
-    int status = fscanf(file, "%d", intPointer);
-    assert(status != EOF);
+    int numRead =fread(intPointer,intsize,1,file);
+    assert(numRead==1);
 }
 
 
@@ -81,7 +81,7 @@ void readInputFile(char *filePath) {
 networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
     networkStats networkStat;
     int verticesNum = getVertices(file);
-    const int edgesNum = (fileLengthInBytes - verticesNum - 1) / 2;
+    const int edgesNum = (fileLengthInBytes - verticesNum - 1) / (2*4);
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
     return networkStat;
