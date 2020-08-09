@@ -34,32 +34,43 @@ int filesize(char *filePath) {
 int readInt(const FILE *file, const int *intPointer) {
     fscanf (file, "%d", intPointer);
 }
- void readInputFile(char *filePath)
-{
-    const fileLengthInBytes=filesize(filePath);
-    const FILE* file=fopen(filePath,"r");
-    networkStats networkStat=getNetworkStats(file,fileLengthInBytes);
 
-    edge* edgeArr=memory(networkStat.edges,sizeof(edge));
+
+void copyVertexNeighbor(const FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
+    while(verticesLeft > 0)
+    {
+        int edgeNeighborIndex=0;
+        readInt(file, edgeNeighborIndex);
+        if(edgeNeighborIndex > edgePrimaryIndex) {
+            (edgePointer)->highIndex = edgeNeighborIndex;
+            (edgePointer)->lowIndex = edgePrimaryIndex;
+        }
+        edgePointer++;
+        verticesLeft--;
+    }
+}
+
+BuildEdgeArr(const FILE *file, networkStats *networkStat) {
+    edge* edgeArr=memory((*networkStat).edges, sizeof(edge));
     edge* edgePointer=edgeArr;
     while(feof(file)==0)
     {
         int edgePrimaryIndex=0,verticesLeft;
         readInt(file,&verticesLeft);
-        while(verticesLeft > 0)
-        {
-            int edgeNeighborIndex=0;
-            readInt(file, edgeNeighborIndex);
-            if(edgeNeighborIndex > edgePrimaryIndex) {
-                (edgePointer)->highIndex = edgeNeighborIndex;
-                (edgePointer)->lowIndex = edgePrimaryIndex;
-            }
-            edgePointer++;
-            verticesLeft--;
-        }
+         copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
 
     }
+    return edgeArr;
+}
+
+void readInputFile(char *filePath)
+{
+    const fileLengthInBytes=filesize(filePath);
+    const FILE* file=fopen(filePath,"r");
+    networkStats networkStat=getNetworkStats(file,fileLengthInBytes);
+
+    BuildEdgeArr(file, &networkStat);
     fclose(file);
 }
 
