@@ -21,7 +21,7 @@ void *memory(int sizeOfCell, size_t numberOfCell) {
 
 }
 
-int getVertices(const FILE *file);
+int getVertices( FILE *file);
 
 networkStats getNetworkStats(FILE *file, int fileLengthInBytes);
 
@@ -35,16 +35,16 @@ int filesize(char *filePath) {
     return -1;
 }
 
-int readInt(const FILE *file, const int *intPointer) {
+int readInt( FILE *file,  int *intPointer) {
     int status = fscanf(file, "%d", intPointer);
-    assert(status != EOF)
+    assert(status != EOF);
 }
 
 
-void copyVertexNeighbor(const FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
+void copyVertexNeighbor( FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
     while (verticesLeft > 0) {
         int edgeNeighborIndex = 0;
-        readInt(file, edgeNeighborIndex);
+        readInt(file, &edgeNeighborIndex);
         if (edgeNeighborIndex > edgePrimaryIndex) {
             (edgePointer)->highIndex = edgeNeighborIndex;
             (edgePointer)->lowIndex = edgePrimaryIndex;
@@ -54,7 +54,7 @@ void copyVertexNeighbor(const FILE *file, edge *edgePointer, int edgePrimaryInde
     }
 }
 
-buildEdgeArr(const FILE *file, networkStats *networkStat) {
+edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
     edge *edgePointer = edgeArr;
     int edgePrimaryIndex = 0;
@@ -70,7 +70,7 @@ buildEdgeArr(const FILE *file, networkStats *networkStat) {
 
 void readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
-    const FILE *file = fopen(filePath, "r");
+     FILE *file = fopen(filePath, "r");
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
     buildEdgeArr(file, &networkStat);
@@ -90,13 +90,14 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
 }
 
 
-int getVertices(const FILE *file) {
-    const int verticesNum = 0;
+int getVertices( FILE *file) {
+     int verticesNum = 0;
     readInt(file, &verticesNum);
     return verticesNum;
 }
 
 int main() {
+    readInputFile("/home/eran/Downloads/graph.in");
     printf("Hello, World!\n");
     return 0;
 }
