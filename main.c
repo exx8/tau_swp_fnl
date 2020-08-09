@@ -36,8 +36,8 @@ int filesize(char *filePath) {
 }
 
 int readInt(const FILE *file, const int *intPointer) {
-    int status=fscanf(file, "%d", intPointer);
-    assert(status!=EOF)
+    int status = fscanf(file, "%d", intPointer);
+    assert(status != EOF)
 }
 
 
