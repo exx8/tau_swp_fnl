@@ -41,15 +41,17 @@ int readInt( FILE *file,  int *intPointer) {
 }
 
 
-void copyVertexNeighbor( FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
+void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, int verticesLeft) {
     while (verticesLeft > 0) {
         int edgeNeighborIndex = 0;
         readInt(file, &edgeNeighborIndex);
         if (edgeNeighborIndex > edgePrimaryIndex) {
-            (edgePointer)->highIndex = edgeNeighborIndex;
-            (edgePointer)->lowIndex = edgePrimaryIndex;
+
+            (*edgePointer)->highIndex = edgeNeighborIndex;
+            (*edgePointer)->lowIndex = edgePrimaryIndex;
+            (*edgePointer)++;
+
         }
-        edgePointer++;
         verticesLeft--;
     }
 }
@@ -61,20 +63,19 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
         readInt(file, &verticesLeft);
-        copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
-        edgePointer+=verticesLeft;
+        copyVertexNeighbor(file, &edgePointer, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
 
     }
     return edgeArr;
 }
 
-void readInputFile(char *filePath) {
+edge * readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
      FILE *file = fopen(filePath, "r");
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
-    buildEdgeArr(file, &networkStat);
+    return buildEdgeArr(file, &networkStat);
     fclose(file);
 }
 
@@ -98,7 +99,7 @@ int getVertices( FILE *file) {
 }
 
 int main() {
-    readInputFile("/home/eran/Downloads/graph.in");
-    printf("Hello, World!\n");
+    edge* graphData=readInputFile("/home/eran/Downloads/graph.in");
+    free(graphData);
     return 0;
 }
