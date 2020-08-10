@@ -21,7 +21,7 @@ void *memory(int sizeOfCell, size_t numberOfCell) {
 
 }
 
-int getVertices( FILE *file);
+int getVertices(FILE *file);
 
 networkStats getNetworkStats(FILE *file, int fileLengthInBytes);
 
@@ -35,13 +35,14 @@ int filesize(char *filePath) {
     return -1;
 }
 
-int readInt( FILE *file,  int *intPointer) {
-    int numRead =fread(intPointer,intsize,1,file);
-    assert(numRead==1);
+int readInt(FILE *file, int *intPointer) {
+    //@todo fix reading as it returns ivalid results.
+    int numRead = fread(intPointer, intsize, 1, file);
+    assert(numRead == 1);
 }
 
 
-void copyVertexNeighbor( FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
+void copyVertexNeighbor(FILE *file, edge *edgePointer, int edgePrimaryIndex, int verticesLeft) {
     while (verticesLeft > 0) {
         int edgeNeighborIndex = 0;
         readInt(file, &edgeNeighborIndex);
@@ -54,7 +55,7 @@ void copyVertexNeighbor( FILE *file, edge *edgePointer, int edgePrimaryIndex, in
     }
 }
 
-edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
+edge *buildEdgeArr(FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
     edge *edgePointer = edgeArr;
     int edgePrimaryIndex = 0;
@@ -69,9 +70,39 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     return edgeArr;
 }
 
+printfile(FILE* file)
+{
+setvbuf(stdout, NULL, _IOLBF, 0);
+int i=0;
+int number=0;
+int vertexNum=0;
+readInt(file,&number);
+
+printf("%d n=|V|\n",number);
+
+
+for(i=1;i<412/4;)
+{
+    int k=0;
+readInt(file,&number);
+printf("%d vertex number %d \n",number,vertexNum);
+i++;
+vertexNum++;
+int numOfEdges=number;
+for(k=0;k<numOfEdges;k++){
+readInt(file,&number);
+printf(" %d \n",number);
+i++;
+}
+fflush( stdout );
+
+}
+}
 void readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
-     FILE *file = fopen(filePath, "r");
+    FILE *file = fopen(filePath, "r");
+    printfile(file);
+    return;
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
     buildEdgeArr(file, &networkStat);
@@ -79,10 +110,11 @@ void readInputFile(char *filePath) {
 }
 
 
+
 networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
     networkStats networkStat;
     int verticesNum = getVertices(file);
-    const int edgesNum = (fileLengthInBytes - verticesNum - 1) / (2*4);
+    const double edgesNum = fileLengthInBytes / 4 - 1 - verticesNum;
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
     return networkStat;
@@ -91,8 +123,8 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
 }
 
 
-int getVertices( FILE *file) {
-     int verticesNum = 0;
+int getVertices(FILE *file) {
+    int verticesNum = 0;
     readInt(file, &verticesNum);
     return verticesNum;
 }
