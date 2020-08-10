@@ -58,7 +58,7 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
     edge *edgePointer = edgeArr;
     int edgePrimaryIndex = 0;
-    while (feof(file) == 0) {
+    while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
         readInt(file, &verticesLeft);
         copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
