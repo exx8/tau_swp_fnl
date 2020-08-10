@@ -62,6 +62,7 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
         int verticesLeft;
         readInt(file, &verticesLeft);
         copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
+        edgePointer+=verticesLeft;
         edgePrimaryIndex++;
 
     }
