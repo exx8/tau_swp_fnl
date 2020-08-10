@@ -82,7 +82,7 @@ void readInputFile(char *filePath) {
 networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
     networkStats networkStat;
     int verticesNum = getVertices(file);
-    const int edgesNum = (fileLengthInBytes - verticesNum - 1) / (2*4);
+    const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
     return networkStat;
