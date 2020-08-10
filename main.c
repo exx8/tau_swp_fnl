@@ -56,12 +56,11 @@ void copyVertexNeighbor( FILE *file, edge *edgePointer, int edgePrimaryIndex, in
 
 edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
-    edge *edgePointer = edgeArr;
     int edgePrimaryIndex = 0;
     while (feof(file) == 0) {
         int verticesLeft;
         readInt(file, &verticesLeft);
-        copyVertexNeighbor(file, edgePointer, edgePrimaryIndex, verticesLeft);
+        copyVertexNeighbor(file, edgeArr, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
 
     }
