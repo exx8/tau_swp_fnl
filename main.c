@@ -72,6 +72,7 @@ edge *buildEdgeArr(FILE *file, networkStats *networkStat) {
 
 printfile(FILE* file)
 {
+    int edgeMentionIndex=0;
 setvbuf(stdout, NULL, _IOLBF, 0);
 int i=0;
 int number=0;
@@ -91,7 +92,7 @@ vertexNum++;
 int numOfEdges=number;
 for(k=0;k<numOfEdges;k++){
 readInt(file,&number);
-printf(" %d \n",number);
+printf(" %d  edge mention index: %d\n",number,edgeMentionIndex++);
 i++;
 }
 fflush( stdout );
