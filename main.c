@@ -73,6 +73,7 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
 edge * readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
      FILE *file = fopen(filePath, "r");
+     assert(file!=NULL);
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
     return buildEdgeArr(file, &networkStat);
