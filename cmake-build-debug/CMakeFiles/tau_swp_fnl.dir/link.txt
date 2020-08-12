@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/tau_swp_fnl.dir/main.c.o  -o tau_swp_fnl 

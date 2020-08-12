@@ -8,6 +8,10 @@
 struct _networkStats {
     int vertices;
     int edges;
+    ///New addition
+    int * vertexDegreeArray;
+    int degreeSum;
+
 } typedef networkStats;
 struct _edge {
     int highIndex;
@@ -58,11 +62,21 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
 
 edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
+
+    ///Addition - Need to free memory
+    networkStat->vertexDegreeArray = (int *) malloc(networkStat->vertices * sizeof(int));
+    int vertexIndex = 0;
+
     edge *edgePointer = edgeArr;
     int edgePrimaryIndex = 0;
     while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
         readInt(file, &verticesLeft);
+
+        ///Addition
+        networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
+        networkStat->degreeSum += verticesLeft;
+
         copyVertexNeighbor(file, &edgePointer, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
 
@@ -70,10 +84,38 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
     return edgeArr;
 }
 
+/// Addition
+int fillDegreeMatrix(int * matrix, networkStats *networkStat){
+    int currVertexIndex = 0;
+    int overAllCounter = 0;
+    int degreeMulSum = 0;
+    while (currVertexIndex < networkStat->vertices){
+        int i = 0;
+        while (i < networkStat->vertices){
+            int verticesDegreeMul = (networkStat->vertexDegreeArray[currVertexIndex] * networkStat->vertexDegreeArray[i]);
+            degreeMulSum += verticesDegreeMul;
+            matrix[overAllCounter] = verticesDegreeMul;
+            overAllCounter++;
+        }
+    }
+
+    return degreeMulSum;
+}
+
+
+int calculateModularity(networkStats *networkStat){
+
+    int verticesSquared = (networkStat->vertices * networkStat->vertices);
+    int * degreeMatrix = (int *) malloc (verticesSquared * sizeof(int));
+    int degreeMulSum = fillDegreeMatrix(degreeMatrix, networkStat);
+    int modularity = (2 * networkStat->edges) - degreeMulSum/networkStat->degreeSum;
+
+}
+
 edge * readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
-     FILE *file = fopen(filePath, "r");
-     assert(file!=NULL);
+    FILE *file = fopen(filePath, "r");
+    assert(file!=NULL);
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
     return buildEdgeArr(file, &networkStat);
@@ -94,7 +136,7 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
 
 
 int getVertices( FILE *file) {
-     int verticesNum = 0;
+    int verticesNum = 0;
     readInt(file, &verticesNum);
     return verticesNum;
 }
