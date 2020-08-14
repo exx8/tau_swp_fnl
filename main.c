@@ -92,7 +92,8 @@ int fillDegreeMatrix(int * matrix, networkStats *networkStat){
     while (currVertexIndex < networkStat->vertices){
         int i = 0;
         while (i < networkStat->vertices){
-            int verticesDegreeMul = (networkStat->vertexDegreeArray[currVertexIndex] * networkStat->vertexDegreeArray[i]);
+            int verticesDegreeMul = (networkStat->vertexDegreeArray[currVertexIndex] *
+                    networkStat->vertexDegreeArray[i]);
             degreeMulSum += verticesDegreeMul;
             matrix[overAllCounter] = verticesDegreeMul;
             overAllCounter++;
@@ -135,11 +136,39 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
 }
 
 
+* int algorithm1(networkStats *networkStat){
+     int leadEigenValue = computeLeadEigenVal(networkStat);
+     int * leadEigenVector = computeLeadEigenVec(networkStat);
+     if (leadEigenValue <= 0){
+         printf("The network is indivisible.");
+         return NULL;
+     }
+     int * groupDivisionVector = (int *) malloc(networkStat->vertices * sizeof(int));
+     for (int i = 0; i < networkStat->vertices; i++){
+         if (leadEigenValue[i] <= 0){
+             groupDivisionVector[i] = -1;
+         }
+         else{
+             groupDivisionVector[i] = 1;
+         }
+     }
+     ///Line 4 in Algo1 description
+     int result = matrixMultiply(matrixMultilpy(networkStat, transpose(leadEigenVector)), leadEigenVector);
+     if (result <=0){
+         printf("The network is indivisible.");
+         return NULL;
+     }
+     return groupDivisionVector;
+}
+
+
 int getVertices( FILE *file) {
     int verticesNum = 0;
     readInt(file, &verticesNum);
     return verticesNum;
 }
+
+
 
 int main() {
     edge* graphData=readInputFile("/home/eran/Downloads/graph.in");
