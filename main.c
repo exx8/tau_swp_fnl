@@ -64,8 +64,7 @@ void updateNetworkStat(networkStats *networkStat, int vertexIndex, int verticesL
     networkStat->degreeSum += verticesLeft;
 }
 
-edge* buildAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat) {
-    edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
+void loadAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat,edge* edgeArr) {
 
     int vertexIndex = 0;
 
@@ -81,7 +80,6 @@ edge* buildAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat) 
         edgePrimaryIndex++;
 
     }
-    return edgeArr;
 }
 
 void releaseNetworkStat(networkStats *networkStat) { free((*networkStat).vertexDegreeArray); }
@@ -91,8 +89,8 @@ edge * readInputFile(char *filePath) {
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
-
-    edge* edgeArr= buildAdjacencyMatrixDataStructures(file, &networkStat);
+    edge *edgeArr = memory((networkStat).edges, sizeof(edge));
+    loadAdjacencyMatrixDataStructures(file, &networkStat,&edgeArr);
 
     releaseNetworkStat(&networkStat);
     fclose(file);
