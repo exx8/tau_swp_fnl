@@ -76,6 +76,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/eran/CLionProjects/tau_swp_fnl/eigen.c">
+			<Option target="tau_swp_fnl"/>
+		</Unit>
 		<Unit filename="/home/eran/CLionProjects/tau_swp_fnl/main.c">
 			<Option target="tau_swp_fnl"/>
 		</Unit>

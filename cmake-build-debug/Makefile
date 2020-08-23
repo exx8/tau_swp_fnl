@@ -143,6 +143,33 @@ tau_swp_fnl/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_swp_fnl.dir/build.make CMakeFiles/tau_swp_fnl.dir/build
 .PHONY : tau_swp_fnl/fast
 
+eigen.o: eigen.c.o
+
+.PHONY : eigen.o
+
+# target to build an object file
+eigen.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_swp_fnl.dir/build.make CMakeFiles/tau_swp_fnl.dir/eigen.c.o
+.PHONY : eigen.c.o
+
+eigen.i: eigen.c.i
+
+.PHONY : eigen.i
+
+# target to preprocess a source file
+eigen.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_swp_fnl.dir/build.make CMakeFiles/tau_swp_fnl.dir/eigen.c.i
+.PHONY : eigen.c.i
+
+eigen.s: eigen.c.s
+
+.PHONY : eigen.s
+
+# target to generate assembly for a file
+eigen.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_swp_fnl.dir/build.make CMakeFiles/tau_swp_fnl.dir/eigen.c.s
+.PHONY : eigen.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -179,6 +206,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... tau_swp_fnl"
+	@echo "... eigen.o"
+	@echo "... eigen.i"
+	@echo "... eigen.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

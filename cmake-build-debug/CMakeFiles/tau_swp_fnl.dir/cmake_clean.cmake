@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/tau_swp_fnl.dir/eigen.c.o"
   "CMakeFiles/tau_swp_fnl.dir/main.c.o"
   "tau_swp_fnl"
   "tau_swp_fnl.pdb"
