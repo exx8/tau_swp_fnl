@@ -111,6 +111,7 @@ int calculateModularity(networkStats *networkStat){
     int * degreeMatrix = (int *) malloc (verticesSquared * sizeof(int));
     int degreeMulSum = fillDegreeMatrix(degreeMatrix, networkStat);
     int modularity = (2 * networkStat->edges) - degreeMulSum/networkStat->degreeSum;
+    return  modularity;
 
 }
 
