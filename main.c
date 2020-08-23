@@ -113,6 +113,8 @@ int calculateModularity(networkStats *networkStat){
 
 }
 
+void releaseNetworkStat(networkStats *networkStat) { free((*networkStat).vertexDegreeArray); }
+
 edge * readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
@@ -120,6 +122,7 @@ edge * readInputFile(char *filePath) {
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
     return buildEdgeArr(file, &networkStat);
+    releaseNetworkStat(&networkStat);
     fclose(file);
 }
 
