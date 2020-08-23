@@ -121,9 +121,10 @@ edge * readInputFile(char *filePath) {
     assert(file!=NULL);
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
-    return buildEdgeArr(file, &networkStat);
+    edge* edgeArr= buildEdgeArr(file, &networkStat);
     releaseNetworkStat(&networkStat);
     fclose(file);
+    return edgeArr;
 }
 
 
