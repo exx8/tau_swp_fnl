@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <assert.h>
 #include <stdlib.h>
 //#include "algo1.c"
