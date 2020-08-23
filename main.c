@@ -60,11 +60,14 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
     }
 }
 
-edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
+void updateNetworkStat(networkStats *networkStat, int vertexIndex, int verticesLeft) {
+    networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
+    networkStat->degreeSum += verticesLeft;
+}
+
+edge* buildAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat) {
     edge *edgeArr = memory((*networkStat).edges, sizeof(edge));
 
-    ///Addition - Need to free memory
-    networkStat->vertexDegreeArray = (int *) malloc(networkStat->vertices * sizeof(int));
     int vertexIndex = 0;
 
     edge *edgePointer = edgeArr;
@@ -74,8 +77,7 @@ edge* buildEdgeArr( FILE *file, networkStats *networkStat) {
         readInt(file, &verticesLeft);
 
         ///Addition
-        networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
-        networkStat->degreeSum += verticesLeft;
+        updateNetworkStat(networkStat, vertexIndex, verticesLeft);
 
         copyVertexNeighbor(file, &edgePointer, edgePrimaryIndex, verticesLeft);
         edgePrimaryIndex++;
@@ -121,7 +123,8 @@ edge * readInputFile(char *filePath) {
     assert(file!=NULL);
     networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
 
-    edge* edgeArr= buildEdgeArr(file, &networkStat);
+    edge* edgeArr= buildAdjacencyMatrixDataStructures(file, &networkStat);
+
     releaseNetworkStat(&networkStat);
     fclose(file);
     return edgeArr;
@@ -134,6 +137,7 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
     const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
+    networkStat.vertexDegreeArray = (int *) malloc(networkStat.vertices * sizeof(int));
     return networkStat;
 
 
