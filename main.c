@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "algo1.c"
+//#include "algo1.c"
 
 #define intsize 4
 struct _networkStats {
@@ -76,7 +76,6 @@ edge* buildAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat) 
         int verticesLeft;
         readInt(file, &verticesLeft);
 
-        ///Addition
         updateNetworkStat(networkStat, vertexIndex, verticesLeft);
 
         copyVertexNeighbor(file, &edgePointer, edgePrimaryIndex, verticesLeft);
