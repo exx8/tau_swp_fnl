@@ -106,7 +106,7 @@ networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
     const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
-    networkStat.vertexDegreeArray = (int *) malloc(networkStat.vertices * sizeof(int));
+    networkStat.vertexDegreeArray = (int *) memory(networkStat.vertices , sizeof(int));
     return networkStat;
 
 
