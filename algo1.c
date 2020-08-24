@@ -4,29 +4,10 @@
 
 #include "utils.h"
 #include "networkStats.h"
-/// Addition
-int fillDegreeMatrix(int * matrix,  networkStatsSet *networkStat){
-    int currVertexIndex = 0;
-    int overAllCounter = 0;
-    int degreeMulSum = 0;
-    while (currVertexIndex < networkStat->vertices){
-        int i = 0;
-        while (i < networkStat->vertices){
-            int verticesDegreeMul = (networkStat->vertexDegreeArray[currVertexIndex] *
-                                     networkStat->vertexDegreeArray[i]);
-            degreeMulSum += verticesDegreeMul;
-            matrix[overAllCounter] = verticesDegreeMul;
-            overAllCounter++;
-        }
-    }
 
-    return degreeMulSum;
-}
 
 int calculateModularity(networkStatsSet *networkStat){
 
-    int verticesSquared = (networkStat->vertices * networkStat->vertices);
-    int * degreeMatrix = (int *) memory(verticesSquared ,sizeof(int));
     int degreeMulSum = fillDegreeMatrix(degreeMatrix, networkStat);
     int modularity = (2 * networkStat->edges) - degreeMulSum/networkStat->degreeSum;
     return  modularity;
