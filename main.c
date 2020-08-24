@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "utils.h"
 //#include "algo1.c"
 
 #define intsize 4
@@ -16,13 +17,6 @@ struct _edge {
     int highIndex;
     int lowIndex;
 } typedef edge;
-
-void *memory(int sizeOfCell, size_t numberOfCell) {
-    void *buffer = calloc(sizeOfCell, numberOfCell);
-    assert(buffer != NULL);
-    return buffer;
-
-}
 
 int getVertices( FILE *file);
 

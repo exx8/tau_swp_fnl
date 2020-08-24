@@ -3,6 +3,7 @@
 //
 
 #include "algo1.h"
+#include "utils.c"
 /// Addition
 int fillDegreeMatrix(int * matrix, networkStats *networkStat){
     int currVertexIndex = 0;
@@ -25,7 +26,7 @@ int fillDegreeMatrix(int * matrix, networkStats *networkStat){
 int calculateModularity(networkStats *networkStat){
 
     int verticesSquared = (networkStat->vertices * networkStat->vertices);
-    int * degreeMatrix = (int *) malloc (verticesSquared * sizeof(int));
+    int * degreeMatrix = (int *) memory(verticesSquared ,sizeof(int));
     int degreeMulSum = fillDegreeMatrix(degreeMatrix, networkStat);
     int modularity = (2 * networkStat->edges) - degreeMulSum/networkStat->degreeSum;
     return  modularity;
@@ -39,7 +40,7 @@ int algorithm1(networkStats *networkStat){
          printf("The network is indivisible.");
          return NULL;
      }
-     int * groupDivisionVector = (int *) malloc(networkStat->vertices * sizeof(int));
+     int * groupDivisionVector = (int *) memory(networkStat->vertices , sizeof(int));
      for (int i = 0; i < networkStat->vertices; i++){
          if (leadEigenValue[i] <= 0){
              groupDivisionVector[i] = -1;
