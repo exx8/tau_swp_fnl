@@ -10,6 +10,7 @@
 struct _edge {
     int highIndex;
     int lowIndex;
+    struct _edge* next;
 } typedef edge;
 
 int getVertices( FILE *file);
@@ -38,18 +39,22 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
 
             (*edgePointer)->highIndex = edgeNeighborIndex;
             (*edgePointer)->lowIndex = edgePrimaryIndex;
-            (*edgePointer)++;
+            if(verticesLeft>1) {
+                (*edgePointer)->next = memory(1, sizeof(edge));
+                *edgePointer = (*edgePointer)->next;
+            }
 
         }
         verticesLeft--;
     }
+
 }
 
-void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge** edgeArr) {
+void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge* edgeLinkedList) {
 
     int vertexIndex = 0;
 
-    edge *edgePointer = *edgeArr;
+    edge* edgePointer = edgeLinkedList;
     int edgePrimaryIndex = 0;
     while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
@@ -63,17 +68,17 @@ void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat,
     }
 }
 
-edge * readInputFile(char *filePath) {
+edge*  readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    edge *edgeArr = memory((networkStat).edges, sizeof(edge));
-    loadAdjacencyMatrixDataStructures(file, &networkStat,&edgeArr);
+    edge* edgeLinkedList = (edge*)memory(1, sizeof(edge));
+    loadAdjacencyMatrixDataStructures(file, &networkStat,edgeLinkedList);
 
     releaseNetworkStat(&networkStat);
     fclose(file);
-    return edgeArr;
+    return edgeLinkedList;
 }
 
 
