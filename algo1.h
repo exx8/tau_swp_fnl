@@ -3,8 +3,8 @@
 //
 
 #ifndef TAU_SWP_FNL_ALGO1_H
-#include "algo1.c"
 #define TAU_SWP_FNL_ALGO1_H
+#include "algo1.c"
 
 
 #endif //TAU_SWP_FNL_ALGO1_H

@@ -32,16 +32,19 @@ int calculateModularity(networkStatsSet *networkStat){
     return  modularity;
 
 }
+int* computeLeadEigenVal(networkStatsSet* networkStat);
+int* computeLeadEigenVec(networkStatsSet* networkStat);
 
-int algorithm1(networkStatsSet *networkStat){
-     int leadEigenValue = computeLeadEigenVal(networkStat);
+int* algorithm1(networkStatsSet *networkStat){
+    int i;
+     int* leadEigenValue = computeLeadEigenVal(networkStat);
      int * leadEigenVector = computeLeadEigenVec(networkStat);
      if (leadEigenValue <= 0){
          printf("The network is indivisible.");
          return NULL;
      }
      int * groupDivisionVector = (int *) memory(networkStat->vertices , sizeof(int));
-     for (int i = 0; i < networkStat->vertices; i++){
+     for (i = 0; i < networkStat->vertices; i++){
          if (leadEigenValue[i] <= 0){
              groupDivisionVector[i] = -1;
          }

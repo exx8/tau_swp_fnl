@@ -45,11 +45,11 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
     }
 }
 
-void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge* edgeArr) {
+void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge** edgeArr) {
 
     int vertexIndex = 0;
 
-    edge *edgePointer = edgeArr;
+    edge *edgePointer = *edgeArr;
     int edgePrimaryIndex = 0;
     while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
