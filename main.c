@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "utils.h"
 #include "networkStats.h"
-#include "algo1.h"
+//#include "algo1.h"
 
 #define intsize 4
 struct _edge {
