@@ -2,10 +2,10 @@
 // Created by eran on 23/08/2020.
 //
 
-#include "algo1.h"
-#include "utils.c"
+#include "utils.h"
+#include "networkStats.h"
 /// Addition
-int fillDegreeMatrix(int * matrix, networkStats *networkStat){
+int fillDegreeMatrix(int * matrix,  networkStatsSet *networkStat){
     int currVertexIndex = 0;
     int overAllCounter = 0;
     int degreeMulSum = 0;
@@ -23,7 +23,7 @@ int fillDegreeMatrix(int * matrix, networkStats *networkStat){
     return degreeMulSum;
 }
 
-int calculateModularity(networkStats *networkStat){
+int calculateModularity(networkStatsSet *networkStat){
 
     int verticesSquared = (networkStat->vertices * networkStat->vertices);
     int * degreeMatrix = (int *) memory(verticesSquared ,sizeof(int));
@@ -33,7 +33,7 @@ int calculateModularity(networkStats *networkStat){
 
 }
 
-int algorithm1(networkStats *networkStat){
+int algorithm1(networkStatsSet *networkStat){
      int leadEigenValue = computeLeadEigenVal(networkStat);
      int * leadEigenVector = computeLeadEigenVec(networkStat);
      if (leadEigenValue <= 0){

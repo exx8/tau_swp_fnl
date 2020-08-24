@@ -4,5 +4,5 @@
 
 #ifndef TAU_SWP_FNL_UTILS_H
 #define TAU_SWP_FNL_UTILS_H
-
+#include "utils.c"
 #endif //TAU_SWP_FNL_UTILS_H

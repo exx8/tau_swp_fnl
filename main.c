@@ -3,24 +3,16 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "utils.h"
-//#include "algo1.c"
+#include "networkStats.h"
+#include "algo1.h"
 
 #define intsize 4
-struct _networkStats {
-    int vertices;
-    int edges;
-    int * vertexDegreeArray;
-    int degreeSum;
-
-} typedef networkStats;
 struct _edge {
     int highIndex;
     int lowIndex;
 } typedef edge;
 
 int getVertices( FILE *file);
-
-networkStats getNetworkStats(FILE *file, int fileLengthInBytes);
 
 int filesize(char *filePath) {
     struct stat details;
@@ -53,12 +45,7 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
     }
 }
 
-void updateNetworkStat(networkStats *networkStat, int vertexIndex, int verticesLeft) {
-    networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
-    networkStat->degreeSum += verticesLeft;
-}
-
-void loadAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat,edge* edgeArr) {
+void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge* edgeArr) {
 
     int vertexIndex = 0;
 
@@ -76,32 +63,17 @@ void loadAdjacencyMatrixDataStructures(FILE *file, networkStats *networkStat,edg
     }
 }
 
-void releaseNetworkStat(networkStats *networkStat) { free((*networkStat).vertexDegreeArray); }
-
 edge * readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
-    networkStats networkStat = getNetworkStats(file, fileLengthInBytes);
+    networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
     edge *edgeArr = memory((networkStat).edges, sizeof(edge));
     loadAdjacencyMatrixDataStructures(file, &networkStat,&edgeArr);
 
     releaseNetworkStat(&networkStat);
     fclose(file);
     return edgeArr;
-}
-
-
-networkStats getNetworkStats(FILE *file, int fileLengthInBytes) {
-    networkStats networkStat;
-    int verticesNum = getVertices(file);
-    const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
-    networkStat.vertices = verticesNum;
-    networkStat.edges = edgesNum;
-    networkStat.vertexDegreeArray = (int *) memory(networkStat.vertices , sizeof(int));
-    return networkStat;
-
-
 }
 
 
