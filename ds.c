@@ -8,7 +8,6 @@
 #include <assert.h>
 #include <sys/stat.h>
 #include <stdio.h>
-#include "ds.h"
 
 struct _colLinkedList {
     int colIndex;
