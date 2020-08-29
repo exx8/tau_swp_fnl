@@ -4,14 +4,10 @@
 #include <stdlib.h>
 #include "utils.h"
 #include "networkStats.h"
+#include "ds.h"
 //#include "algo1.h"
 
 #define intsize 4
-struct _edge {
-    int highIndex;
-    int lowIndex;
-    struct _edge* next;
-} typedef edge;
 
 int getVertices( FILE *file);
 
@@ -31,7 +27,7 @@ int readInt( FILE *file,  int *intPointer) {
 }
 
 
-void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, int verticesLeft) {
+void copyVertexNeighbor(FILE *file, colLinkedList **edgePointer, int edgePrimaryIndex, int verticesLeft) {
     while (verticesLeft > 0) {
         int edgeNeighborIndex = 0;
         readInt(file, &edgeNeighborIndex);
@@ -40,7 +36,7 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
             (*edgePointer)->highIndex = edgeNeighborIndex;
             (*edgePointer)->lowIndex = edgePrimaryIndex;
             if(verticesLeft>1) {
-                (*edgePointer)->next = memory(1, sizeof(edge));
+                (*edgePointer)->next = memory(1, sizeof(colLinkedList));
                 *edgePointer = (*edgePointer)->next;
             }
 
@@ -50,11 +46,11 @@ void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, i
 
 }
 
-void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge* edgeLinkedList) {
+void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, colLinkedList* edgeLinkedList) {
 
     int vertexIndex = 0;
 
-    edge* edgePointer = edgeLinkedList;
+    colLinkedList* edgePointer = edgeLinkedList;
     int edgePrimaryIndex = 0;
     while (edgePrimaryIndex<networkStat->vertices) {
         int verticesLeft;
@@ -68,12 +64,12 @@ void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat,
     }
 }
 
-edge*  readInputFile(char *filePath) {
+colLinkedList*  readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    edge* edgeLinkedList = (edge*)memory(1, sizeof(edge));
+    colLinkedList* edgeLinkedList = (colLinkedList*)memory(1, sizeof(colLinkedList));
     loadAdjacencyMatrixDataStructures(file, &networkStat,edgeLinkedList);
 
     releaseNetworkStat(&networkStat);
@@ -91,7 +87,7 @@ int getVertices( FILE *file) {
 
 
 int main() {
-    edge* graphData=readInputFile("/home/eran/Downloads/graph.in");
+    colLinkedList* graphData=readInputFile("/home/eran/Downloads/graph.in");
     free(graphData);
     return 0;
 }
