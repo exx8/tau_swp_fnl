@@ -37,3 +37,20 @@ colLinkedList* newColLinkedList(int index,colLinkedList* next)
     return returned;
 
 }
+
+
+void freeCol(colLinkedList* list)
+{
+    if(list==NULL)
+        return;
+    freeCol(list->next);
+    free(list);
+}
+void freeData(rowLinkedList* list)
+{
+    if(list==NULL)
+        return;
+    freeData(list->nextRow);
+    freeCol(list->colList);
+    free(list);
+}

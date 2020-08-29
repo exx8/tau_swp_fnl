@@ -92,6 +92,6 @@ int getVertices( FILE *file) {
 
 int main() {
     rowLinkedList * graphData=readInputFile("/home/eran/Downloads/graph.in");
-    free(graphData);
+    freeData(graphData);
     return 0;
 }
