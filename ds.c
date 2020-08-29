@@ -20,21 +20,21 @@ struct _rowLinkedList {
     struct _colLinkedList* colList;
 } typedef rowLinkedList;
 
-rowLinkedList newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
+rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
-    rowLinkedList returned;
-    returned.rowIndex=index;
-    returned.nextRow=nextRow;
-    returned.colList=colList;
+    rowLinkedList* returned=memory(sizeof(rowLinkedList),1);
+    returned->rowIndex=index;
+    returned->nextRow=nextRow;
+    returned->colList=colList;
     return returned;
 
 }
 
-colLinkedList newColLinkedList(int index,colLinkedList* next)
+colLinkedList* newColLinkedList(int index,colLinkedList* next)
 {
-    colLinkedList returned;
-    returned.colIndex=index;
-    returned.next=next;
+    colLinkedList* returned=memory(sizeof(colLinkedList),1);
+    returned->colIndex=index;
+    returned->next=next;
     return returned;
 
 }
