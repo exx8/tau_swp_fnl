@@ -4,13 +4,9 @@
 #include <stdlib.h>
 #include "utils.h"
 #include "networkStats.h"
-//#include "algo1.h"
-
+#include "ds.h"
+#include "ds.h"
 #define intsize 4
-struct _edge {
-    int highIndex;
-    int lowIndex;
-} typedef edge;
 
 int getVertices( FILE *file);
 
@@ -30,50 +26,59 @@ int readInt( FILE *file,  int *intPointer) {
 }
 
 
-void copyVertexNeighbor( FILE *file, edge **edgePointer, int edgePrimaryIndex, int verticesLeft) {
+colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
+    if(verticesLeft==0)
+        return NULL;
+    int edgeNeighborIndex = 0;
+    readInt(file, &edgeNeighborIndex);
+    verticesLeft--;
+
+    colLinkedList* primary=newColLinkedList(edgeNeighborIndex, NULL);
+    colLinkedList* current=primary;
     while (verticesLeft > 0) {
-        int edgeNeighborIndex = 0;
         readInt(file, &edgeNeighborIndex);
-        if (edgeNeighborIndex > edgePrimaryIndex) {
 
-            (*edgePointer)->highIndex = edgeNeighborIndex;
-            (*edgePointer)->lowIndex = edgePrimaryIndex;
-            (*edgePointer)++;
-
-        }
+        current->next=newColLinkedList(edgeNeighborIndex,NULL);
+        current=current->next;
         verticesLeft--;
     }
+    return  primary;
 }
 
-void loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat, edge** edgeArr) {
+rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
 
     int vertexIndex = 0;
-
-    edge *edgePointer = *edgeArr;
-    int edgePrimaryIndex = 0;
-    while (edgePrimaryIndex<networkStat->vertices) {
+    rowLinkedList* holder=newRowLinkedList(-1,NULL,NULL),// holder won't be returned
+            *returned;
+    rowLinkedList* current= holder;
+    int edgeRowIndex = 0;
+    while (edgeRowIndex < networkStat->vertices) {
         int verticesLeft;
         readInt(file, &verticesLeft);
-
+        current->nextRow=newRowLinkedList(edgeRowIndex,NULL, NULL);
+        current=current->nextRow;
         updateNetworkStat(networkStat, vertexIndex, verticesLeft);
-
-        copyVertexNeighbor(file, &edgePointer, edgePrimaryIndex, verticesLeft);
-        edgePrimaryIndex++;
+        current->colList=copyVertexNeighbor(file, verticesLeft);
+        edgeRowIndex++;
 
     }
+    returned=holder->nextRow;
+    free(holder);
+    return returned;
+
 }
 
-edge * readInputFile(char *filePath) {
+rowLinkedList*  readInputFile(char *filePath) {
+    rowLinkedList* returned;
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    edge *edgeArr = memory((networkStat).edges, sizeof(edge));
-    loadAdjacencyMatrixDataStructures(file, &networkStat,&edgeArr);
+    returned=loadAdjacencyMatrixDataStructures(file, &networkStat);
 
     releaseNetworkStat(&networkStat);
     fclose(file);
-    return edgeArr;
+    return returned;
 }
 
 
@@ -86,7 +91,7 @@ int getVertices( FILE *file) {
 
 
 int main() {
-    edge* graphData=readInputFile("/home/eran/Downloads/graph.in");
-    free(graphData);
+    rowLinkedList * graphData=readInputFile("/home/eran/Downloads/graph.in");
+    freeData(graphData);
     return 0;
 }
