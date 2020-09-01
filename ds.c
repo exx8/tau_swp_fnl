@@ -54,3 +54,17 @@ void freeData(rowLinkedList* list)
     freeCol(list->colList);
     free(list);
 }
+
+struct _colLinkedListSparseMatrix {
+    int colIndex;
+    double value;
+    struct _colLinkedListSparseMatrix* next;
+} typedef colLinkedListSparseMatrix;
+
+
+struct _rowLinkedListSparseMatrix {
+    int rowIndex;
+    double value;
+    struct _rowLinkedListSparseMatrix* nextRow;
+    struct _colLinkedListSparseMatrix* colList;
+} typedef rowLinkedListSparseMatrix;
