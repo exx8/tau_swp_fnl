@@ -68,3 +68,22 @@ struct _rowLinkedListSparseMatrix {
     struct _rowLinkedListSparseMatrix* nextRow;
     struct _colLinkedListSparseMatrix* colList;
 } typedef rowLinkedListSparseMatrix;
+
+rowLinkedListSparseMatrix* newRowLinkedListSparseMatrix(int index,rowLinkedListSparseMatrix* nextRow,colLinkedListSparseMatrix* colList)
+{
+    rowLinkedListSparseMatrix * returned=memory(sizeof(rowLinkedList),1);
+    returned->rowIndex=index;
+    returned->nextRow=nextRow;
+    returned->colList=colList;
+    return returned;
+
+}
+
+colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListSparseMatrix* next)
+{
+    colLinkedListSparseMatrix* returned=memory(sizeof(colLinkedList),1);
+    returned->colIndex=index;
+    returned->next=next;
+    return returned;
+
+}
