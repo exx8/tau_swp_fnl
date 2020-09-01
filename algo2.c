@@ -8,10 +8,10 @@ typedef int bool;
 #include "ds.h"
 #include "networkStats.h"
 
-int bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
+double bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
                               int *eigenVectorApproximation) {
     //@todo check me!!!
-    int bilinearValue=0;
+    double bilinearValue=0;
     const M = AGlobalstats->degreeSum;
     const vectorLength = AgStat->vertices;
     rowLinkedList *AgCurrent = Ag;
@@ -25,7 +25,7 @@ int bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, network
         colLinkedList *AgCurrentCol = AgCurrent->colList;
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
-            int B_ij = 0;
+            double B_ij = 0;
             const bool isColExists = AgCurrentCol->colIndex == colIndex ? 1 : 0;
             const bool isCellExists = isRowExists && isColExists;
 
@@ -50,4 +50,12 @@ int bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, network
     free(partialMultipicationOfEigenAndMatrix);
     return bilinearValue;
 
+}
+int norm(double* vector,int len)
+{
+    int sum=0;
+    int i=0;
+    for(;i<len;i++)
+        sum+=vector[i]*vector[i];
+    return sum;
 }
