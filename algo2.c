@@ -9,14 +9,12 @@ typedef int bool;
 #include "networkStats.h"
 #include "time.h"
 
-double bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
-                                int *eigenVectorApproximation) {
+double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
+                         int *eigenVectorApproximation, int vectorLength) {
     //@todo check me!!!
     double bilinearValue = 0;
     const M = AGlobalstats->degreeSum;
-    const vectorLength = AgStat->vertices;
     rowLinkedList *AgCurrent = Ag;
-    double *partialMultipicationOfEigenAndMatrix = memory(sizeof(double), vectorLength);
     int rowIndex, colIndex;
 // all matrices are symmetrical.
     for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
@@ -35,27 +33,61 @@ double bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, netw
                 B_ij++;//Add 1 exists
                 AgCurrentCol = AgCurrentCol->next;
             }
-            partialMultipicationOfEigenAndMatrix[rowIndex] = eigenVectorApproximation[rowIndex * B_ij];
+            eigenVectorApproximation[rowIndex] = eigenVectorApproximation[rowIndex * B_ij];
         }
 
-        partialMultipicationOfEigenAndMatrix[rowIndex] = sum;
+        eigenVectorApproximation[rowIndex] = sum;
         if (rowIndex == AgCurrent->rowIndex) {
             AgCurrent = AgCurrent->nextRow;
         }
     }
-    for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
-        bilinearValue += eigenVectorApproximation[rowIndex] * partialMultipicationOfEigenAndMatrix[rowIndex];
-    }
 
-    free(partialMultipicationOfEigenAndMatrix);
-    return bilinearValue;
+
+    return eigenVectorApproximation;
 
 }
 
-int norm(double *vector, int len) {
+double norm(double *vector, int len) {
     int sum = 0;
     int i = 0;
     for (; i < len; i++)
         sum += vector[i] * vector[i];
     return sum;
+}
+
+void normalizeVector(double *vec, int vecLength) {
+    double vecNorm = norm(vec, vecLength);
+    int i = 0;
+    for (; i < vecLength; i++)
+        vec[i] /= vecNorm;
+}
+double diff(double *vec1,double *vec2){
+    //@todo do me
+}
+
+//Ag==A[g]
+double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+    srand(NULL);
+    const volatile vectorLength = AgStat->vertices;
+    const double epsilon = 0.00001;
+    double currentDiff = 1;
+    double *vec1, *vec2;
+    int volatile i = 0;
+    vec1 = memory(sizeof(double), vectorLength);
+    vec2 = memory(sizeof(double), vectorLength);
+    for (; i < vectorLength; i++) {
+        vec1[i] = rand();
+        vec2[i] = rand();
+
+    }
+    while (currentDiff > epsilon) {
+        double* swap;
+        swap=vec1;
+        vec2= multipicationOfB(Ag, AgStat, AGlobalstats, vec2, vectorLength);
+        normalizeVector(vec2,vectorLength);
+        vec1=vec2;
+        vec2=swap;
+        diff(vec1,vec2)
+
+    }
 }
