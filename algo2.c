@@ -7,11 +7,12 @@ typedef int bool;
 
 #include "ds.h"
 #include "networkStats.h"
+#include "time.h"
 
 double bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
-                              int *eigenVectorApproximation) {
+                                int *eigenVectorApproximation) {
     //@todo check me!!!
-    double bilinearValue=0;
+    double bilinearValue = 0;
     const M = AGlobalstats->degreeSum;
     const vectorLength = AgStat->vertices;
     rowLinkedList *AgCurrent = Ag;
@@ -42,20 +43,19 @@ double bilinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, netw
             AgCurrent = AgCurrent->nextRow;
         }
     }
-    for(rowIndex=0;rowIndex<vectorLength;rowIndex++)
-    {
-        bilinearValue+=eigenVectorApproximation[rowIndex]*partialMultipicationOfEigenAndMatrix[rowIndex];
+    for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
+        bilinearValue += eigenVectorApproximation[rowIndex] * partialMultipicationOfEigenAndMatrix[rowIndex];
     }
 
     free(partialMultipicationOfEigenAndMatrix);
     return bilinearValue;
 
 }
-int norm(double* vector,int len)
-{
-    int sum=0;
-    int i=0;
-    for(;i<len;i++)
-        sum+=vector[i]*vector[i];
+
+int norm(double *vector, int len) {
+    int sum = 0;
+    int i = 0;
+    for (; i < len; i++)
+        sum += vector[i] * vector[i];
     return sum;
 }
