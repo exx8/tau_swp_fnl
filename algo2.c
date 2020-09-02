@@ -87,7 +87,7 @@ double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
         normalizeVector(vec2,vectorLength);
         vec1=vec2;
         vec2=swap;
-        diff(vec1,vec2)
+        diff(vec1,vec2);
 
     }
 }
