@@ -64,8 +64,7 @@ struct _colLinkedListSparseMatrix {
 
 struct _rowLinkedListSparseMatrix {
     int rowIndex;
-    double value;
-    struct _rowLinkedListSparseMatrix* nextRow;
+
     struct _colLinkedListSparseMatrix* colList;
 } typedef rowLinkedListSparseMatrix;
 
