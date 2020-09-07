@@ -61,8 +61,14 @@ void normalizeVector(double *vec, int vecLength) {
     for (; i < vecLength; i++)
         vec[i] /= vecNorm;
 }
-double diff(double *vec1,double *vec2){
-    //@todo do me
+
+double diff(const double *vec1, const double *vec2, int vectorLength) {
+    const double *vectorEnd = vec1 + vectorLength;
+    double sum = 0;
+    for (;vectorEnd!=vec1; vec1++, vec2++) {
+        sum += *vec1 + *vec2;
+    }
+    return sum;
 }
 
 //Ag==A[g]
@@ -81,13 +87,13 @@ double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
 
     }
     while (currentDiff > epsilon) {
-        double* swap;
-        swap=vec1;
-        vec2= multipicationOfB(Ag, AgStat, AGlobalstats, vec2, vectorLength);
-        normalizeVector(vec2,vectorLength);
-        vec1=vec2;
-        vec2=swap;
-        diff(vec1,vec2);
+        double *swap;
+        swap = vec1;
+        vec2 = multipicationOfB(Ag, AgStat, AGlobalstats, vec2, vectorLength);
+        normalizeVector(vec2, vectorLength);
+        vec1 = vec2;
+        vec2 = swap;
+        diff(vec1, vec2);
 
     }
 }
