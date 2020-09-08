@@ -8,7 +8,7 @@ typedef int bool;
 #include "ds.h"
 #include "networkStats.h"
 #include "time.h"
-
+#include "math.h"
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
                          int *eigenVectorApproximation, int vectorLength) {
     //@todo check me!!!
@@ -66,8 +66,9 @@ double diff(const double *vec1, const double *vec2, int vectorLength) {
     const double *vectorEnd = vec1 + vectorLength;
     double sum = 0;
     for (;vectorEnd!=vec1; vec1++, vec2++) {
-        sum += *vec1 + *vec2;
+        sum +=pow( *vec1 - *vec2,2);
     }
+    sum=sqrt(sum);
     return sum;
 }
 
