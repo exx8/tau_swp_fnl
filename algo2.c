@@ -9,6 +9,7 @@ typedef int bool;
 #include "networkStats.h"
 #include "time.h"
 #include "math.h"
+
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
                          int *eigenVectorApproximation, int vectorLength) {
     //@todo check me!!!
@@ -65,10 +66,10 @@ void normalizeVector(double *vec, int vecLength) {
 double diff(const double *vec1, const double *vec2, int vectorLength) {
     const double *vectorEnd = vec1 + vectorLength;
     double sum = 0;
-    for (;vectorEnd!=vec1; vec1++, vec2++) {
-        sum +=pow( *vec1 - *vec2,2);
+    for (; vectorEnd != vec1; vec1++, vec2++) {
+        sum += pow(*vec1 - *vec2, 2);
     }
-    sum=sqrt(sum);
+    sum = sqrt(sum);
     return sum;
 }
 
@@ -94,7 +95,7 @@ double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
         normalizeVector(vec2, vectorLength);
         vec1 = vec2;
         vec2 = swap;
-        diff(vec1, vec2,vectorLength);
+        diff(vec1, vec2, vectorLength);
 
     }
 }
