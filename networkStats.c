@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include "utils.h"
+int getVertices( FILE *file);
 
 struct _networkStats {
     int vertices;

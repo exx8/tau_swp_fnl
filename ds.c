@@ -3,7 +3,7 @@
 //
 
 #include "networkStats.h"
-#include "utils.h"
+
 #include <stdlib.h>
 #include <assert.h>
 #include <sys/stat.h>
@@ -64,13 +64,13 @@ struct _colLinkedListSparseMatrix {
 
 struct _rowLinkedListSparseMatrix {
     int rowIndex;
-    rowLinkedList* nextRow;
+    struct _rowLinkedListSparseMatrix* nextRow;
     struct _colLinkedListSparseMatrix* colList;
 } typedef rowLinkedListSparseMatrix;
 
 rowLinkedListSparseMatrix* newRowLinkedListSparseMatrix(int index,rowLinkedListSparseMatrix* nextRow,colLinkedListSparseMatrix* colList)
 {
-    rowLinkedListSparseMatrix * returned=memory(sizeof(rowLinkedList),1);
+    rowLinkedListSparseMatrix * returned=memory(sizeof(rowLinkedListSparseMatrix),1);
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;

@@ -5,13 +5,16 @@ typedef int bool;
 #define true 1
 #define false 0
 
-#include "ds.h"
-#include "networkStats.h"
+
 #include "time.h"
 #include "math.h"
-
+#include "ds.h"
+struct _eigen{
+    double *vector;
+    double value;
+} typedef eigen;
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
-                         int *eigenVectorApproximation, int vectorLength) {
+                         double *eigenVectorApproximation, int vectorLength) {
     //@todo check me!!!
     double bilinearValue = 0;
     const M = AGlobalstats->degreeSum;
@@ -34,7 +37,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
                 B_ij++;//Add 1 exists
                 AgCurrentCol = AgCurrentCol->next;
             }
-            eigenVectorApproximation[rowIndex] = eigenVectorApproximation[rowIndex * B_ij];
+            eigenVectorApproximation[rowIndex] = eigenVectorApproximation[rowIndex ]* B_ij;
         }
 
         eigenVectorApproximation[rowIndex] = sum;
@@ -74,7 +77,8 @@ double diff(const double *vec1, const double *vec2, int vectorLength) {
 }
 
 //Ag==A[g]
-double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+
     srand(NULL);
     const volatile vectorLength = AgStat->vertices;
     const double epsilon = 0.00001;
@@ -83,6 +87,7 @@ double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
     int volatile i = 0;
     vec1 = memory(sizeof(double), vectorLength);
     vec2 = memory(sizeof(double), vectorLength);
+    eigen returned;
     for (; i < vectorLength; i++) {
         vec1[i] = rand();
         vec2[i] = rand();
@@ -98,4 +103,14 @@ double powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
         diff(vec1, vec2, vectorLength);
 
     }
+    free(vec2);
+    returned.vector=vec1;
+    returned.value;//@todo
+    return returned;
+
+}
+
+void test(rowLinkedList * graphData,networkStatsSet networkStat)
+{
+powerIterationOnB(graphData,&networkStat,&networkStat);
 }
