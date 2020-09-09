@@ -29,7 +29,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
             double B_ij = 0;
-            const bool isColExists = AgCurrentCol->colIndex == colIndex ? 1 : 0;
+            const bool isColExists =AgCurrentCol? 0: AgCurrentCol->colIndex == colIndex ? 1 : 0;
             const bool isCellExists = isRowExists && isColExists;
 
             B_ij -= AGlobalstats->vertexDegreeArray[rowIndex] * AGlobalstats->vertexDegreeArray[colIndex] / M;
