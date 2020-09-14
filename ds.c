@@ -93,6 +93,6 @@ struct _networkStatSetList {
 } typedef networkStatsSetList;
 
 struct _divisionResults{
-    int isErrored;
+    int errorNum; //whereas 0 stands for no error
     void* value;
 } typedef divisionResults;

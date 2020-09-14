@@ -86,6 +86,26 @@ double diff(const double *vec1, const double *vec2, int vectorLength) {
     return sum;
 }
 
+double
+billinearMultipicationOfB(const rowLinkedList *Ag, const networkStatsSet *AgStat, const networkStatsSet *AGlobalstats,
+                          volatile const int vectorLength, const double *vec1, const double *vec2) {
+    double * ab = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
+    double bAb=vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
+    return bAb;
+}
+
+double
+billinearMultipicationOfBUnoptimized(const rowLinkedList *Ag, const networkStatsSet *AgStat, const networkStatsSet *AGlobalstats,
+                          volatile const int vectorLength, const double *vec1) {
+    double* vec2=memory(sizeof(double),vectorLength);
+ double returned=billinearMultipicationOfB(  Ag,   AgStat,  AGlobalstats,
+     vectorLength,  vec1,  vec2);
+ free(vec2);
+    return returned;
+
+}
+
+
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
 
@@ -118,8 +138,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     }
     returned.vector=vec1;
 
-    double * ab = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
-    double bAb=vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
+    double bAb = billinearMultipicationOfB(Ag, AgStat, AGlobalstats, vectorLength, vec1, vec2);
     returned.value=bAb/vectorMultipication(vec2, vec2, vectorLength);
     free(vec2);
     return returned;
@@ -132,9 +151,28 @@ for(;vector<end;vector++)
     *vector=(*vector>0)?1:-1;
 }
 
+divisionResults returnError(divisionResults *returned,int errorNum) {
+    (*returned).errorNum=errorNum;
+    (*returned).value=NULL;
+    return (*returned);
+}
+
 divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+    divisionResults returned;
+    int vectorLength = AgStat->vertices;
+
     eigen division = powerIterationOnB(Ag, &AgStat, &AGlobalstats);
-    makeVectorDiscrete(division.vector,AgStat->vertices);
+    if(division.value<0)
+    {
+        return returnError(&returned,1);
+    }
+    makeVectorDiscrete(division.vector, vectorLength);
+    double sBs=billinearMultipicationOfBUnoptimized(Ag, AgStat, AGlobalstats, vectorLength, division.vector);
+    if(sBs<0)
+    {
+        return returnError(&returned,2);
+
+    }
 
 }
 
