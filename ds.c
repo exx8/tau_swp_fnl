@@ -112,5 +112,5 @@ struct _divisionResults{
 
 struct _communityDescription{
     networkStatsSet networkStat;
-    rowLinkedList graph;
+    rowLinkedList* graph;
 } typedef communityDescription;
