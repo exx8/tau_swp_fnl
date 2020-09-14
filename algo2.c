@@ -37,7 +37,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
                 B_ij++;//Add 1 exists
                 AgCurrentCol = AgCurrentCol->next;
             }
-            sum+= eigenVectorApproximationRead[rowIndex ]* B_ij;
+            sum+= eigenVectorApproximationRead[colIndex ]* B_ij;
         }
 
         eigenVectorApproximationWrite[rowIndex] = sum;
@@ -93,6 +93,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     for (; i < vectorLength; i++) {
         vec1[i] = (double)rand();
         vec2[i] = (double)rand();
+        //vec1[i]=2*i+1;//@todo delete us
+        //vec2[i]=2*i+1;//@todo delete us
 
     }
     while (currentDiff > epsilon) {
