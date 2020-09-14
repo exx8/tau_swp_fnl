@@ -8,10 +8,7 @@
 #include "algo2.h"
 
 
-struct _networkStatSetList {
-    networkStatsSet networkInfo;
-    struct _networkStatSetList* next;
-} typedef networkStatsSetList;
+
 
 
 void addNodeToBeginning(networkStatsSet networkInfo, networkStatsSetList* list){
