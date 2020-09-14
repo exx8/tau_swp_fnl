@@ -58,6 +58,7 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
         updateNetworkStat(networkStat, vertexIndex, verticesLeft);
         current->colList=copyVertexNeighbor(file, verticesLeft);
         edgeRowIndex++;
+        vertexIndex++;
 
     }
     returned=holder->nextRow;

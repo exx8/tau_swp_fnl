@@ -89,17 +89,17 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     vec2 = memory(sizeof(double), vectorLength);
     eigen returned;
     for (; i < vectorLength; i++) {
-        vec1[i] = rand();
-        vec2[i] = rand();
+        vec1[i] = (double)rand();
+        vec2[i] = (double)rand();
 
     }
     while (currentDiff > epsilon) {
         double *swap;
         swap = vec1;
         vec2 = multipicationOfB(Ag, AgStat, AGlobalstats, vec2, vectorLength);
+        normalizeVector(vec2, vectorLength);
         vec1 = vec2;
         vec2 = swap;
-        normalizeVector(vec2, vectorLength);
 
         currentDiff=diff(vec1, vec2, vectorLength);
     }
