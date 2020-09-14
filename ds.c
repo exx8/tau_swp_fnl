@@ -18,6 +18,19 @@ struct _rowLinkedList {
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
 } typedef rowLinkedList;
+void deleteNextRow(rowLinkedList* l){
+    rowLinkedList* lNext;
+    l->nextRow=l->nextRow->nextRow;
+    free(lNext);
+
+}
+
+void deleteNextCol(colLinkedList* l){
+    colLinkedList* lNext;
+    l->next=l->next->next;
+    free(lNext);
+
+}
 
 rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
@@ -96,3 +109,8 @@ struct _divisionResults{
     int errorNum; //whereas 0 stands for no error
     void* value;
 } typedef divisionResults;
+
+struct _communityDescription{
+    networkStatsSet networkStat;
+    rowLinkedList graph;
+} typedef communityDescription;
