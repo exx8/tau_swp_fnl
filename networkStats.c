@@ -33,6 +33,7 @@ networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes) {
     networkStat.vertices = verticesNum;
     networkStat.edges = edgesNum;
     networkStat.vertexDegreeArray = (int *) memory(networkStat.vertices , sizeof(int));
+     networkStat.degreeSum=0; // only initing not setting
     return networkStat;
 
 
