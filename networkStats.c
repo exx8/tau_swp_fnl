@@ -12,7 +12,7 @@ int getVertices( FILE *file);
 struct _networkStats {
     int vertices;
     int edges;
-    int * vertexDegreeArray;
+    int * vertexDegreeArray; //CAUTION: for avoiding initing array for each community, the array MAY contain data about extenrnal vertices
     int degreeSum;
 
 } typedef networkStatsSet;
