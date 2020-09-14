@@ -121,8 +121,20 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     double * ab = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
     double bAb=vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
     returned.value=bAb/vectorMultipication(vec2, vec2, vectorLength);
-
+    free(vec2);
     return returned;
+
+}
+
+void makeVectorDiscrete(double* vector,int vectorLength) {
+const end=vector+vectorLength;
+for(;vector<end;vector++)
+    *vector=(*vector>0)?1:-1;
+}
+
+divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+    eigen division = powerIterationOnB(Ag, &AgStat, &AGlobalstats);
+    makeVectorDiscrete(division.vector,AgStat->vertices);
 
 }
 

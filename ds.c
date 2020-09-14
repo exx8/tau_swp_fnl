@@ -91,3 +91,8 @@ struct _networkStatSetList {
     networkStatsSet networkInfo;
     struct _networkStatSetList* next;
 } typedef networkStatsSetList;
+
+struct _divisionResults{
+    int isErrored;
+    void* value;
+} typedef divisionResults;
