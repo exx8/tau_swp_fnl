@@ -5,7 +5,7 @@ typedef int bool;
 #define true 1
 #define false 0
 
-
+#include "utils.h"
 #include "time.h"
 #include "math.h"
 #include "ds.h"
@@ -117,7 +117,6 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
 
     srand(NULL);
     const volatile vectorLength = AgStat->vertices;
-    const double epsilon = 0.00001;
     double currentDiff = 1;
     double *vec1, *vec2;
     int volatile i = 0;
@@ -130,7 +129,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
 
 
     }
-    while (currentDiff > epsilon) {
+    while (IS_POSITIVE(currentDiff) ) {
         //@todo think about reflection cases
         double *swap1, *swap2;
         swap1 = vec1;
@@ -162,7 +161,16 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
     (*returned).value = NULL;
     return (*returned);
 }
+networkStatsSet* splitCommunities(communityDescription communityToSplit,double * splitter)
+{
+     rowLinkedList holder;
+    networkStatsSet communnity2Set;
+    rowLinkedList community2Graph,currentCommunityPointer=*communityToSplit.graph;
+   //@todo scan and separate by value each vertex
 
+
+
+}
 divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
     divisionResults returned;
     int vectorLength = AgStat->vertices;
