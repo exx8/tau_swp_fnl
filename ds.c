@@ -86,3 +86,8 @@ colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListS
     return returned;
 
 }
+
+struct _networkStatSetList {
+    networkStatsSet networkInfo;
+    struct _networkStatSetList* next;
+} typedef networkStatsSetList;
