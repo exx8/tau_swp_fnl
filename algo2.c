@@ -59,7 +59,15 @@ double norm(double *vector, int len) {
 
     return sqrt(sum);
 }
+double vectorMultipication(double* a,double* b,int vectorLength)
+{
+    double sum=0;
+    const double* end=b+vectorLength;
+    for(;b<end;b++,a++)
+        sum+=(*a)*(*b);
 
+    return sum;
+}
 void normalizeVector(double *vec, int vecLength) {
     double vecNorm = norm(vec, vecLength);
     int i = 0;
@@ -93,11 +101,11 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     for (; i < vectorLength; i++) {
         vec1[i] = (double)rand();
         vec2[i] = (double)rand();
-        //vec1[i]=2*i+1;//@todo delete us
-        //vec2[i]=2*i+1;//@todo delete us
+
 
     }
     while (currentDiff > epsilon) {
+        //@todo think about reflection cases
         double *swap1, *swap2;
         swap1 = vec1;
         swap2=vec2;
@@ -108,9 +116,12 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
 
         currentDiff=diff(vec1, vec2, vectorLength);
     }
-    free(vec2);
     returned.vector=vec1;
-    returned.value;//@todo
+
+    double * ab = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
+    double bAb=vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
+    returned.value=bAb/vectorMultipication(vec2, vec2, vectorLength);
+
     return returned;
 
 }
