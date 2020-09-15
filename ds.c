@@ -104,6 +104,11 @@ struct _communityDescription{
     rowLinkedList* graph;
 } typedef communityDescription;
 
+communityDescription newCommunityDescription(networkStatsSet ns,rowLinkedList* graph)
+{
+    communityDescription returned={.networkStat=ns,.graph=graph};
+    return returned;
+}
 struct _communitiesList {
     communityDescription *communityInfo;
     struct _communitiesList* next;
