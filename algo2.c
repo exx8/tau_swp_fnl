@@ -193,6 +193,9 @@ void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colL
 communityDescription *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holder1, holder2;
     holder1.nextRow = communityToSplit.graph;
+    holder2.nextRow=NULL;
+    holder1.rowIndex=-1;
+    holder2.rowIndex=-1;
     networkStatsSet community1NetworkStats = communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
     rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
     rowLinkedList *newGraphsArr[2];
@@ -221,6 +224,7 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
             shouldContinue=1;
         }
         deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);
+        current1->colList=currentCol->next;
         community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
         community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;
         if(shouldContinue)
