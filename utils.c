@@ -14,3 +14,9 @@ void *memory(int sizeOfCell, size_t numberOfCell) {
     return buffer;
 
 }
+
+void error(int errorID,char* errorReason)
+{
+    printf("Error:%s",errorReason);
+    exit(errorID);
+}

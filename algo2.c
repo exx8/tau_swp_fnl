@@ -17,12 +17,12 @@ struct _eigen {
     double value;
 } typedef eigen;
 
-double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats,
+double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength) {
     //@todo check me!!!
     double bilinearValue = 0;
-    const M = AGlobalstats->degreeSum;
+    const M = AgStat->degreeSum;
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
 // all matrices are symmetrical.
@@ -37,7 +37,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
             const bool isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
             const bool isCellExists = isRowExists && isColExists;
 
-            B_ij -= ((double) AGlobalstats->vertexDegreeArray[rowIndex] * AGlobalstats->vertexDegreeArray[colIndex]) /
+            B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
                     M;
             if (isCellExists) {
                 B_ij++;//Add 1 exists
@@ -94,19 +94,18 @@ double diff(const double *vec1, const double *vec2, int vectorLength) {
 }
 
 double
-billinearMultipicationOfB(const rowLinkedList *Ag, const networkStatsSet *AgStat, const networkStatsSet *AGlobalstats,
+billinearMultipicationOfB(const rowLinkedList *Ag, const networkStatsSet *AgStat,
                           volatile const int vectorLength, const double *vec1, const double *vec2) {
-    double *ab = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
+    double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength);
     double bAb = vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
     return bAb;
 }
 
 double
 billinearMultipicationOfBUnoptimized(const rowLinkedList *Ag, const networkStatsSet *AgStat,
-                                     const networkStatsSet *AGlobalstats,
                                      volatile const int vectorLength, const double *vec1) {
     double *vec2 = memory(sizeof(double), vectorLength);
-    double returned = billinearMultipicationOfB(Ag, AgStat, AGlobalstats,
+    double returned = billinearMultipicationOfB(Ag, AgStat,
                                                 vectorLength, vec1, vec2);
     free(vec2);
     return returned;
@@ -115,7 +114,7 @@ billinearMultipicationOfBUnoptimized(const rowLinkedList *Ag, const networkStats
 
 
 //Ag==A[g]
-eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     srand(NULL);
     const volatile vectorLength = AgStat->vertices;
@@ -137,7 +136,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
         double *swap1, *swap2;
         swap1 = vec1;
         swap2 = vec2;
-        vec2 = multipicationOfB(Ag, AgStat, AGlobalstats, vec1, vec2, vectorLength);
+        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength);
         normalizeVector(vec2, vectorLength);
         vec1 = swap2;
         vec2 = swap1;
@@ -147,7 +146,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
     }
     returned.vector = vec1;
 
-    double bAb = billinearMultipicationOfB(Ag, AgStat, AGlobalstats, vectorLength, vec1, vec2);
+    double bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
     returned.value = bAb / vectorMultipication(vec2, vec2, vectorLength);
     free(vec2);
     return returned;
@@ -246,19 +245,19 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
 
 }
 
-divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
+divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     divisionResults returned;
     communityDescription currentCommunity;
     int vectorLength = AgStat->vertices;
     currentCommunity.networkStat = *AgStat;
     currentCommunity.graph = Ag;
 
-    eigen division = powerIterationOnB(Ag, AgStat, AGlobalstats);
+    eigen division = powerIterationOnB(Ag, AgStat);
     if (division.value < 0) {
         return returnError(&returned, 1);
     }
     //makeVectorDiscrete(division.vector, vectorLength);
-    double sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, AGlobalstats, vectorLength, division.vector);
+    double sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
     if (sBs < 0) {
         return returnError(&returned, 2);
 
@@ -272,5 +271,5 @@ return returnSuccess(communtiesAfterSplitting);
 void test(rowLinkedList *graphData, networkStatsSet networkStat) {
 
 
-    algo2(graphData, &networkStat, &networkStat);
+    algo2(graphData, &networkStat);
 }
