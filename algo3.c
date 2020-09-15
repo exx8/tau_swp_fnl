@@ -17,12 +17,14 @@ void addNodeToBeginning(communityDescription *communityInfo, communitiesList *li
 
 communitiesList *algo3(communityDescription community) {
 
-    communitiesList *groupA;
-    communitiesList *groupB;
+    communitiesList *groupA=memory(sizeof(communitiesList ),1);
+
+    groupA->next=NULL;
+    communitiesList *groupB=memory(sizeof(communitiesList ),1);
     groupA->communityInfo = &community;
     while (groupA != NULL) {
-        communitiesList *groupC = &groupA;
-        divisionResults algo2Results = algo2(groupC->communityInfo->graph, &groupC->communityInfo->networkStat);
+        communitiesList *groupC = groupA;
+        divisionResults algo2Results = algo2(groupC->communityInfo->graph, &(groupC->communityInfo->networkStat));
         if(algo2Results.errorNum!=0)
         {
             error(algo2Results.errorNum,"divsion failed");
