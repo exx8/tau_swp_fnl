@@ -3,7 +3,7 @@
 //
 
 #include "networkStats.h"
-#include "utils.h"
+
 #include <stdlib.h>
 #include <assert.h>
 #include <sys/stat.h>
@@ -18,6 +18,19 @@ struct _rowLinkedList {
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
 } typedef rowLinkedList;
+void deleteNextRow(rowLinkedList* l){
+    rowLinkedList* lNext;
+    l->nextRow=l->nextRow->nextRow;
+    free(lNext);
+
+}
+
+void deleteNextCol(colLinkedList* l){
+    colLinkedList* lNext;
+    l->next=l->next->next;
+    free(lNext);
+
+}
 
 rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
@@ -64,7 +77,42 @@ struct _colLinkedListSparseMatrix {
 
 struct _rowLinkedListSparseMatrix {
     int rowIndex;
-    double value;
     struct _rowLinkedListSparseMatrix* nextRow;
     struct _colLinkedListSparseMatrix* colList;
 } typedef rowLinkedListSparseMatrix;
+
+rowLinkedListSparseMatrix* newRowLinkedListSparseMatrix(int index,rowLinkedListSparseMatrix* nextRow,colLinkedListSparseMatrix* colList)
+{
+    rowLinkedListSparseMatrix * returned=memory(sizeof(rowLinkedListSparseMatrix),1);
+    returned->rowIndex=index;
+    returned->nextRow=nextRow;
+    returned->colList=colList;
+    return returned;
+
+}
+
+colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListSparseMatrix* next)
+{
+    colLinkedListSparseMatrix* returned=memory(sizeof(colLinkedList),1);
+    returned->colIndex=index;
+    returned->next=next;
+    return returned;
+
+}
+
+struct _networkStatSetList {
+    networkStatsSet networkInfo;
+    struct _networkStatSetList* next;
+} typedef networkStatsSetList;
+
+
+
+struct _communityDescription{
+    networkStatsSet networkStat;
+    rowLinkedList* graph;
+} typedef communityDescription;
+
+struct _divisionResults{
+    int errorNum; //whereas 0 stands for no error
+    communityDescription* value;
+} typedef divisionResults;

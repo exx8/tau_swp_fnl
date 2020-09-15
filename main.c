@@ -3,12 +3,10 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "utils.h"
-#include "networkStats.h"
 #include "ds.h"
-#include "ds.h"
+#include "algo2.h"
 #define intsize 4
 
-int getVertices( FILE *file);
 
 int filesize(char *filePath) {
     struct stat details;
@@ -60,6 +58,7 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
         updateNetworkStat(networkStat, vertexIndex, verticesLeft);
         current->colList=copyVertexNeighbor(file, verticesLeft);
         edgeRowIndex++;
+        vertexIndex++;
 
     }
     returned=holder->nextRow;
@@ -75,6 +74,8 @@ rowLinkedList*  readInputFile(char *filePath) {
     assert(file!=NULL);
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
     returned=loadAdjacencyMatrixDataStructures(file, &networkStat);
+
+    test(returned,networkStat);
 
     releaseNetworkStat(&networkStat);
     fclose(file);

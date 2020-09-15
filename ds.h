@@ -3,7 +3,6 @@
 //
 
 #ifndef TAU_SWP_FNL_DS_H
-#include "ds.c"
 #define TAU_SWP_FNL_DS_H
-
+#include "ds.c"
 #endif //TAU_SWP_FNL_DS_H
