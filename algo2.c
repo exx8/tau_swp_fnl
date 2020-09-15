@@ -182,15 +182,16 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
             current1->nextRow=current1->nextRow->nextRow;
             current2=current2->nextRow;
             
-            //@todo maybe we should also update cols?
             //@todo update network stats
 
         }
         while (currentCol->next!=NULL)
         {
-            if(BELONGS_TO_2ND_COMMUNITY(splitter[currentCol->next->colIndex])!=isRowIn2ndGroup )
+            const colLinkedList *nextCol=currentCol->next;
+            if(BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex])!=isRowIn2ndGroup )
             {
-
+                currentCol=nextCol->next;
+                free(nextCol);
             }
         }
     }
