@@ -105,12 +105,14 @@ struct _networkStatSetList {
     struct _networkStatSetList* next;
 } typedef networkStatsSetList;
 
-struct _divisionResults{
-    int errorNum; //whereas 0 stands for no error
-    void* value;
-} typedef divisionResults;
+
 
 struct _communityDescription{
     networkStatsSet networkStat;
     rowLinkedList* graph;
 } typedef communityDescription;
+
+struct _divisionResults{
+    int errorNum; //whereas 0 stands for no error
+    communityDescription* value;
+} typedef divisionResults;
