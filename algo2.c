@@ -172,7 +172,11 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
    //@todo scan and separate by value each vertex
     while(current1->nextRow != NULL)
     {
-        if(BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] ))
+        const int isRowIn2ndGroup=BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] );
+        colLinkedList colHolder,*currentCol=&colHolder;
+        colHolder.next=current1->colList;
+
+        if(isRowIn2ndGroup)
         {
             current2->nextRow=current1->nextRow;
             current1->nextRow=current1->nextRow->nextRow;
@@ -181,6 +185,13 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
             //@todo maybe we should also update cols?
             //@todo update network stats
 
+        }
+        while (currentCol->next!=NULL)
+        {
+            if(BELONGS_TO_2ND_COMMUNITY(splitter[currentCol->next->colIndex])!=isRowIn2ndGroup )
+            {
+
+            }
         }
     }
     newGraphsArr[0]=holder1.nextRow;
