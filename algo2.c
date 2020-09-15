@@ -166,10 +166,12 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
 {
      rowLinkedList holder1,holder2;
     holder1.nextRow=communityToSplit.graph;
+    networkStatsSet community1NetworkStats=communityToSplit.networkStat,community2NetworkStas=emptyNetworkstats();
     rowLinkedList * current1=&holder1,*current2=&holder2;
     rowLinkedList *newGraphsArr[2];
 
-   //@todo scan and separate by value each vertex
+    community1NetworkStats.edges=0;
+    community2NetworkStas.vertexDegreeArray=community1NetworkStats.vertexDegreeArray; //they are in the same universe
     while(current1->nextRow != NULL)
     {
         const int isRowIn2ndGroup=BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] );
@@ -181,8 +183,10 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
             current2->nextRow=current1->nextRow;
             current1->nextRow=current1->nextRow->nextRow;
             current2=current2->nextRow;
-            
-            //@todo update network stats
+            current2->nextRow=NULL;
+            community1NetworkStats.vertices--;
+            community2NetworkStas.vertices++;
+
 
         }
         while (currentCol->next!=NULL)
@@ -193,7 +197,15 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
                 currentCol=nextCol->next;
                 free(nextCol);
             }
+            else
+                if(isRowIn2ndGroup)
+                    community2NetworkStas.degreeSum++;
+                else
+                    community1NetworkStats.degreeSum++;
         }
+        community1NetworkStats.edges=community1NetworkStats.degreeSum/2;
+        community2NetworkStas.edges=community2NetworkStas.degreeSum/2;
+        //@todo return the split communities
     }
     newGraphsArr[0]=holder1.nextRow;
     newGraphsArr[1]=holder2.nextRow;

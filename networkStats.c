@@ -38,3 +38,12 @@ networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes) {
 
 
 }
+networkStatsSet emptyNetworkstats(){
+    networkStatsSet returned;
+    returned.edges=0;
+    returned.vertices=0;
+    returned.vertexDegreeArray=NULL;
+    returned.degreeSum=0;
+
+    return returned;
+}
