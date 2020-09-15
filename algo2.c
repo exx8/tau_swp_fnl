@@ -131,7 +131,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
 
 
     }
-    while (IS_POSITIVE(currentDiff)) {
+    int left=1000;
+    while (IS_POSITIVE(currentDiff)&&left>0) {
         //@todo think about reflection cases
         double *swap1, *swap2;
         swap1 = vec1;
@@ -142,6 +143,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
         vec2 = swap1;
 
         currentDiff = diff(vec1, vec2, vectorLength);
+        left--;
     }
     returned.vector = vec1;
 
@@ -167,10 +169,13 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
 void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colLinkedList *currentCol,
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
-        const colLinkedList *nextCol = currentCol->next;
-        if (BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex]) != isRowIn2ndGroup) {
-            currentCol = nextCol->next;
-            free(nextCol);
+
+        if (BELONGS_TO_2ND_COMMUNITY(splitter[currentCol->next->colIndex]) != isRowIn2ndGroup) {
+            const colLinkedList *nodeTodelete=currentCol->next;
+            currentCol->next= currentCol->next->next;
+            free(nodeTodelete);
+            currentCol=currentCol->next;
+
         } else {
             currentCol=currentCol->next;
             if (isRowIn2ndGroup) {
@@ -195,7 +200,7 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
     int shouldContinue=0;
-    while (current1->nextRow != NULL) {
+    while (current1&&current1->nextRow != NULL) {
         const int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
         colLinkedList colHolder, *currentCol = &colHolder;
         colHolder.colIndex=-1; //@todo delete me
