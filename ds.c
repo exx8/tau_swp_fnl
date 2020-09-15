@@ -105,7 +105,7 @@ struct _communityDescription{
 } typedef communityDescription;
 
 struct _communitiesList {
-    communityDescription networkInfo;
+    communityDescription communityInfo;
     struct _communitiesList* next;
 } typedef communitiesList;
 

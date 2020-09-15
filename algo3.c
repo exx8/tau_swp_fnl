@@ -11,9 +11,9 @@
 
 
 
-void addNodeToBeginning(communityDescription networkInfo, communitiesList* list){
+void addNodeToBeginning(communityDescription communityInfo, communitiesList* list){
     communitiesList* newGroup;
-    newGroup->networkInfo = networkInfo;
+    newGroup->communityInfo = communityInfo;
     newGroup->next = &list;
     list = newGroup;
 }
@@ -22,10 +22,10 @@ communitiesList* algo3(communityDescription community) {
 
     communitiesList* groupA;
     communitiesList* groupB;
-    groupA->networkInfo = community;
+    groupA->communityInfo = community;
     while(groupA != NULL){
         communitiesList* groupC = &groupA;
-        communityDescription * algo2Division [2]= algo2(groupC->networkInfo);
+        communityDescription * algo2Division [2]= algo2(groupC->communityInfo);
         groupA = groupA->next;
         int firstGroupVetricesNum = algo2Division[0]->networkStat.vertices;
         int secondGroupVerticesNum = algo2Division[1]->networkStat->vertices;
