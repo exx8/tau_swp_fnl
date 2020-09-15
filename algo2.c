@@ -169,6 +169,7 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
     networkStatsSet community1NetworkStats=communityToSplit.networkStat,community2NetworkStas=emptyNetworkstats();
     rowLinkedList * current1=&holder1,*current2=&holder2;
     rowLinkedList *newGraphsArr[2];
+    communityDescription *communityDescriptionArr=memory(sizeof(communityDescription),2);
 
     community1NetworkStats.edges=0;
     community2NetworkStas.vertexDegreeArray=community1NetworkStats.vertexDegreeArray; //they are in the same universe
@@ -209,6 +210,12 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
     }
     newGraphsArr[0]=holder1.nextRow;
     newGraphsArr[1]=holder2.nextRow;
+    communityDescriptionArr[0].networkStat=community1NetworkStats;
+    communityDescriptionArr[0].graph=newGraphsArr[0];
+    communityDescriptionArr[1].networkStat=community2NetworkStas;
+    communityDescriptionArr[1].graph=newGraphsArr[1];
+    return communityDescriptionArr;
+
 
 
 }
