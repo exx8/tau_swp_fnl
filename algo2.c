@@ -9,6 +9,7 @@ typedef int bool;
 #include "time.h"
 #include "math.h"
 #include "ds.h"
+#define BELONGS_TO_2ND_COMMUNITY(X) ((X) < 0)
 
 struct _eigen {
     double *vector;
@@ -171,13 +172,15 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
    //@todo scan and separate by value each vertex
     while(current1->nextRow != NULL)
     {
-        if(splitter[current1->nextRow->rowIndex] == -1)
+        if(BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] ))
         {
             current2->nextRow=current1->nextRow;
             current1->nextRow=current1->nextRow->nextRow;
             current2=current2->nextRow;
+            
             //@todo maybe we should also update cols?
             //@todo update network stats
+
         }
     }
     newGraphsArr[0]=holder1.nextRow;
@@ -193,7 +196,7 @@ divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSe
     if (division.value < 0) {
         return returnError(&returned, 1);
     }
-    makeVectorDiscrete(division.vector, vectorLength);
+    //makeVectorDiscrete(division.vector, vectorLength);
     double sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, AGlobalstats, vectorLength, division.vector);
     if (sBs < 0) {
         return returnError(&returned, 2);
