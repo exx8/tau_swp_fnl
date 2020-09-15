@@ -165,7 +165,12 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
     (*returned).value = NULL;
     return (*returned);
 }
-
+divisionResults returnSuccess(divisionResults *returned) {
+    divisionResults result;
+    result.errorNum=0;
+    result.value=returned;
+    return result;
+}
 void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colLinkedList *currentCol,
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
@@ -261,6 +266,7 @@ divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSe
 
     communityDescription *communtiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
 
+return returnSuccess(communtiesAfterSplitting);
 }
 
 void test(rowLinkedList *graphData, networkStatsSet networkStat) {
