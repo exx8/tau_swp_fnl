@@ -166,7 +166,7 @@ communityDescription* splitCommunities(communityDescription communityToSplit,dou
      rowLinkedList holder1,holder2;
     holder1.nextRow=communityToSplit.graph;
     networkStatsSet community1NetworkStats=communityToSplit.networkStat,community2NetworkStas=emptyNetworkstats();
-    rowLinkedList * current1=&holder1,*current2=&holder2;
+    rowLinkedList * current1=holder1.nextRow,*current2=&holder2;
     rowLinkedList *newGraphsArr[2];
     communityDescription *communityDescriptionArr=memory(sizeof(communityDescription),2);
     community1NetworkStats.edges=0;
