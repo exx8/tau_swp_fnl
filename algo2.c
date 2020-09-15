@@ -163,11 +163,25 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
 }
 networkStatsSet* splitCommunities(communityDescription communityToSplit,double * splitter)
 {
-     rowLinkedList holder;
-    networkStatsSet communnity2Set;
-    rowLinkedList community2Graph,currentCommunityPointer=*communityToSplit.graph;
-   //@todo scan and separate by value each vertex
+     rowLinkedList holder1,holder2;
+    holder1.nextRow=communityToSplit.graph;
+    rowLinkedList * current1=&holder1,*current2=&holder2;
+    rowLinkedList *newGraphsArr[2];
 
+   //@todo scan and separate by value each vertex
+    while(current1->nextRow != NULL)
+    {
+        if(splitter[current1->nextRow->rowIndex] == -1)
+        {
+            current2->nextRow=current1->nextRow;
+            current1->nextRow=current1->nextRow->nextRow;
+            current2=current2->nextRow;
+            //@todo maybe we should also update cols?
+            //@todo update network stats
+        }
+    }
+    newGraphsArr[0]=holder1.nextRow;
+    newGraphsArr[1]=holder2.nextRow;
 
 
 }
