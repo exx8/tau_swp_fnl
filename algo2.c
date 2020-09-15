@@ -162,17 +162,16 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
     (*returned).value = NULL;
     return (*returned);
 }
-networkStatsSet* splitCommunities(communityDescription communityToSplit,double * splitter)
-{
+communityDescription* splitCommunities(communityDescription communityToSplit,double * splitter){
      rowLinkedList holder1,holder2;
     holder1.nextRow=communityToSplit.graph;
     networkStatsSet community1NetworkStats=communityToSplit.networkStat,community2NetworkStas=emptyNetworkstats();
     rowLinkedList * current1=&holder1,*current2=&holder2;
     rowLinkedList *newGraphsArr[2];
     communityDescription *communityDescriptionArr=memory(sizeof(communityDescription),2);
-
     community1NetworkStats.edges=0;
     community2NetworkStas.vertexDegreeArray=community1NetworkStats.vertexDegreeArray; //they are in the same universe
+
     while(current1->nextRow != NULL)
     {
         const int isRowIn2ndGroup=BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] );
@@ -206,7 +205,6 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
         }
         community1NetworkStats.edges=community1NetworkStats.degreeSum/2;
         community2NetworkStas.edges=community2NetworkStas.degreeSum/2;
-        //@todo return the split communities
     }
     newGraphsArr[0]=holder1.nextRow;
     newGraphsArr[1]=holder2.nextRow;
@@ -221,9 +219,12 @@ networkStatsSet* splitCommunities(communityDescription communityToSplit,double *
 }
 divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
     divisionResults returned;
+    communityDescription currentCommunity;
     int vectorLength = AgStat->vertices;
+    currentCommunity.networkStat=*AgStat;
+    currentCommunity.graph=Ag;
 
-    eigen division = powerIterationOnB(Ag, &AgStat, &AGlobalstats);
+    eigen division = powerIterationOnB(Ag, AgStat, AGlobalstats);
     if (division.value < 0) {
         return returnError(&returned, 1);
     }
@@ -234,10 +235,12 @@ divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSe
 
     }
 
+   communityDescription * communtiesAfterSplitting= splitCommunities(currentCommunity,division.vector);
+
 }
 
 void test(rowLinkedList *graphData, networkStatsSet networkStat) {
 
 
-    powerIterationOnB(graphData, &networkStat, &networkStat);
+    algo2(graphData, &networkStat, &networkStat);
 }
