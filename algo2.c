@@ -166,7 +166,7 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
 
 void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colLinkedList *currentCol,
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
-    while (currentCol->next != NULL) {
+    while (currentCol&&currentCol->next != NULL) {
         const colLinkedList *nextCol = currentCol->next;
         if (BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex]) != isRowIn2ndGroup) {
             currentCol = nextCol->next;
