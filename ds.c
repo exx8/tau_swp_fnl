@@ -104,10 +104,10 @@ struct _communityDescription{
     rowLinkedList* graph;
 } typedef communityDescription;
 
-struct _networkStatSetList {
+struct _communitiesList {
     communityDescription networkInfo;
-    struct _networkStatSetList* next;
-} typedef networkStatsSetList;
+    struct _communitiesList* next;
+} typedef communitiesList;
 
 
 
