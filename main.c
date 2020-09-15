@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "ds.h"
 #include "algo2.h"
+#include "algo3.h"
 #define intsize 4
 
 

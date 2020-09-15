@@ -18,30 +18,32 @@ void addNodeToBeginning(networkStatsSet networkInfo, networkStatsSetList* list){
     list = newGroup;
 }
 
-networkStatsSetList* algo3(networkStatsSet stats) {
+networkStatsSetList* algo3(communityDescription community) {
 
     networkStatsSetList* groupA;
     networkStatsSetList* groupB;
-    groupA->networkInfo = stats;
+    groupA->networkInfo = community;
     while(groupA != NULL){
         networkStatsSetList* groupC = &groupA;
-        networkStatsSet[2] algo2Division = algo2(groupC->networkInfo);
+        communityDescription * algo2Division [2]= algo2(groupC->networkInfo);
         groupA = groupA->next;
-        if(algo2Divison[0].vertices == 0 || algo2Divison[1].vertices == 0){
+        int firstGroupVetricesNum = algo2Division[0]->networkStat.vertices;
+        int secondGroupVerticesNum = algo2Division[1]->networkStat->vertices;
+        if(firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0){
             groupC->next = groupB;
             groupB = groupC;
         }
         else{
-            if(algo2Divison[0].vertices == 1 ){
+            if(firstGroupVetricesNum == 1 ){
                 addNodeToBeginning(algo2Division[0], groupB);
             }
-            if(algo2Divison[1].vertices == 1 ){
+            if(secondGroupVerticesNum == 1 ){
                 addNodeToBeginning(algo2Division[1], groupB);
             }
             if(algo2Divison[0].vertices > 1 ){
                 addNodeToBeginning(algo2Division[0], groupA);
             }
-            if(algo2Divison[1].vertices > 1 ){
+            if(secondGroupVerticesNum > 1 ){
                 addNodeToBeginning(algo2Division[1], groupA);
             }
         }
