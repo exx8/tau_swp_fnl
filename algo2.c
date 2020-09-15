@@ -164,6 +164,27 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
     return (*returned);
 }
 
+void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colLinkedList *currentCol,
+                         networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
+    while (currentCol->next != NULL) {
+        const colLinkedList *nextCol = currentCol->next;
+        if (BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex]) != isRowIn2ndGroup) {
+            currentCol = nextCol->next;
+            free(nextCol);
+        } else {
+            currentCol=currentCol->next;
+            if (isRowIn2ndGroup) {
+                (*community2NetworkStas).degreeSum++;
+            }
+            else{
+                (*community1NetworkStats).degreeSum++;
+
+            }
+        }
+
+    }
+}
+
 communityDescription *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holder1, holder2;
     holder1.nextRow = communityToSplit.graph;
@@ -173,10 +194,11 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     communityDescription *communityDescriptionArr = memory(sizeof(communityDescription), 2);
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
-
+    int shouldContinue=0;
     while (current1->nextRow != NULL) {
         const int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
         colLinkedList colHolder, *currentCol = &colHolder;
+        colHolder.colIndex=-1; //@todo delete me
         colHolder.next = current1->colList;
 
         if (isRowIn2ndGroup) {
@@ -189,18 +211,15 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
 
 
         }
-        while (currentCol->next != NULL) {
-            const colLinkedList *nextCol = currentCol->next;
-            if (BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex]) != isRowIn2ndGroup) {
-                currentCol = nextCol->next;
-                free(nextCol);
-            } else if (isRowIn2ndGroup)
-                community2NetworkStas.degreeSum++;
-            else
-                community1NetworkStats.degreeSum++;
+        else
+        {
+            shouldContinue=1;
         }
+        deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);
         community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
         community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;
+        if(shouldContinue)
+            current1=current1->nextRow;
     }
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
