@@ -9,6 +9,7 @@ typedef int bool;
 #include "time.h"
 #include "math.h"
 #include "ds.h"
+
 #define BELONGS_TO_2ND_COMMUNITY(X) ((X) < 0)
 
 struct _eigen {
@@ -130,7 +131,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStats
 
 
     }
-    while (IS_POSITIVE(currentDiff) ) {
+    while (IS_POSITIVE(currentDiff)) {
         //@todo think about reflection cases
         double *swap1, *swap2;
         swap1 = vec1;
@@ -162,67 +163,62 @@ divisionResults returnError(divisionResults *returned, int errorNum) {
     (*returned).value = NULL;
     return (*returned);
 }
-communityDescription* splitCommunities(communityDescription communityToSplit,double * splitter){
-     rowLinkedList holder1,holder2;
-    holder1.nextRow=communityToSplit.graph;
-    networkStatsSet community1NetworkStats=communityToSplit.networkStat,community2NetworkStas=emptyNetworkstats();
-    rowLinkedList * current1=holder1.nextRow,*current2=&holder2;
+
+communityDescription *splitCommunities(communityDescription communityToSplit, double *splitter) {
+    rowLinkedList holder1, holder2;
+    holder1.nextRow = communityToSplit.graph;
+    networkStatsSet community1NetworkStats = communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
+    rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
     rowLinkedList *newGraphsArr[2];
-    communityDescription *communityDescriptionArr=memory(sizeof(communityDescription),2);
-    community1NetworkStats.edges=0;
-    community2NetworkStas.vertexDegreeArray=community1NetworkStats.vertexDegreeArray; //they are in the same universe
+    communityDescription *communityDescriptionArr = memory(sizeof(communityDescription), 2);
+    community1NetworkStats.edges = 0;
+    community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
 
-    while(current1->nextRow != NULL)
-    {
-        const int isRowIn2ndGroup=BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex] );
-        colLinkedList colHolder,*currentCol=&colHolder;
-        colHolder.next=current1->colList;
+    while (current1->nextRow != NULL) {
+        const int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
+        colLinkedList colHolder, *currentCol = &colHolder;
+        colHolder.next = current1->colList;
 
-        if(isRowIn2ndGroup)
-        {
-            current2->nextRow=current1->nextRow;
-            current1->nextRow=current1->nextRow->nextRow;
-            current2=current2->nextRow;
-            current2->nextRow=NULL;
+        if (isRowIn2ndGroup) {
+            current2->nextRow = current1->nextRow;
+            current1->nextRow = current1->nextRow->nextRow;
+            current2 = current2->nextRow;
+            current2->nextRow = NULL;
             community1NetworkStats.vertices--;
             community2NetworkStas.vertices++;
 
 
         }
-        while (currentCol->next!=NULL)
-        {
-            const colLinkedList *nextCol=currentCol->next;
-            if(BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex])!=isRowIn2ndGroup )
-            {
-                currentCol=nextCol->next;
+        while (currentCol->next != NULL) {
+            const colLinkedList *nextCol = currentCol->next;
+            if (BELONGS_TO_2ND_COMMUNITY(splitter[nextCol->colIndex]) != isRowIn2ndGroup) {
+                currentCol = nextCol->next;
                 free(nextCol);
-            }
+            } else if (isRowIn2ndGroup)
+                community2NetworkStas.degreeSum++;
             else
-                if(isRowIn2ndGroup)
-                    community2NetworkStas.degreeSum++;
-                else
-                    community1NetworkStats.degreeSum++;
+                community1NetworkStats.degreeSum++;
         }
-        community1NetworkStats.edges=community1NetworkStats.degreeSum/2;
-        community2NetworkStas.edges=community2NetworkStas.degreeSum/2;
+        community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
+        community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;
     }
-    newGraphsArr[0]=holder1.nextRow;
-    newGraphsArr[1]=holder2.nextRow;
-    communityDescriptionArr[0].networkStat=community1NetworkStats;
-    communityDescriptionArr[0].graph=newGraphsArr[0];
-    communityDescriptionArr[1].networkStat=community2NetworkStas;
-    communityDescriptionArr[1].graph=newGraphsArr[1];
+    newGraphsArr[0] = holder1.nextRow;
+    newGraphsArr[1] = holder2.nextRow;
+    communityDescriptionArr[0].networkStat = community1NetworkStats;
+    communityDescriptionArr[0].graph = newGraphsArr[0];
+    communityDescriptionArr[1].networkStat = community2NetworkStas;
+    communityDescriptionArr[1].graph = newGraphsArr[1];
     return communityDescriptionArr;
 
 
-
 }
+
 divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSet *AGlobalstats) {
     divisionResults returned;
     communityDescription currentCommunity;
     int vectorLength = AgStat->vertices;
-    currentCommunity.networkStat=*AgStat;
-    currentCommunity.graph=Ag;
+    currentCommunity.networkStat = *AgStat;
+    currentCommunity.graph = Ag;
 
     eigen division = powerIterationOnB(Ag, AgStat, AGlobalstats);
     if (division.value < 0) {
@@ -235,7 +231,7 @@ divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat, networkStatsSe
 
     }
 
-   communityDescription * communtiesAfterSplitting= splitCommunities(currentCommunity,division.vector);
+    communityDescription *communtiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
 
 }
 
