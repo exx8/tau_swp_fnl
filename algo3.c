@@ -22,7 +22,7 @@ communitiesList* algo3(communityDescription community) {
 
     communitiesList* groupA;
     communitiesList* groupB;
-    groupA->communityInfo = community;
+    groupA->communityInfo = &community;
     while(groupA != NULL){
         communitiesList* groupC = &groupA;
         communityDescription * algo2Division [2]= algo2(groupC->communityInfo);
