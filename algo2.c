@@ -9,7 +9,7 @@ typedef int bool;
 #include "time.h"
 #include "math.h"
 #include "ds.h"
-
+#include "string.h"
 #define BELONGS_TO_2ND_COMMUNITY(X) ((X) < 0)
 
 struct _eigen {
@@ -200,7 +200,7 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     holder2.nextRow=NULL;
     holder1.rowIndex=-1;
     holder2.rowIndex=-1;
-    networkStatsSet community1NetworkStats = communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
+    networkStatsSet community1NetworkStats = *communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
     rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
     rowLinkedList *newGraphsArr[2];
     communityDescription *communityDescriptionArr = memory(sizeof(communityDescription), 2);
@@ -236,9 +236,11 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     }
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
-    communityDescriptionArr[0].networkStat = community1NetworkStats;
+    communityDescriptionArr[0].networkStat=memory(sizeof(networkStatsSet),1);
+    memcpy(&communityDescriptionArr[0].networkStat,&community1NetworkStats,sizeof(networkStatsSet));
     communityDescriptionArr[0].graph = newGraphsArr[0];
-    communityDescriptionArr[1].networkStat = community2NetworkStas;
+    communityDescriptionArr[1].networkStat=memory(sizeof(networkStatsSet),1);
+    memcpy(&communityDescriptionArr[1].networkStat,&community2NetworkStas,sizeof(networkStatsSet));
     communityDescriptionArr[1].graph = newGraphsArr[1];
     return communityDescriptionArr;
 
@@ -249,7 +251,7 @@ divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     divisionResults returned;
     communityDescription currentCommunity;
     int vectorLength = AgStat->vertices;
-    currentCommunity.networkStat = *AgStat;
+    currentCommunity.networkStat = AgStat;
     currentCommunity.graph = Ag;
 
     eigen division = powerIterationOnB(Ag, AgStat);

@@ -100,11 +100,11 @@ colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListS
 
 }
 struct _communityDescription{
-    networkStatsSet networkStat;
+    networkStatsSet* networkStat;
     rowLinkedList* graph;
 } typedef communityDescription;
 
-communityDescription newCommunityDescription(networkStatsSet ns,rowLinkedList* graph)
+communityDescription newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
 {
     communityDescription returned={.networkStat=ns,.graph=graph};
     return returned;

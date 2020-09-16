@@ -76,7 +76,7 @@ rowLinkedList*  readInputFile(char *filePath) {
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
     returned=loadAdjacencyMatrixDataStructures(file, &networkStat);
 
-    algo3(newCommunityDescription(networkStat,returned));
+    algo3(newCommunityDescription(&networkStat,returned));
 
     releaseNetworkStat(&networkStat);
     fclose(file);

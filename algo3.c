@@ -32,8 +32,8 @@ communitiesList *algo3(communityDescription community) {
 
         communityDescription **algo2Division = algo2Results.value;
         groupA = groupA->next;
-        int firstGroupVetricesNum = algo2Division[0]->networkStat.vertices;
-        int secondGroupVerticesNum = algo2Division[1]->networkStat.vertices;
+        int firstGroupVetricesNum = algo2Division[0]->networkStat->vertices;
+        int secondGroupVerticesNum = algo2Division[1]->networkStat->vertices;
         if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
             groupC->next = groupB;
             groupB = groupC;
@@ -44,7 +44,7 @@ communitiesList *algo3(communityDescription community) {
             if (secondGroupVerticesNum == 1) {
                 addNodeToBeginning(algo2Division[1], groupB);
             }
-            if (algo2Division[0]->networkStat.vertices > 1) {
+            if (algo2Division[0]->networkStat->vertices > 1) {
                 addNodeToBeginning(algo2Division[0], groupA);
             }
             if (secondGroupVerticesNum > 1) {
