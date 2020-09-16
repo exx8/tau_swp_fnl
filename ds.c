@@ -121,7 +121,13 @@ struct _communitiesList {
 
 
 
+void freeCommunityInfo(communityDescription* communityInfo)
+{
+    freeGraph((communityInfo->graph));
+    free(communityInfo->networkStat);
+    free(communityInfo);
 
+}
 
 void freeNested(communitiesList * d)
 {
@@ -130,11 +136,11 @@ void freeNested(communitiesList * d)
         return;
     }
     freeNested(d->next);
-    freeGraph((d->communityInfo->graph));
-    free(d->communityInfo->networkStat);
-    free(d->communityInfo);
+    freeCommunityInfo(d->communityInfo);
     free(d);
+
 }
+
 
 void freeCommunitiesList(communitiesList * d)
 {
