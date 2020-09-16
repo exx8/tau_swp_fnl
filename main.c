@@ -69,18 +69,18 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 }
 
 rowLinkedList*  readInputFile(char *filePath) {
-    rowLinkedList* returned;
+    rowLinkedList* graphData;
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
     networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    returned=loadAdjacencyMatrixDataStructures(file, &networkStat);
+    graphData=loadAdjacencyMatrixDataStructures(file, &networkStat);
 
-    algo3(newCommunityDescription(&networkStat,returned));
+    algo3(newCommunityDescription(&networkStat, graphData));
 
     releaseNetworkStat(&networkStat);
     fclose(file);
-    return returned;
+    return graphData;
 }
 
 
@@ -93,7 +93,7 @@ int getVertices( FILE *file) {
 
 
 int main() {
-    rowLinkedList * graphData=readInputFile("/home/eran/Downloads/graph.in");
+    rowLinkedList * graphData=readInputFile("/home/eran/Desktop/graph.in");
     freeData(graphData);
     return 0;
 }
