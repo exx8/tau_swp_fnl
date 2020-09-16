@@ -183,10 +183,10 @@ void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colL
         } else {
             currentCol=currentCol->next;
             if (isRowIn2ndGroup) {
-                (*community2NetworkStas).degreeSum++;
+                (*community2NetworkStas).degreeSum+=2;
             }
             else{
-                (*community1NetworkStats).degreeSum++;
+                (*community1NetworkStats).degreeSum+=2;
 
             }
         }
