@@ -121,10 +121,7 @@ struct _communitiesList {
 
 
 
-struct _divisionResults{
-    int errorNum; //whereas 0 stands for no error
-    communityDescription* value;
-} typedef divisionResults;
+
 
 void freeNested(communitiesList * d)
 {
@@ -144,5 +141,12 @@ void freeCommunitiesList(communitiesList * d)
     free(d);
 }
 
+struct _tuple2{
+    communityDescription* first;
+    communityDescription* second;
+} typedef tuple2;
 
-
+struct _divisionResults{
+    int errorNum; //whereas 0 stands for no error
+    tuple2 * value;
+} typedef divisionResults;

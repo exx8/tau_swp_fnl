@@ -116,7 +116,7 @@ billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgSta
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
-    srand(time(NULL));
+    srand(2);
      volatile vectorLength = AgStat->vertices;
     double currentDiff = 1;
     double *vec1, *vec2;
@@ -164,7 +164,7 @@ divisionResults * returnError(divisionResults *returned, int errorNum) {
     (*returned).value = NULL;
     return (returned);
 }
-divisionResults * returnSuccess(communityDescription* communitiesAfterDivision) {
+divisionResults * returnSuccess(tuple2* communitiesAfterDivision) {
     divisionResults *result=memory(sizeof(divisionResults),1);
     result->errorNum=0;
     result->value=communitiesAfterDivision;
@@ -195,7 +195,7 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
     }
 }
 
-communityDescription *splitCommunities(communityDescription communityToSplit, double *splitter) {
+tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holder1, holder2;
     holder1.nextRow = communityToSplit.graph;
     holder2.nextRow=NULL;
@@ -204,7 +204,9 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     networkStatsSet community1NetworkStats = *communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
     rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
     rowLinkedList *newGraphsArr[2];
-    communityDescription *communityDescriptionArr = memory(sizeof(communityDescription), 2);
+    tuple2 *communityDescriptionArr=memory(sizeof(tuple2),1);
+    communityDescriptionArr->first=memory(sizeof(communityDescription), 1);
+    communityDescriptionArr->second=memory(sizeof(communityDescription), 1);
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
     int shouldContinue=0;
@@ -237,12 +239,12 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     }
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
-    communityDescriptionArr[0].networkStat=memory(sizeof(networkStatsSet),1);
-    memcpy(communityDescriptionArr[0].networkStat,&community1NetworkStats,sizeof(networkStatsSet));
-    communityDescriptionArr[0].graph = newGraphsArr[0];
-    communityDescriptionArr[1].networkStat=memory(sizeof(networkStatsSet),1);
-    memcpy(communityDescriptionArr[1].networkStat,&community2NetworkStas,sizeof(networkStatsSet));
-    communityDescriptionArr[1].graph = newGraphsArr[1];
+    communityDescriptionArr->first->networkStat=memory(sizeof(networkStatsSet),1);
+    memcpy(communityDescriptionArr->first->networkStat,&community1NetworkStats,sizeof(networkStatsSet));
+    communityDescriptionArr->first->graph = newGraphsArr[0];
+    communityDescriptionArr->second->networkStat=memory(sizeof(networkStatsSet),1);
+    memcpy(communityDescriptionArr->second->networkStat,&community2NetworkStas,sizeof(networkStatsSet));
+    communityDescriptionArr->second->graph = newGraphsArr[1];
     return communityDescriptionArr;
 
 
@@ -266,7 +268,7 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     }
 
-    communityDescription *communtiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
+    tuple2 *communtiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
     free(division.vector);
 return returnSuccess(communtiesAfterSplitting);
 }

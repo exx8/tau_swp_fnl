@@ -36,23 +36,23 @@ communitiesList *algo3(communityDescription* community) {
         divisionResults *algo2Results = divideGroup(groupToDivide);
 
         groupP = groupP->next;
-        int firstGroupVetricesNum = algo2Results->value[0].networkStat->vertices;
-        int secondGroupVerticesNum = algo2Results->value[1].networkStat->vertices;
+        int firstGroupVetricesNum = algo2Results->value->first->networkStat->vertices;
+        int secondGroupVerticesNum = algo2Results->value->second->networkStat->vertices;
         if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
             groupToDivide->next = groupO;
             groupO = groupToDivide;
         } else {
             if (firstGroupVetricesNum == 1) {
-                groupO=addNodeToBeginning(&algo2Results->value[0], groupO);
+                groupO=addNodeToBeginning(algo2Results->value->first, groupO);
             }
             if (secondGroupVerticesNum == 1) {
-                groupO=addNodeToBeginning(&algo2Results->value[1], groupO);
+                groupO=addNodeToBeginning(algo2Results->value->second, groupO);
             }
-            if (algo2Results->value[0].networkStat->vertices > 1) {
-                groupP=addNodeToBeginning(&algo2Results->value[0], groupP);
+            if (algo2Results->value->first->networkStat->vertices > 1) {
+                groupP=addNodeToBeginning(algo2Results->value->first, groupP);
             }
             if (secondGroupVerticesNum > 1) {
-                groupP=addNodeToBeginning(&algo2Results->value[1], groupP);
+                groupP=addNodeToBeginning(algo2Results->value->second, groupP);
             }
         }
 
