@@ -108,8 +108,8 @@ communityDescription * newCommunityDescription(networkStatsSet *ns,rowLinkedList
 {
     communityDescription *returned=memory(sizeof(communityDescription),1);
 
-            returned->networkStat=ns;
-            returned->graph=graph;
+    returned->networkStat=ns;
+    returned->graph=graph;
     return returned;
 }
 struct _communitiesList {
@@ -125,20 +125,23 @@ struct _communitiesList {
 
 void freeNested(communitiesList * d)
 {
-if(d==NULL||d->communityInfo==NULL)
-return;
-freeNested(d->next);
-free(d->communityInfo->networkStat);
-freeGraph(d->communityInfo->graph);
-free(d->communityInfo);
+    if(d==NULL)
+    {
+        return;
+    }
+    freeNested(d->next);
+    freeGraph((d->communityInfo->graph));
+    free(d->communityInfo->networkStat);
+    free(d->communityInfo);
+    free(d);
 }
 
 void freeCommunitiesList(communitiesList * d)
 {
     int *vertexDegreeArray = d->communityInfo->networkStat->vertexDegreeArray;
     free(vertexDegreeArray);
-    freeNested(d->next);
-    free(d);
+    freeNested(d);
+
 }
 
 struct _tuple2{

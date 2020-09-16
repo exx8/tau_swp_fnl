@@ -8,58 +8,12 @@
 #include "algo2.h"
 
 
-communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
-    communitiesList *newGroup=memory(sizeof(communitiesList),1);
-    newGroup->communityInfo = communityInfo;
-    newGroup->next = list;
-    return newGroup;
-}
 
-divisionResults *divideGroup(const communitiesList *groupToDivide) {
-    divisionResults * algo2Results = algo2(groupToDivide->communityInfo->graph, (groupToDivide->communityInfo->networkStat));
-    if(algo2Results->errorNum!=0)
-    {
-        error(algo2Results->errorNum,"division failed");
-    }
-    return algo2Results;
-}
+
+
 
 communitiesList *algo3(communityDescription* community) {
-
-    communitiesList *groupP=memory(sizeof(communitiesList ), 1);
-
-    groupP->next=NULL;
-    communitiesList *groupO=memory(sizeof(communitiesList ), 1);
-    groupP->communityInfo = community;
-    while (groupP != NULL) {
-        communitiesList *groupToDivide = groupP;
-        divisionResults *algo2Results = divideGroup(groupToDivide);
-
-        groupP = groupP->next;
-        tuple2 *divsionResult = algo2Results->value;
-        free(algo2Results);
-        int firstGroupVetricesNum = divsionResult->first->networkStat->vertices;
-        int secondGroupVerticesNum = divsionResult->second->networkStat->vertices;
-        if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
-            groupToDivide->next = groupO;
-            groupO = groupToDivide;
-        } else {
-            if (firstGroupVetricesNum == 1) {
-                groupO=addNodeToBeginning(divsionResult->first, groupO);
-            }
-            if (secondGroupVerticesNum == 1) {
-                groupO=addNodeToBeginning(divsionResult->second, groupO);
-
-            }
-            if (divsionResult->first->networkStat->vertices > 1) {
-                groupP=addNodeToBeginning(divsionResult->first, groupP);
-
-            }
-            if (secondGroupVerticesNum > 1) {
-                groupP=addNodeToBeginning(divsionResult->second, groupP);
-            }
-        }
-
-    }
-    return groupO;
+    communitiesList* list=memory(sizeof(communityDescription),1);
+    list->communityInfo=community;
+    return list;
 }
