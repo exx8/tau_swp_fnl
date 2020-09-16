@@ -34,7 +34,6 @@ communitiesList *algo3(communityDescription* community) {
     while (groupP != NULL) {
         communitiesList *groupToDivide = groupP;
         divisionResults *algo2Results = divideGroup(groupToDivide);
-
         groupP = groupP->next;
         tuple2 *divsionResult = algo2Results->value;
         free(algo2Results);
@@ -44,23 +43,28 @@ communitiesList *algo3(communityDescription* community) {
             groupToDivide->next = groupO;
             groupO = groupToDivide;
         } else {
+            free(groupToDivide);
             if (firstGroupVetricesNum == 1) {
                 groupO=addNodeToBeginning(divsionResult->first, groupO);
+
             }
             if (secondGroupVerticesNum == 1) {
                 groupO=addNodeToBeginning(divsionResult->second, groupO);
 
+
             }
+
             if (divsionResult->first->networkStat->vertices > 1) {
                 groupP=addNodeToBeginning(divsionResult->first, groupP);
 
             }
             if (secondGroupVerticesNum > 1) {
                 groupP=addNodeToBeginning(divsionResult->second, groupP);
+
             }
         }
         free(divsionResult);
-
+        left--;
     }
     return groupO;
 }
