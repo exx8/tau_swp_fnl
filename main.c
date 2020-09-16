@@ -40,7 +40,7 @@ colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
         current=current->next;
         verticesLeft--;
     }
-    return  primary;
+    return primary;
 }
 
 rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
