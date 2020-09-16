@@ -53,7 +53,6 @@ communitiesList *algo3(communityDescription* community) {
             }
             if (divsionResult->first->networkStat->vertices > 1) {
                 groupP=addNodeToBeginning(divsionResult->first, groupP);
-                free(divsionResult->second);
 
             }
             if (secondGroupVerticesNum > 1) {
