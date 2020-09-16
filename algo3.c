@@ -8,11 +8,11 @@
 #include "algo2.h"
 
 
-void addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
-    communitiesList *newGroup;
+communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
+    communitiesList *newGroup=memory(sizeof(communitiesList),1);
     newGroup->communityInfo = communityInfo;
     newGroup->next = list;
-    list = newGroup;
+    return newGroup;
 }
 
 communitiesList *algo3(communityDescription community) {
@@ -24,31 +24,31 @@ communitiesList *algo3(communityDescription community) {
     groupA->communityInfo = &community;
     while (groupA != NULL) {
         communitiesList *groupC = groupA;
-        divisionResults algo2Results = algo2(groupC->communityInfo->graph, (groupC->communityInfo->networkStat));
-        if(algo2Results.errorNum!=0)
+        divisionResults * algo2Results = algo2(groupC->communityInfo->graph, (groupC->communityInfo->networkStat));
+        if(algo2Results->errorNum!=0)
         {
-            error(algo2Results.errorNum,"division failed");
+            error(algo2Results->errorNum,"division failed");
         }
 
-        communityDescription **algo2Division = &algo2Results.value;
+        communityDescription **algo2Division = &algo2Results->value; //it might no be an array!!
         groupA = groupA->next;
-        int firstGroupVetricesNum = algo2Division[0]->networkStat->vertices;
-        int secondGroupVerticesNum = algo2Division[1]->networkStat->vertices;
+        int firstGroupVetricesNum = algo2Results->value[0].networkStat->vertices;
+        int secondGroupVerticesNum = algo2Results->value[1].networkStat->vertices;
         if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
             groupC->next = groupB;
             groupB = groupC;
         } else {
             if (firstGroupVetricesNum == 1) {
-                addNodeToBeginning(algo2Division[0], groupB);
+                groupB=addNodeToBeginning(&algo2Results->value[0], groupB);
             }
             if (secondGroupVerticesNum == 1) {
-                addNodeToBeginning(algo2Division[1], groupB);
+                groupB=addNodeToBeginning(&algo2Results->value[1], groupB);
             }
-            if (algo2Division[0]->networkStat->vertices > 1) {
-                addNodeToBeginning(algo2Division[0], groupA);
+            if (algo2Results->value[0].networkStat->vertices > 1) {
+                groupA=addNodeToBeginning(&algo2Results->value[0], groupA);
             }
             if (secondGroupVerticesNum > 1) {
-                addNodeToBeginning(algo2Division[1], groupA);
+                groupA=addNodeToBeginning(&algo2Results->value[1], groupA);
             }
         }
     }

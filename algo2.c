@@ -159,15 +159,15 @@ void makeVectorDiscrete(double *vector, int vectorLength) {
         *vector = (*vector > 0) ? 1 : -1;
 }
 
-divisionResults returnError(divisionResults *returned, int errorNum) {
+divisionResults * returnError(divisionResults *returned, int errorNum) {
     (*returned).errorNum = errorNum;
     (*returned).value = NULL;
-    return (*returned);
+    return (returned);
 }
-divisionResults returnSuccess(communityDescription* communitiesAfterDivision) {
-    divisionResults result;
-    result.errorNum=0;
-    result.value=communitiesAfterDivision;
+divisionResults * returnSuccess(communityDescription* communitiesAfterDivision) {
+    divisionResults *result=memory(sizeof(divisionResults),1);
+    result->errorNum=0;
+    result->value=communitiesAfterDivision;
     return result;
 }
 void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList *currentCol,
@@ -247,7 +247,7 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
 
 }
 
-divisionResults algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
+divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     divisionResults returned;
     communityDescription currentCommunity;
     int vectorLength = AgStat->vertices;
