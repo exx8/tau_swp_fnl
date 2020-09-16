@@ -5,7 +5,9 @@
 #include "utils.h"
 #include "ds.h"
 #include "algo2.h"
+#include "shift.h"
 #define intsize 4
+
 
 
 int filesize(char *filePath) {
@@ -91,7 +93,6 @@ int getVertices( FILE *file) {
 
 
 int main() {
-    rowLinkedList * graphData=readInputFile("/home/eran/Downloads/graph.in");
-    freeData(graphData);
-    return 0;
+
+
 }

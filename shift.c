@@ -36,3 +36,5 @@ void shiftSparseMatrix(rowLinkedListSparseMatrix * sparseMatrix){
     double shiftAmount = findMaxColSum(sparseMatrix);
     addShiftAmount(sparseMatrix, shiftAmount);
 }
+
+
