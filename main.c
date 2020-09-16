@@ -77,8 +77,8 @@ communitiesList*  readInputFile(char *filePath) {
     networkStatsSet* networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
-    returned=algo3(newCommunityDescription(networkStat, graphData));
-
+    communityDescription *firstCommunity = newCommunityDescription(networkStat, graphData);
+    returned=algo3(firstCommunity);
     fclose(file);
     return returned;
 }
