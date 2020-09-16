@@ -25,7 +25,7 @@ void writeDataToOutput(divisionResults * graphDivision){
         }
         fwrite(nodeCount, sizeof(int), 1, out_file); ///MIGHT NEED A POINTER TO NODECOUNT
         while (node != NULL){
-            fwrite(node->colIndex, sizeof(int), 1, out_file);
+            fwrite(node->colIndex, sizeof(int), 1, out_file); ///Same as above
             node = node->next;
         }
         groups = groups->nextRow;
