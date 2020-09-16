@@ -59,11 +59,11 @@ void freeCol(colLinkedList* list)
     freeCol(list->next);
     free(list);
 }
-void freeData(rowLinkedList* list)
+void freeGraph(rowLinkedList* list)
 {
     if(list==NULL)
         return;
-    freeData(list->nextRow);
+    freeGraph(list->nextRow);
     freeCol(list->colList);
     free(list);
 }
@@ -122,3 +122,19 @@ struct _divisionResults{
     int errorNum; //whereas 0 stands for no error
     communityDescription* value;
 } typedef divisionResults;
+
+void freeDvisionResults(divisionResults* d)
+{
+    int i;
+    for( i=0;i<2;i++) {
+
+
+        releaseNetworkStat(d->value[i].networkStat);
+        freeGraph(d->value[i].graph);
+        free(d->value);
+    }
+    free(d);
+}
+
+
+
