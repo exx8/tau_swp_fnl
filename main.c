@@ -74,10 +74,10 @@ communitiesList*  readInputFile(char *filePath) {
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
-    networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    graphData=loadAdjacencyMatrixDataStructures(file, &networkStat);
+    networkStatsSet* networkStat = getNetworkStats(file, fileLengthInBytes);
+    graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
-    returned=algo3(newCommunityDescription(&networkStat, graphData));
+    returned=algo3(newCommunityDescription(networkStat, graphData));
 
     fclose(file);
     return returned;
@@ -93,6 +93,7 @@ int getVertices( FILE *file) {
 
 
 int main() {
-    communitiesList * divisionResults=readInputFile("/home/eran/Desktop/graph.in");
+    communitiesList * divisionResults=readInputFile("/home/eran/Desktop/swp_samples/graph.in");
+    freeCommunitiesList(divisionResults);
     return 0;
 }

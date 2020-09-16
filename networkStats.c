@@ -17,7 +17,6 @@ struct _networkStats {
 
 } typedef networkStatsSet;
 
-networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes);
 
 void updateNetworkStat(networkStatsSet *networkStat, int vertexIndex, int verticesLeft) {
     networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
@@ -26,14 +25,15 @@ void updateNetworkStat(networkStatsSet *networkStat, int vertexIndex, int vertic
 
 void releaseNetworkStat(networkStatsSet *networkStat) { free((*networkStat).vertexDegreeArray); }
 
-networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes) {
-    networkStatsSet networkStat;
+networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
+
+    networkStatsSet* networkStat=memory(sizeof(networkStatsSet),1);
     int verticesNum = getVertices(file);
     const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
-    networkStat.vertices = verticesNum;
-    networkStat.edges = edgesNum;
-    networkStat.vertexDegreeArray = (int *) memory(networkStat.vertices , sizeof(int));
-     networkStat.degreeSum=0; // only initing not setting
+    networkStat->vertices = verticesNum;
+    networkStat->edges = edgesNum;
+    networkStat->vertexDegreeArray = (int *) memory(networkStat->vertices , sizeof(int));
+     networkStat->degreeSum=0; // only initing not setting
     return networkStat;
 
 

@@ -104,9 +104,12 @@ struct _communityDescription{
     rowLinkedList* graph;
 } typedef communityDescription;
 
-communityDescription newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
+communityDescription * newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
 {
-    communityDescription returned={.networkStat=ns,.graph=graph};
+    communityDescription *returned=memory(sizeof(communityDescription),1);
+
+            returned->networkStat=ns;
+            returned->graph=graph;
     return returned;
 }
 struct _communitiesList {
@@ -123,16 +126,21 @@ struct _divisionResults{
     communityDescription* value;
 } typedef divisionResults;
 
-void freeDvisionResults(divisionResults* d)
+void freeNested(communitiesList * d)
 {
-    int i;
-    for( i=0;i<2;i++) {
+if(d==NULL||d->communityInfo==NULL)
+return;
+freeNested(d->next);
+free(d->communityInfo->networkStat);
+freeGraph(d->communityInfo->graph);
+free(d->communityInfo);
+}
 
-
-        releaseNetworkStat(d->value[i].networkStat);
-        freeGraph(d->value[i].graph);
-        free(d->value);
-    }
+void freeCommunitiesList(communitiesList * d)
+{
+    int *vertexDegreeArray = d->communityInfo->networkStat->vertexDegreeArray;
+    free(vertexDegreeArray);
+    freeNested(d->next);
     free(d);
 }
 

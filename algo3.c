@@ -24,13 +24,13 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
     return algo2Results;
 }
 
-communitiesList *algo3(communityDescription community) {
+communitiesList *algo3(communityDescription* community) {
 
     communitiesList *groupP=memory(sizeof(communitiesList ), 1);
 
     groupP->next=NULL;
     communitiesList *groupO=memory(sizeof(communitiesList ), 1);
-    groupP->communityInfo = &community;
+    groupP->communityInfo = community;
     while (groupP != NULL) {
         communitiesList *groupToDivide = groupP;
         divisionResults *algo2Results = divideGroup(groupToDivide);
