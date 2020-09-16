@@ -11,7 +11,7 @@
 void addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
     communitiesList *newGroup;
     newGroup->communityInfo = communityInfo;
-    newGroup->next = &list;
+    newGroup->next = list;
     list = newGroup;
 }
 
@@ -24,13 +24,13 @@ communitiesList *algo3(communityDescription community) {
     groupA->communityInfo = &community;
     while (groupA != NULL) {
         communitiesList *groupC = groupA;
-        divisionResults algo2Results = algo2(groupC->communityInfo->graph, &(groupC->communityInfo->networkStat));
+        divisionResults algo2Results = algo2(groupC->communityInfo->graph, (groupC->communityInfo->networkStat));
         if(algo2Results.errorNum!=0)
         {
             error(algo2Results.errorNum,"division failed");
         }
 
-        communityDescription **algo2Division = algo2Results.value;
+        communityDescription **algo2Division = &algo2Results.value;
         groupA = groupA->next;
         int firstGroupVetricesNum = algo2Division[0]->networkStat->vertices;
         int secondGroupVerticesNum = algo2Division[1]->networkStat->vertices;

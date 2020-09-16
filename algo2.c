@@ -22,7 +22,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          int vectorLength) {
     //@todo check me!!!
     double bilinearValue = 0;
-    const M = AgStat->degreeSum;
+     int M = AgStat->degreeSum;
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
 // all matrices are symmetrical.
@@ -34,8 +34,8 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
             double B_ij = 0;
-            const bool isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
-            const bool isCellExists = isRowExists && isColExists;
+             bool isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
+             bool isCellExists = isRowExists && isColExists;
 
             B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
                     M;
@@ -68,7 +68,7 @@ double norm(double *vector, int len) {
 
 double vectorMultipication(double *a, double *b, int vectorLength) {
     double sum = 0;
-    const double *end = b + vectorLength;
+     double *end = b + vectorLength;
     for (; b < end; b++, a++)
         sum += (*a) * (*b);
 
@@ -83,8 +83,8 @@ void normalizeVector(double *vec, int vecLength) {
             vec[i] /= vecNorm;
 }
 
-double diff(const double *vec1, const double *vec2, int vectorLength) {
-    const double *vectorEnd = vec1 + vectorLength;
+double diff( double *vec1,  double *vec2, int vectorLength) {
+     double *vectorEnd = vec1 + vectorLength;
     double sum = 0;
     for (; vectorEnd != vec1; vec1++, vec2++) {
         sum += pow(*vec1 - *vec2, 2);
@@ -94,16 +94,16 @@ double diff(const double *vec1, const double *vec2, int vectorLength) {
 }
 
 double
-billinearMultipicationOfB(const rowLinkedList *Ag, const networkStatsSet *AgStat,
-                          volatile const int vectorLength, const double *vec1, const double *vec2) {
+billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
+                          volatile  int vectorLength,  double *vec1,  double *vec2) {
     double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength);
     double bAb = vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
     return bAb;
 }
 
 double
-billinearMultipicationOfBUnoptimized(const rowLinkedList *Ag, const networkStatsSet *AgStat,
-                                     volatile const int vectorLength, const double *vec1) {
+billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgStat,
+                                     volatile  int vectorLength,  double *vec1) {
     double *vec2 = memory(sizeof(double), vectorLength);
     double returned = billinearMultipicationOfB(Ag, AgStat,
                                                 vectorLength, vec1, vec2);
@@ -116,8 +116,8 @@ billinearMultipicationOfBUnoptimized(const rowLinkedList *Ag, const networkStats
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
-    srand(NULL);
-    const volatile vectorLength = AgStat->vertices;
+    srand(time(NULL));
+     volatile vectorLength = AgStat->vertices;
     double currentDiff = 1;
     double *vec1, *vec2;
     int volatile i = 0;
@@ -154,7 +154,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 }
 
 void makeVectorDiscrete(double *vector, int vectorLength) {
-    const end = vector + vectorLength;
+    double* end = vector + vectorLength;
     for (; vector < end; vector++)
         *vector = (*vector > 0) ? 1 : -1;
 }
@@ -170,12 +170,12 @@ divisionResults returnSuccess(communityDescription* communitiesAfterDivision) {
     result.value=communitiesAfterDivision;
     return result;
 }
-void deleteCrossRelation(const double *splitter, const int isRowIn2ndGroup, colLinkedList *currentCol,
+void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList *currentCol,
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
 
         if (BELONGS_TO_2ND_COMMUNITY(splitter[currentCol->next->colIndex]) != isRowIn2ndGroup) {
-            const colLinkedList *nodeTodelete=currentCol->next;
+             colLinkedList *nodeTodelete=currentCol->next;
             currentCol->next= currentCol->next->next;
             free(nodeTodelete);
             currentCol=currentCol->next;
@@ -208,7 +208,7 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
     int shouldContinue=0;
     while (current1&&current1->nextRow != NULL) {
-        const int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
+         int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
         colLinkedList colHolder, *currentCol = &colHolder;
         colHolder.colIndex=-1; //@todo delete me
         colHolder.next = current1->colList;
@@ -237,10 +237,10 @@ communityDescription *splitCommunities(communityDescription communityToSplit, do
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
     communityDescriptionArr[0].networkStat=memory(sizeof(networkStatsSet),1);
-    memcpy(&communityDescriptionArr[0].networkStat,&community1NetworkStats,sizeof(networkStatsSet));
+    memcpy(communityDescriptionArr[0].networkStat,&community1NetworkStats,sizeof(networkStatsSet));
     communityDescriptionArr[0].graph = newGraphsArr[0];
     communityDescriptionArr[1].networkStat=memory(sizeof(networkStatsSet),1);
-    memcpy(&communityDescriptionArr[1].networkStat,&community2NetworkStas,sizeof(networkStatsSet));
+    memcpy(communityDescriptionArr[1].networkStat,&community2NetworkStas,sizeof(networkStatsSet));
     communityDescriptionArr[1].graph = newGraphsArr[1];
     return communityDescriptionArr;
 
