@@ -27,7 +27,7 @@ communitiesList *algo3(communityDescription community) {
         divisionResults algo2Results = algo2(groupC->communityInfo->graph, &(groupC->communityInfo->networkStat));
         if(algo2Results.errorNum!=0)
         {
-            error(algo2Results.errorNum,"divsion failed");
+            error(algo2Results.errorNum,"division failed");
         }
 
         communityDescription **algo2Division = algo2Results.value;
