@@ -99,18 +99,24 @@ colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListS
     return returned;
 
 }
-
-struct _networkStatSetList {
-    networkStatsSet networkInfo;
-    struct _networkStatSetList* next;
-} typedef networkStatsSetList;
-
-
-
 struct _communityDescription{
-    networkStatsSet networkStat;
+    networkStatsSet* networkStat;
     rowLinkedList* graph;
 } typedef communityDescription;
+
+communityDescription newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
+{
+    communityDescription returned={.networkStat=ns,.graph=graph};
+    return returned;
+}
+struct _communitiesList {
+    communityDescription *communityInfo;
+    struct _communitiesList* next;
+} typedef communitiesList;
+
+
+
+
 
 struct _divisionResults{
     int errorNum; //whereas 0 stands for no error
