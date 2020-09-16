@@ -174,7 +174,8 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
 
-        if (BELONGS_TO_2ND_COMMUNITY(splitter[currentCol->next->colIndex]) != isRowIn2ndGroup) {
+        int colIndex = currentCol->next->colIndex;
+        if (BELONGS_TO_2ND_COMMUNITY(splitter[colIndex]) != isRowIn2ndGroup) {
              colLinkedList *nodeTodelete=currentCol->next;
             currentCol->next= currentCol->next->next;
             free(nodeTodelete);
