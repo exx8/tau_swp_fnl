@@ -59,6 +59,7 @@ communitiesList *algo3(communityDescription* community) {
                 groupP=addNodeToBeginning(divsionResult->second, groupP);
             }
         }
+        free(divsionResult);
 
     }
     return groupO;
