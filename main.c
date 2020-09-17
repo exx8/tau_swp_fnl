@@ -63,7 +63,6 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 
     }
     returned=holder->nextRow;
-    free(holder);
     return returned;
 
 }
@@ -95,5 +94,6 @@ int getVertices( FILE *file) {
 int main() {
     communitiesList * divisionResults=readInputFile("/home/eran/Desktop/swp_samples/graph.in");
    // freeCommunitiesList(divisionResults);
+   freeThemAll();
     return 0;
 }

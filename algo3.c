@@ -9,7 +9,7 @@
 
 
 communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
-    communitiesList *newGroup=memory(sizeof(communitiesList),1);
+    communitiesList *newGroup=smemory(sizeof(communitiesList),1);
     newGroup->communityInfo = communityInfo;
     newGroup->next = list;
     return newGroup;
@@ -26,10 +26,10 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
 
 communitiesList *algo3(communityDescription* community) {
 
-    communitiesList *groupP=memory(sizeof(communitiesList ), 1);
+    communitiesList *groupP=smemory(sizeof(communitiesList ), 1);
 
     groupP->next=NULL;
-    communitiesList *groupO=memory(sizeof(communitiesList ), 1);
+    communitiesList *groupO=smemory(sizeof(communitiesList ), 1);
     groupP->communityInfo = community;
     while (groupP != NULL) {
         communitiesList *groupToDivide = groupP;
