@@ -94,5 +94,5 @@ int getVertices( FILE *file) {
 
 int main() {
 
-
+return 0;
 }
