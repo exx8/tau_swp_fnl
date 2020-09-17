@@ -5,8 +5,10 @@
 #include "utils.h"
 #include "ds.h"
 #include "algo2.h"
+#include "shift.h"
 #include "algo3.h"
 #define intsize 4
+
 
 
 int filesize(char *filePath) {

@@ -56,7 +56,6 @@ colLinkedList* newColLinkedList(int index,colLinkedList* next)
 
 }
 
-
 void freeCol(colLinkedList* list)
 {
     if(list==NULL)
@@ -79,9 +78,10 @@ struct _colLinkedListSparseMatrix {
     struct _colLinkedListSparseMatrix* next;
 } typedef colLinkedListSparseMatrix;
 
-
+/*shiftAmount indicates the maximum column sum which is added in the matrix shifting algorithm*/
 struct _rowLinkedListSparseMatrix {
     int rowIndex;
+    int shiftAmount;
     struct _rowLinkedListSparseMatrix* nextRow;
     struct _colLinkedListSparseMatrix* colList;
 } typedef rowLinkedListSparseMatrix;
