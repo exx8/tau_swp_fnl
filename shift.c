@@ -19,7 +19,7 @@ int counter(colLinkedList* col)
         int numberOfNodes=counter(rowLinkedList1->colList);
         maximum=numberOfNodes>maximum?numberOfNodes:maximum;
 
-        rowLinkedList1->nextRow=rowLinkedList1;
+        rowLinkedList1=rowLinkedList1->nextRow;
     }
     return maximum;
 }
