@@ -92,8 +92,13 @@ int getVertices( FILE *file) {
 
 
 
-int main() {
-    communitiesList * divisionResults=readInputFile("/home/eran/Desktop/swp_samples/graph.in");
+int main(int argc,char** argv) {
+    if(argc!=3)
+    {
+        error(3,"too few argument")
+    }
+
+    communitiesList * divisionResults=readInputFile(argv[1]);
     freeCommunitiesList(divisionResults);
     return 0;
 }
