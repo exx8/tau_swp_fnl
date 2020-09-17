@@ -130,7 +130,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
 
     }
-    int left=1000;
+    int left=5*AgStat->vertices;
     while (IS_POSITIVE(currentDiff)&&left>0) {
         //@todo think about reflection cases
         double *swap1, *swap2;
