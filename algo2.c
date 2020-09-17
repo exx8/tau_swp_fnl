@@ -20,11 +20,10 @@ struct _eigen{
 
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
-                         int vectorLength) {
+                         int vectorLength,shift) {
     //@todo check me!!!
     double bilinearValue = 0;
      int M = AgStat->degreeSum;
-    int shift=norm1(Ag);
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
 // all matrices are symmetrical.
@@ -117,7 +116,7 @@ billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgSta
 
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
-
+    int shift=norm1(Ag);
     srand(2);
      volatile vectorLength = AgStat->vertices;
     double currentDiff = 1;
@@ -138,7 +137,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
         double *swap1, *swap2;
         swap1 = vec1;
         swap2 = vec2;
-        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength);
+        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,shift);
         normalizeVector(vec2, vectorLength);
         vec1 = swap2;
         vec2 = swap1;
@@ -149,7 +148,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     returned.vector = vec1;
 
     double bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
-    returned.value = bAb / vectorMultipication(vec2, vec2, vectorLength);
+    returned.value = bAb / vectorMultipication(vec2, vec2, vectorLength)-shift;
     free(vec2);
     return returned;
 
