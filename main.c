@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <sys/stat.h>
-#include <assert.h>
 #include <stdlib.h>
 #include "utils.h"
 #include "ds.h"
@@ -16,13 +15,13 @@ int filesize(char *filePath) {
     const int status = stat(filePath, &details);
     if (status == 0)
         return details.st_size;
-    assert(status != 0);
+    makesure(status != 0);
     return -1;
 }
 
 int readInt( FILE *file,  int *intPointer) {
     int numRead =fread(intPointer,intsize,1,file);
-    assert(numRead==1);
+    makesure(numRead==1);
 }
 
 
@@ -74,7 +73,7 @@ communitiesList*  readInputFile(char *filePath) {
     communitiesList* returned;
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
-    assert(file!=NULL);
+    makesure(file!=NULL);
     networkStatsSet* networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 

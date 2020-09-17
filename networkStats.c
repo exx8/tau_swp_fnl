@@ -3,7 +3,6 @@
 //
 
 #include <stdlib.h>
-#include <assert.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include "utils.h"
