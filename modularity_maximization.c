@@ -34,12 +34,16 @@ for(;i<communityStat->vertices;i++)
 
     double q0=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
     rowLinkedList * unmovedPointer=unmovedcurrent;
+    int splitterIndex=0;
+    int maxIndex=-1;
+    double maxModularity=-infinity;
     while(unmovedPointer!=NULL)
     {//purple
         int rowIndex = unmovedPointer->rowIndex;
-        splitter[rowIndex]=-splitter[unmovedPointer->rowIndex];
-        score[rowIndex]=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
-        splitter[rowIndex]=-splitter[unmovedPointer->rowIndex];
+        splitter[splitterIndex]=-splitter[splitterIndex];
+        score[splitterIndex]=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
+        splitter[splitterIndex]=-splitter[splitterIndex];
+        splitterIndex++;
     }
 
 
