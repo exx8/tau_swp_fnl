@@ -6,7 +6,6 @@
 #include "networkStats.h"
 #include "time.h"
 #include "algo2.h"
-#include "utils.h"
 
 
 communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
@@ -25,15 +24,25 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
     return algo2Results;
 }
 
+void freeGroup(communitiesList * list){
+    while (list != NULL){
+        free(list);
+        list = list->next;
+    }
+}
+
 communitiesList *algo3(communityDescription* community) {
 
     communitiesList *groupP=memory(sizeof(communitiesList ), 1);
     groupP->next=NULL;
-    communitiesList *groupO=memory(sizeof(communitiesList ), 1);
     groupP->communityInfo = community;
+    communitiesList *groupO=memory(sizeof(communitiesList ), 1);
+    groupO->next=NULL;
+    groupO->communityInfo = NULL;
+
     while (groupP != NULL) {
-        communitiesList *groupToDivide = memory(sizeof(communitiesList ), 1);
-        groupToDivide= groupP;
+        communitiesList *groupToDivide;
+        groupToDivide = groupP;
         divisionResults *algo2Results = divideGroup(groupToDivide);
         groupP = groupP->next;
         tuple2 *divisionResult = algo2Results->value;
@@ -59,11 +68,8 @@ communitiesList *algo3(communityDescription* community) {
                 groupP=addNodeToBeginning(divisionResult->second, groupP);
             }
         }
-        free(groupToDivide);
-        free(divisionResult);
 
     }
-
-    free(groupP);
+    freeGroup(groupP);
     return groupO;
 }
