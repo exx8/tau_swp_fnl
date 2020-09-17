@@ -1,4 +1,5 @@
 #include "algo2.h"
+#include "float.h"
 double
 billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgStat,
                                       volatile  int vectorLength,  double *vec1);
@@ -35,16 +36,24 @@ for(;i<communityStat->vertices;i++)
     double q0=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
     rowLinkedList * unmovedPointer=unmovedcurrent;
     int splitterIndex=0;
-    int maxIndex=-1;
-    double maxModularity=-infinity;
+    int j=-1;
+    double maxModularity=-DBL_MAX;
     while(unmovedPointer!=NULL)
     {//purple
         int rowIndex = unmovedPointer->rowIndex;
         splitter[splitterIndex]=-splitter[splitterIndex];
         score[splitterIndex]=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
         splitter[splitterIndex]=-splitter[splitterIndex];
+        if(score[splitterIndex]>maxModularity)
+        {
+            maxModularity=score[splitterIndex];
+            j=splitterIndex;
+            //arg maxs not in the purple
+        }
         splitterIndex++;
     }
+    splitter[j]=-splitter[j];
+
 
 
 }
