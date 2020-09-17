@@ -45,7 +45,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                 B_ij++;//Add 1 exists
                 AgCurrentCol = AgCurrentCol->next;
             }
-            eigenVectorApproximation[rowIndex] = (shift+eigenVectorApproximation[rowIndex ])* B_ij;
+            eigenVectorApproximationWrite[rowIndex] = (shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
         }
 
         eigenVectorApproximationWrite[rowIndex] = sum;
