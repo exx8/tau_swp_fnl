@@ -210,10 +210,10 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
     int shouldContinue=0;
-
+    int splliterIndex=0;
      modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
         while (current1&&current1->nextRow != NULL) {
-         int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[current1->nextRow->rowIndex]);
+            int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[splliterIndex]);
         colLinkedList colHolder, *currentCol = &colHolder;
         colHolder.colIndex=-1; //@todo delete me
         colHolder.next = current1->colList;
@@ -238,7 +238,10 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
         community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;
         if(shouldContinue)
             current1=current1->nextRow;
-    }
+
+        splliterIndex++;
+
+        }
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
     communityDescriptionArr->first->networkStat=memory(sizeof(networkStatsSet),1);
