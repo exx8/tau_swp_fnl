@@ -3,36 +3,44 @@
 //
 #include "ds.h"
 #include "output.h"
-void writeInt(int k,FILE* file)
-{
-    fwrite(&k,sizeof(int),1,file);
+
+void writeInt(int k, FILE *file) {
+    fwrite(&k, sizeof(int), 1, file);
 }
-output(communitiesList * list,char* where)
+
+output(communitiesList
+* list,
+char *where
+)
 {
 
-    communitiesList * listHolder=list;
-    int counter=0;
-    while(listHolder!=NULL)
+communitiesList *listHolder = list;
+int counter = 0;
+while(listHolder!=NULL)
 {
-        counter++;
-        listHolder=listHolder->next;
+counter++;
+listHolder = listHolder->next;
 }
 
 
 FILE *file = fopen(where, "w");
-assert(file!=NULL);
-writeInt(counter,file);
-communitiesList * writerList=list;
+assert(file != NULL);
+writeInt(counter, file
+);
+communitiesList *writerList = list;
 while(writerList!=NULL)
 {
-    rowLinkedList*  indicesList=writerList->communityInfo->graph;
-    writeInt(writerList->communityInfo->networkStat->vertices,file);
-    while(indicesList!=NULL)
+if(writerList->communityInfo){
+rowLinkedList *indicesList = writerList->communityInfo->graph;
+writeInt(writerList->communityInfo->networkStat->vertices,file);
+while(indicesList!=NULL)
 {
-        writeInt(indicesList->rowIndex,file);
-        indicesList=indicesList->nextRow;
+writeInt(indicesList->rowIndex,file);
+indicesList = indicesList->nextRow;
 }
-    writerList=writerList->next;
+
+}
+writerList = writerList->next;
 
 }
 fclose(file);
