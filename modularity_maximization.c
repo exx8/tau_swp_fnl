@@ -28,6 +28,7 @@ void modularity_maximization(double* splitter,int splitterLen,rowLinkedList* lis
         unmovedcurrent=unmovedcurrent->nextRow;
 
     }
+    int  * indices=memory(sizeof(double),communityStat->vertices);
 
 for(;i<communityStat->vertices;i++)
 {//green
@@ -53,6 +54,7 @@ for(;i<communityStat->vertices;i++)
         splitterIndex++;
     }
     splitter[j]=-splitter[j];
+    indices[i]=j;
 
 
 
