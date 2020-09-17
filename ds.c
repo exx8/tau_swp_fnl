@@ -8,7 +8,10 @@
 #include <assert.h>
 #include <sys/stat.h>
 #include <stdio.h>
-
+struct linkedList{
+    void* address;
+    struct linkedList* next;
+}typedef liknedList;
 struct _colLinkedList {
     int colIndex;
     struct _colLinkedList* next;
