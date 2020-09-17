@@ -6,6 +6,7 @@
 #include "ds.h"
 #include "algo2.h"
 #include "algo3.h"
+#include "output.h"
 #define intsize 4
 
 
@@ -95,10 +96,10 @@ int getVertices( FILE *file) {
 int main(int argc,char** argv) {
     if(argc!=3)
     {
-        error(3,"too few argument")
+        error(3,"too few argument");
     }
 
     communitiesList * divisionResults=readInputFile(argv[1]);
-    freeCommunitiesList(divisionResults);
+    output(divisionResults,argv[2]);
     return 0;
 }
