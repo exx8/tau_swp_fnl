@@ -11,7 +11,7 @@ typedef int bool;
 #include "ds.h"
 #include "string.h"
 #define BELONGS_TO_2ND_COMMUNITY(X) ((X) < 0)
-
+#include "modularity_maximization.h"
 struct _eigen {
     double *vector;
     double value;

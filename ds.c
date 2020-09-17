@@ -17,6 +17,8 @@ struct _rowLinkedList {
     int rowIndex;
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
+    int side;
+    int marked;
 } typedef rowLinkedList;
 void deleteNextRow(rowLinkedList* l){
     rowLinkedList* lNext;
@@ -38,6 +40,8 @@ rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* 
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;
+    returned->marked=0;
+    returned->side=-10;
     return returned;
 
 }
