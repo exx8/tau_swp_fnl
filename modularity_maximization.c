@@ -30,6 +30,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             int rowIndex = rowPointer->rowIndex;
             rowPointer->side = splitter[k3];
             unmovedcurrent->nextRow = memory(sizeof(rowLinkedList), 1);
+            unmovedcurrent->rowIndex=rowIndex;
             unmovedcurrent = unmovedcurrent->nextRow;
             rowPointer=rowPointer->nextRow;
             k3++;
@@ -42,7 +43,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             double *score = memory(sizeof(double), n_g);
 
             double q0 = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
-            rowLinkedList *unmovedPointer = unmovedcurrent;
+            rowLinkedList *unmovedPointer = unmovedHolder.nextRow;
             int splitterIndex = 0;
             int j_tag = 0;
             double maxModularity = -DBL_MAX;
