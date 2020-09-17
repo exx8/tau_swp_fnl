@@ -9,6 +9,7 @@ typedef int bool;
 #include "time.h"
 #include "math.h"
 #include "ds.h"
+#include "shift.h"
 struct _eigen{
     double *vector;
     double value;
@@ -18,6 +19,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
     //@todo check me!!!
     double bilinearValue = 0;
     const M = AGlobalstats->degreeSum;
+    int shift=norm1(Ag);
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
 // all matrices are symmetrical.
@@ -37,7 +39,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, networkStat
                 B_ij++;//Add 1 exists
                 AgCurrentCol = AgCurrentCol->next;
             }
-            eigenVectorApproximation[rowIndex] = eigenVectorApproximation[rowIndex ]* B_ij;
+            eigenVectorApproximation[rowIndex] = (shift+eigenVectorApproximation[rowIndex ])* B_ij;
         }
 
         eigenVectorApproximation[rowIndex] = sum;
