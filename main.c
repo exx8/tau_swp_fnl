@@ -7,6 +7,7 @@
 #include "algo2.h"
 #include "shift.h"
 #include "algo3.h"
+#include "output.h"
 #define intsize 4
 
 
@@ -94,9 +95,13 @@ int getVertices( FILE *file) {
 
 
 
-int main() {
-    communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/graph.in");
-    printf("Testing");
-    freeCommunitiesList(divisionResults);
+int main(int argc,char** argv) {
+    if(argc!=3)
+    {
+        error(3,"too few argument");
+    }
+
+    communitiesList * divisionResults=readInputFile(argv[1]);
+    output(divisionResults,argv[2]);
     return 0;
 }
