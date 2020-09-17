@@ -5,6 +5,8 @@
 #include "utils.h"
 #include "ds.h"
 #include "algo2.h"
+#include "algo3.h"
+#include "output.h"
 #define intsize 4
 
 
@@ -67,17 +69,17 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 
 }
 
-rowLinkedList*  readInputFile(char *filePath) {
-    rowLinkedList* returned;
+communitiesList*  readInputFile(char *filePath) {
+    rowLinkedList* graphData;
+    communitiesList* returned;
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
     assert(file!=NULL);
-    networkStatsSet networkStat = getNetworkStats(file, fileLengthInBytes);
-    returned=loadAdjacencyMatrixDataStructures(file, &networkStat);
+    networkStatsSet* networkStat = getNetworkStats(file, fileLengthInBytes);
+    graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
-    test(returned,networkStat);
-
-    releaseNetworkStat(&networkStat);
+    communityDescription *firstCommunity = newCommunityDescription(networkStat, graphData);
+    returned=algo3(firstCommunity);
     fclose(file);
     return returned;
 }
@@ -91,8 +93,13 @@ int getVertices( FILE *file) {
 
 
 
-int main() {
-    rowLinkedList * graphData=readInputFile("/home/eran/Downloads/graph.in");
-    freeData(graphData);
+int main(int argc,char** argv) {
+    if(argc!=3)
+    {
+        error(3,"too few argument");
+    }
+
+    communitiesList * divisionResults=readInputFile(argv[1]);
+    output(divisionResults,argv[2]);
     return 0;
 }
