@@ -6,6 +6,7 @@
 #include "networkStats.h"
 #include "time.h"
 #include "algo2.h"
+#include "utils.h"
 
 
 communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
@@ -27,39 +28,42 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
 communitiesList *algo3(communityDescription* community) {
 
     communitiesList *groupP=memory(sizeof(communitiesList ), 1);
-
     groupP->next=NULL;
     communitiesList *groupO=memory(sizeof(communitiesList ), 1);
     groupP->communityInfo = community;
     while (groupP != NULL) {
-        communitiesList *groupToDivide = groupP;
+        communitiesList *groupToDivide = memory(sizeof(communitiesList ), 1);
+        groupToDivide= groupP;
         divisionResults *algo2Results = divideGroup(groupToDivide);
-
         groupP = groupP->next;
-        tuple2 *divsionResult = algo2Results->value;
+        tuple2 *divisionResult = algo2Results->value;
         free(algo2Results);
-        int firstGroupVetricesNum = divsionResult->first->networkStat->vertices;
-        int secondGroupVerticesNum = divsionResult->second->networkStat->vertices;
-        if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
+        int firstGroupVerticesNum = divisionResult->first->networkStat->vertices;
+        int secondGroupVerticesNum = divisionResult->second->networkStat->vertices;
+        if (firstGroupVerticesNum == 0 || secondGroupVerticesNum == 0) {
             groupToDivide->next = groupO;
             groupO = groupToDivide;
         } else {
-            if (firstGroupVetricesNum == 1) {
-                groupO=addNodeToBeginning(divsionResult->first, groupO);
+            if (firstGroupVerticesNum == 1) {
+                groupO=addNodeToBeginning(divisionResult->first, groupO);
             }
             if (secondGroupVerticesNum == 1) {
-                groupO=addNodeToBeginning(divsionResult->second, groupO);
+                groupO=addNodeToBeginning(divisionResult->second, groupO);
 
             }
-            if (divsionResult->first->networkStat->vertices > 1) {
-                groupP=addNodeToBeginning(divsionResult->first, groupP);
+            if (divisionResult->first->networkStat->vertices > 1) {
+                groupP=addNodeToBeginning(divisionResult->first, groupP);
 
             }
             if (secondGroupVerticesNum > 1) {
-                groupP=addNodeToBeginning(divsionResult->second, groupP);
+                groupP=addNodeToBeginning(divisionResult->second, groupP);
             }
         }
+        free(groupToDivide);
+        free(divisionResult);
 
     }
+
+    free(groupP);
     return groupO;
 }

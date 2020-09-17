@@ -117,7 +117,8 @@ billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgSta
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     srand(2);
-     volatile vectorLength = AgStat->vertices;
+
+    volatile vectorLength = AgStat->vertices;
     double currentDiff = 1;
     double *vec1, *vec2;
     int volatile i = 0;

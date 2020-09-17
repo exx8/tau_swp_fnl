@@ -19,7 +19,7 @@ struct _rowLinkedList {
     struct _colLinkedList* colList;
 } typedef rowLinkedList;
 void deleteNextRow(rowLinkedList* l){
-    rowLinkedList* lNext;
+    rowLinkedList* lNext = NULL;
     l->nextRow=l->nextRow->nextRow;
     free(lNext);
 
