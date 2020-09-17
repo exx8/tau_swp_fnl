@@ -94,10 +94,5 @@ int getVertices( FILE *file) {
 
 int main() {
 
-    rowLinkedListSparseMatrix * row1 = (rowLinkedListSparseMatrix *) malloc(sizeof(rowLinkedListSparseMatrix));
-    rowLinkedListSparseMatrix * row2 = (rowLinkedListSparseMatrix *) malloc(sizeof(rowLinkedListSparseMatrix));
-    rowLinkedListSparseMatrix * row3 = (rowLinkedListSparseMatrix *) malloc(sizeof(rowLinkedListSparseMatrix));
-    colLinkedListSparseMatrix * v1 = (colLinkedListSparseMatrix *) malloc(sizeof(colLinkedListSparseMatrix));
-
-    return 0;
+return 0;
 }
