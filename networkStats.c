@@ -12,12 +12,11 @@ int getVertices( FILE *file);
 struct _networkStats {
     int vertices;
     int edges;
-    int * vertexDegreeArray;
+    int * vertexDegreeArray; //CAUTION: for avoiding initing array for each community, the array MAY contain data about extenrnal vertices
     int degreeSum;
 
 } typedef networkStatsSet;
 
-networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes);
 
 void updateNetworkStat(networkStatsSet *networkStat, int vertexIndex, int verticesLeft) {
     networkStat->vertexDegreeArray[vertexIndex] = verticesLeft;
@@ -26,15 +25,25 @@ void updateNetworkStat(networkStatsSet *networkStat, int vertexIndex, int vertic
 
 void releaseNetworkStat(networkStatsSet *networkStat) { free((*networkStat).vertexDegreeArray); }
 
-networkStatsSet getNetworkStats(FILE *file, int fileLengthInBytes) {
-    networkStatsSet networkStat;
+networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
+
+    networkStatsSet* networkStat=memory(sizeof(networkStatsSet),1);
     int verticesNum = getVertices(file);
     const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
-    networkStat.vertices = verticesNum;
-    networkStat.edges = edgesNum;
-    networkStat.vertexDegreeArray = (int *) memory(networkStat.vertices , sizeof(int));
-     networkStat.degreeSum=0; // only initing not setting
+    networkStat->vertices = verticesNum;
+    networkStat->edges = edgesNum;
+    networkStat->vertexDegreeArray = (int *) memory(networkStat->vertices , sizeof(int));
+     networkStat->degreeSum=0; // only initing not setting
     return networkStat;
 
 
+}
+networkStatsSet emptyNetworkstats(){
+    networkStatsSet returned;
+    returned.edges=0;
+    returned.vertices=0;
+    returned.vertexDegreeArray=NULL;
+    returned.degreeSum=0;
+
+    return returned;
 }

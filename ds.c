@@ -17,7 +17,23 @@ struct _rowLinkedList {
     int rowIndex;
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
+    int side;
+    int marked;
 } typedef rowLinkedList;
+void deleteNextRow(rowLinkedList* l){
+    rowLinkedList* lNext= l->nextRow;
+    if(lNext!=NULL)
+    l->nextRow=l->nextRow->nextRow;
+    free(lNext);
+
+}
+
+void deleteNextCol(colLinkedList* l){
+    colLinkedList* lNext;
+    l->next=l->next->next;
+    free(lNext);
+
+}
 
 rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
@@ -25,6 +41,8 @@ rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* 
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;
+    returned->marked=0;
+    returned->side=-10;
     return returned;
 
 }
@@ -45,11 +63,11 @@ void freeCol(colLinkedList* list)
     freeCol(list->next);
     free(list);
 }
-void freeData(rowLinkedList* list)
+void freeGraph(rowLinkedList* list)
 {
     if(list==NULL)
         return;
-    freeData(list->nextRow);
+    freeGraph(list->nextRow);
     freeCol(list->colList);
     free(list);
 }
@@ -86,3 +104,54 @@ colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListS
     return returned;
 
 }
+struct _communityDescription{
+    networkStatsSet* networkStat;
+    rowLinkedList* graph;
+} typedef communityDescription;
+
+communityDescription * newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
+{
+    communityDescription *returned=memory(sizeof(communityDescription),1);
+
+            returned->networkStat=ns;
+            returned->graph=graph;
+    return returned;
+}
+struct _communitiesList {
+    communityDescription *communityInfo;
+    struct _communitiesList* next;
+} typedef communitiesList;
+
+
+
+
+
+
+
+void freeNested(communitiesList * d)
+{
+if(d==NULL||d->communityInfo==NULL)
+return;
+freeNested(d->next);
+free(d->communityInfo->networkStat);
+freeGraph(d->communityInfo->graph);
+free(d->communityInfo);
+}
+
+void freeCommunitiesList(communitiesList * d)
+{
+    int *vertexDegreeArray = d->communityInfo->networkStat->vertexDegreeArray;
+    free(vertexDegreeArray);
+    freeNested(d->next);
+    free(d);
+}
+
+struct _tuple2{
+    communityDescription* first;
+    communityDescription* second;
+} typedef tuple2;
+
+struct _divisionResults{
+    int errorNum; //whereas 0 stands for no error
+    tuple2 * value;
+} typedef divisionResults;
