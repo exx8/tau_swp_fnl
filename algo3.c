@@ -36,14 +36,14 @@ communitiesList *algo3(communityDescription* community) {
         divisionResults *algo2Results = divideGroup(groupToDivide);
         groupP = groupP->next;
         tuple2 *divsionResult = algo2Results->value;
-        free(algo2Results);
+       // free(algo2Results);
         int firstGroupVetricesNum = divsionResult->first->networkStat->vertices;
         int secondGroupVerticesNum = divsionResult->second->networkStat->vertices;
         if (firstGroupVetricesNum == 0 || secondGroupVerticesNum == 0) {
             groupToDivide->next = groupO;
             groupO = groupToDivide;
         } else {
-            free(groupToDivide);
+           // free(groupToDivide);
             if (firstGroupVetricesNum == 1) {
                 groupO=addNodeToBeginning(divsionResult->first, groupO);
 
@@ -63,8 +63,7 @@ communitiesList *algo3(communityDescription* community) {
 
             }
         }
-        free(divsionResult);
-        left--;
+       // free(divsionResult);
     }
     return groupO;
 }
