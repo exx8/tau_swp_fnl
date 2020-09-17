@@ -21,7 +21,8 @@ struct _rowLinkedList {
     int marked;
 } typedef rowLinkedList;
 void deleteNextRow(rowLinkedList* l){
-    rowLinkedList* lNext;
+    rowLinkedList* lNext= l->nextRow;
+    if(lNext!=NULL)
     l->nextRow=l->nextRow->nextRow;
     free(lNext);
 
