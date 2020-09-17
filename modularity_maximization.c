@@ -29,8 +29,21 @@ void modularity_maximization(double* splitter,int splitterLen,rowLinkedList* lis
     }
 
 for(;i<communityStat->vertices;i++)
-{
+{//green
+    double * score=memory(sizeof(double),communityStat->vertices);
+
     double q0=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
+    rowLinkedList * unmovedPointer=unmovedcurrent;
+    while(unmovedPointer!=NULL)
+    {//purple
+        int rowIndex = unmovedPointer->rowIndex;
+        splitter[rowIndex]=-splitter[unmovedPointer->rowIndex];
+        score[rowIndex]=billinearMultipicationOfBUnoptimized(holder1.nextRow,communityStat,splitterLen,splitter);
+        splitter[rowIndex]=-splitter[unmovedPointer->rowIndex];
+    }
+
 
 }
+
+freeGraph(unmovedcurrent);
 }
