@@ -18,13 +18,14 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
     holder1.nextRow = list;
     holder1.rowIndex = -1;
     unmovedHolder.rowIndex = -1;
+    unmovedHolder.nextRow=NULL;
     splitterDiscrete(splitter, splitterLen);
 
     rowLinkedList *rowPointer = holder1.nextRow;
     rowLinkedList *unmovedcurrent = &unmovedHolder;
-    double DeltaQ = 0;
+    double DeltaQ = 1;
 
-    while (DeltaQ > 0) {
+    while (IS_POSITIVE(DeltaQ)) {
         while (rowPointer != NULL) {
             int rowIndex = rowPointer->rowIndex;
             rowPointer->side = splitter[rowIndex];
@@ -71,7 +72,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
 
 
             int i_tag = -1;
-            int max_value = -DBL_MAX;
+            double max_value = -DBL_MAX;
             for (k = 0; k < n_g; k++) {
                 if (improve[i_tag] > max_value) {
                     i_tag = k;
@@ -92,6 +93,6 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
 
         }
     }
-    freeGraph(unmovedcurrent);
+    freeGraph(unmovedHolder.nextRow);
 
 }
