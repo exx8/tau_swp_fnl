@@ -93,8 +93,12 @@ int getVertices( FILE *file) {
 
 
 int main() {
-   communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/groups.out");
-   freeCommunitiesList(divisionResults);
+
    printf("Testing");
+   communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/graph.in");
+   int i = divisionResults->communityInfo->networkStat->vertices;
+   printf("# is %d", i);
+
+    freeCommunitiesList(divisionResults);
     return 0;
 }

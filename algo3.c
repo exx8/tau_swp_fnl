@@ -28,20 +28,25 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
 communitiesList *algo3(communityDescription* community) {
 
     communitiesList *groupP=memory(sizeof(communitiesList ), 1);
-    groupP->next=NULL;
     groupP->communityInfo = community;
+    groupP->next = NULL;
     communitiesList *groupO=memory(sizeof(communitiesList ), 1);
     groupO->next=NULL;
     groupO->communityInfo = NULL;
 
     while (groupP != NULL) {
-        communitiesList *groupToDivide;
-        groupToDivide = groupP;
-        groupP = groupP->next;
+
+        communitiesList *groupToDivide = memory(sizeof(communitiesList ), 1);
+
+        groupToDivide->communityInfo = groupP->communityInfo;
+        groupToDivide->next = NULL;
         divisionResults *algo2Results = divideGroup(groupToDivide);
+        groupP = groupP->next;
         tuple2 *divisionResult = algo2Results->value;
+
         int firstGroupVerticesNum = divisionResult->first->networkStat->vertices;
         int secondGroupVerticesNum = divisionResult->second->networkStat->vertices;
+
         if (firstGroupVerticesNum == 0 || secondGroupVerticesNum == 0) {
             groupToDivide->next = groupO;
             groupO = groupToDivide;
