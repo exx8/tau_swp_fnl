@@ -65,14 +65,12 @@ communitiesList *algo3(communityDescription* community) {
             if (secondGroupVerticesNum > 1) {
                 groupP=addNodeToBeginning(divisionResult->second, groupP);
             }
-            /*free(algo2Results->value->first);
-            free(algo2Results->value->second);
-            free(algo2Results); */
+
+            free(groupToDivide);
+            free(algo2Results);
         }
 
     }
-    /*free(groupP->next);
-    free(groupP->communityInfo);
-    free(groupP); */
+    free(groupP);
     return groupO;
 }

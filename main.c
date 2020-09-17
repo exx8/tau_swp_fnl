@@ -94,12 +94,16 @@ int getVertices( FILE *file) {
 
 int main() {
 
-   printf("Testing\n");
-   communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/graph.in");
-   int i1 = divisionResults->communityInfo->networkStat->vertices;
-   int i2 = divisionResults->next->communityInfo->networkStat->vertices;
-   printf("# is %d\n", i1);
-    printf("# is %d\n", i2);
+    communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/graph.in");
+    /*printf("Testing\n");
+    int counter = 0;
+    while (divisionResults->communityInfo != NULL){
+        int i = divisionResults->communityInfo->networkStat->vertices;
+        printf("Group %d ", counter);
+        printf("number of vertices is %d\n", i);
+        counter +=1;
+        divisionResults = divisionResults->next;
+    } */
     freeCommunitiesList(divisionResults);
     return 0;
 }
