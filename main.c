@@ -93,8 +93,8 @@ int getVertices( FILE *file) {
 
 
 int main() {
-   /* communitiesList * divisionResults=readInputFile("/home/eran/Desktop/swp_samples/graph.in");
-    freeCommunitiesList(divisionResults); */
+   communitiesList * divisionResults=readInputFile("/Users/nazaraburas/Desktop/groups.out");
+   freeCommunitiesList(divisionResults);
    printf("Testing");
     return 0;
 }

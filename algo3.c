@@ -24,12 +24,6 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
     return algo2Results;
 }
 
-void freeGroup(communitiesList * list){
-    while (list != NULL){
-        free(list);
-        list = list->next;
-    }
-}
 
 communitiesList *algo3(communityDescription* community) {
 
@@ -43,10 +37,9 @@ communitiesList *algo3(communityDescription* community) {
     while (groupP != NULL) {
         communitiesList *groupToDivide;
         groupToDivide = groupP;
-        divisionResults *algo2Results = divideGroup(groupToDivide);
         groupP = groupP->next;
+        divisionResults *algo2Results = divideGroup(groupToDivide);
         tuple2 *divisionResult = algo2Results->value;
-        free(algo2Results);
         int firstGroupVerticesNum = divisionResult->first->networkStat->vertices;
         int secondGroupVerticesNum = divisionResult->second->networkStat->vertices;
         if (firstGroupVerticesNum == 0 || secondGroupVerticesNum == 0) {
@@ -67,9 +60,10 @@ communitiesList *algo3(communityDescription* community) {
             if (secondGroupVerticesNum > 1) {
                 groupP=addNodeToBeginning(divisionResult->second, groupP);
             }
+            free(algo2Results);
         }
 
     }
-    freeGroup(groupP);
+    free(groupP);
     return groupO;
 }

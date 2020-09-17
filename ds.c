@@ -39,7 +39,6 @@ rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* 
     returned->nextRow=nextRow;
     returned->colList=colList;
     return returned;
-
 }
 
 colLinkedList* newColLinkedList(int index,colLinkedList* next)
@@ -48,9 +47,7 @@ colLinkedList* newColLinkedList(int index,colLinkedList* next)
     returned->colIndex=index;
     returned->next=next;
     return returned;
-
 }
-
 
 void freeCol(colLinkedList* list)
 {
@@ -116,11 +113,6 @@ struct _communitiesList {
     communityDescription *communityInfo;
     struct _communitiesList* next;
 } typedef communitiesList;
-
-
-
-
-
 
 
 void freeNested(communitiesList * d)
