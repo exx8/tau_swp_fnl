@@ -17,7 +17,7 @@ void error(int errorID,char* errorReason)
 makesure(int condition)
 {
     if(condition)
-        error("5","assert condition failed");
+        error(5,"assert condition failed");
 }
 void *memory(int sizeOfCell, size_t numberOfCell) {
     void *buffer = calloc(sizeOfCell, numberOfCell);
