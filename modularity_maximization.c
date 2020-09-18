@@ -70,8 +70,6 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             j_tag = 0;
             maxModularity = -DBL_MAX;
             while (unmovedPointer != NULL) {/*purple*/
-                int rowIndex;
-                rowIndex = unmovedPointer->rowIndex;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 score[splitterIndex] =
                         billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
