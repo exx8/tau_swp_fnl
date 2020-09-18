@@ -122,11 +122,6 @@ struct _communitiesList {
 } typedef communitiesList;
 
 
-
-
-
-
-
 void freeNested(communitiesList * d)
 {
 if(d==NULL||d->communityInfo==NULL)
