@@ -11,10 +11,23 @@ struct linkedList{
     struct linkedList* next;
 }typedef liknedList;
 
-
-
+void error(int errorID,char* errorReason)
+{
+    printf("Error:%s",errorReason);
+    exit(errorID);
+}
+makesure(int condition)
+{
+    if(condition)
+        error(5,"assert condition failed");
+}
 static liknedList* memoryList=NULL;
+void *memory(int sizeOfCell, size_t numberOfCell) {
+    void *buffer = calloc(sizeOfCell, numberOfCell);
+    makesure(buffer != NULL);
+    return buffer;
 
+}
 void *smemory(int sizeOfCell, size_t numberOfCell)
 {
     void* value=memory(sizeOfCell,numberOfCell);
@@ -37,19 +50,5 @@ void freeThemAll()
     }
 }
 
-void error(int errorID,char* errorReason)
-{
-    printf("Error:%s",errorReason);
-    exit(errorID);
-}
-makesure(int condition)
-{
-    if(condition)
-        error(5,"assert condition failed");
-}
-void *memory(int sizeOfCell, size_t numberOfCell) {
-    void *buffer = calloc(sizeOfCell, numberOfCell);
-    makesure(buffer != NULL);
-    return buffer;
 
-}
+
