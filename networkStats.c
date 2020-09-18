@@ -24,10 +24,10 @@ void releaseNetworkStat(networkStatsSet *networkStat) { free((*networkStat).vert
 networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
 
     networkStatsSet* networkStat;
-    networkStat=smemory(sizeof(networkStatsSet),1);
     int verticesNum;
-    verticesNum= getVertices(file);
     int edgesNum;
+    networkStat=smemory(sizeof(networkStatsSet),1);
+    verticesNum= getVertices(file);
     edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat->vertices = verticesNum;
     networkStat->edges = edgesNum;

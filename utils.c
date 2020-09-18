@@ -30,8 +30,8 @@ void *memory(int sizeOfCell, size_t numberOfCell) {
 void *smemory(int sizeOfCell, size_t numberOfCell)
 {
     void* value;
-    value=memory(sizeOfCell,numberOfCell);
     linkedlist* newNode;
+    value=memory(sizeOfCell,numberOfCell);
     newNode =memory(sizeof(linkedlist),1);
     newNode->next=memoryList;
     newNode->address=value;
