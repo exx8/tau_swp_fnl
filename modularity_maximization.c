@@ -39,7 +39,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
         int *indices = memory(sizeof(double), n_g);
         int *improve = memory(sizeof(double), n_g);
 
-        for (; i < n_g; i++) {//green
+        for (; i < n_g; i++) {/*green*/
             double *score = memory(sizeof(double), n_g);
 
             double q0 = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
@@ -47,7 +47,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             int splitterIndex = 0;
             int j_tag = 0;
             double maxModularity = -DBL_MAX;
-            while (unmovedPointer != NULL) {//purple
+            while (unmovedPointer != NULL) {/*purple*/
                 int rowIndex = unmovedPointer->rowIndex;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 score[splitterIndex] = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
@@ -56,7 +56,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                 if (score[splitterIndex] > maxModularity) {
                     maxModularity = score[splitterIndex];
                     j_tag = splitterIndex;
-                    //arg maxs not in the purple
+                    /*arg maxs not in the purple*/
                 }
                 splitterIndex++;
                 unmovedPointer=unmovedPointer->nextRow;

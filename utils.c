@@ -1,22 +1,20 @@
-//
-// Created by eran on 24/08/2020.
-//
+typedef struct _linkedList{
+    void* address;
+    struct linkedList* next;
+} liknedList;
 
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #define IS_POSITIVE(X) ((X) > 0.00001)
-struct linkedList{
-    void* address;
-    struct linkedList* next;
-}typedef liknedList;
+
 
 void error(int errorID,char* errorReason)
 {
     printf("Error:%s",errorReason);
     exit(errorID);
 }
-makesurenot(int condition)
+void makesurenot(int condition)
 {
     if(!condition)
         error(5,"assert condition failed");
@@ -39,7 +37,6 @@ void *smemory(int sizeOfCell, size_t numberOfCell)
 }
 void freeThemAll()
 {
-    liknedList * currentNode=memoryList;
     while(memoryList!=NULL)
     {
         struct linkedList *next = memoryList->next;

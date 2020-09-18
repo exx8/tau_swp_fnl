@@ -1,6 +1,3 @@
-//
-// Created by eran on 24/08/2020.
-//
 
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -11,7 +8,7 @@ int getVertices( FILE *file);
 struct _networkStats {
     int vertices;
     int edges;
-    int * vertexDegreeArray; //CAUTION: for avoiding initing array for each community, the array MAY contain data about extenrnal vertices
+    int * vertexDegreeArray; /*CAUTION: for avoiding initing array for each community, the array MAY contain data about extenrnal vertices*/
     int degreeSum;
 
 } typedef networkStatsSet;
@@ -32,7 +29,7 @@ networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
     networkStat->vertices = verticesNum;
     networkStat->edges = edgesNum;
     networkStat->vertexDegreeArray = (int *) smemory(networkStat->vertices , sizeof(int));
-     networkStat->degreeSum=0; // only initing not setting
+     networkStat->degreeSum=0; /* only initing not setting*/
     return networkStat;
 
 

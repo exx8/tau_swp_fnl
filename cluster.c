@@ -24,6 +24,7 @@ int filesize(char *filePath) {
 int readInt( FILE *file,  int *intPointer) {
     int numRead =fread(intPointer,intsize,1,file);
     makesurenot(numRead == 1);
+    return numRead;
 }
 
 
@@ -49,7 +50,7 @@ colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
 rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
 
     int vertexIndex = 0;
-    rowLinkedList* holder=newRowLinkedList(-1,NULL,NULL),// holder won't be returned
+    rowLinkedList* holder=newRowLinkedList(-1,NULL,NULL),/* holder won't be returned*/
             *returned;
     rowLinkedList* current= holder;
     int edgeRowIndex = 0;

@@ -1,6 +1,4 @@
-//
-// Created by eran on 17/09/2020.
-//
+
 #include "ds.h"
 #include "output.h"
 
@@ -8,7 +6,7 @@ void writeInt(int k, FILE *file) {
     fwrite(&k, sizeof(int), 1, file);
 }
 
-output(communitiesList
+void output(communitiesList
 * list,
 char *where
 )

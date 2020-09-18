@@ -1,6 +1,4 @@
-//
-// Created by eran on 01/09/2020.
-//
+
 typedef int bool;
 #define true 1
 #define false 0
@@ -21,12 +19,11 @@ struct _eigen{
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
-    //@todo check me!!!
     double bilinearValue = 0;
      int M = AgStat->degreeSum;
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
-// all matrices are symmetrical.
+/* all matrices are symmetrical.*/
     for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
         bool isRowExists = AgCurrent->rowIndex == rowIndex ? 1 : 0;
 
@@ -41,7 +38,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
             B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
                     M;
             if (isCellExists) {
-                B_ij++;//Add 1 exists
+                B_ij++;/*Add 1 exists*/
                 AgCurrentCol = AgCurrentCol->next;
             }
             eigenVectorApproximationWrite[rowIndex] = (shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
