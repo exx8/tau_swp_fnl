@@ -37,8 +37,9 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
             double B_ij = 0;
-             bool isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
-             bool isCellExists = isRowExists && isColExists;
+             bool isColExists, isCellExists;
+             isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
+             isCellExists = isRowExists && isColExists;
 
             B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
                     M;
@@ -115,8 +116,8 @@ billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
 }
 
 double
-billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgStat,
-                                     volatile  int vectorLength,  double *vec1) {
+billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
+                                      volatile  int vectorLength, double *vec1) {
     double *vec2;
     vec2 = memory(sizeof(double), vectorLength);
     double returned;
@@ -226,20 +227,33 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     holder2.nextRow=NULL;
     holder1.rowIndex=-1;
     holder2.rowIndex=-1;
-    networkStatsSet community1NetworkStats = *communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
-    rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
+    networkStatsSet community1NetworkStats, community2NetworkStas;
+    community1NetworkStats = *communityToSplit.networkStat;
+    community2NetworkStas = emptyNetworkstats();
+
+    rowLinkedList *current1, *current2;
+    current1= holder1.nextRow;
+    current2 = &holder2;
+
     rowLinkedList *newGraphsArr[2];
-    tuple2 *communityDescriptionArr=smemory(sizeof(tuple2),1);
+    tuple2 *communityDescriptionArr;
+    communityDescriptionArr=smemory(sizeof(tuple2),1);
     communityDescriptionArr->first=smemory(sizeof(communityDescription), 1);
     communityDescriptionArr->second=smemory(sizeof(communityDescription), 1);
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
-    int shouldContinue=0;
-    int splliterIndex=0;
-     modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
+
+    int shouldContinue;
+    shouldContinue = 0;
+    int spliterIndex;
+    spliterIndex=0;
+    modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
+
         while (current1&&current1->nextRow != NULL) {
-            int isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[splliterIndex]);
-        colLinkedList colHolder, *currentCol = &colHolder;
+            int isRowIn2ndGroup;
+            isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[spliterIndex]);
+        colLinkedList colHolder, *currentCol;
+        currentCol= &colHolder;
         colHolder.colIndex=-1; //@todo delete me
         colHolder.next = current1->colList;
 
@@ -264,7 +278,7 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
         if(shouldContinue)
             current1=current1->nextRow;
 
-        splliterIndex++;
+        spliterIndex++;
 
         }
     newGraphsArr[0] = holder1.nextRow;
@@ -288,13 +302,14 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     currentCommunity.networkStat = AgStat;
     currentCommunity.graph = Ag;
 
-    eigen division = powerIterationOnB(Ag, AgStat);
+    eigen division;
+    division = powerIterationOnB(Ag, AgStat);
     if (division.value < 0) {
         return returnError(&returned, 1);
     }
     //makeVectorDiscrete(division.vector, vectorLength);
     double sBs;
-    sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
+    sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
     if (sBs < 0) {
         return returnError(&returned, 2);
 

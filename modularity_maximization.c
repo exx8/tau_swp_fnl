@@ -2,11 +2,12 @@
 #include "float.h"
 
 double
-billinearMultipicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
-                                     volatile int vectorLength, double *vec1);
+billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
+                                      volatile int vectorLength, double *vec1);
 
 void splitterDiscrete(double *splitter, int splitterLen) {
-    int i = 0;
+    int i;
+    i = 0;
     for (; i < splitterLen; i++)
         splitter[i] = splitter[i] ? 1 : -1;
 }
@@ -55,7 +56,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             score = memory(sizeof(double), n_g);
 
             double q0;
-            q0 = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
+            q0 = billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
             rowLinkedList *unmovedPointer;
             unmovedPointer = unmovedHolder.nextRow;
             int splitterIndex;
@@ -68,8 +69,9 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                 int rowIndex;
                 rowIndex = unmovedPointer->rowIndex;
                 splitter[splitterIndex] = -splitter[splitterIndex];
-                score[splitterIndex] = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
-                                                                            splitter) - q0;
+                score[splitterIndex] =
+                        billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
+                                                              splitter) - q0;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 if (score[splitterIndex] > maxModularity) {
                     maxModularity = score[splitterIndex];
