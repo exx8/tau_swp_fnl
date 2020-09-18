@@ -13,8 +13,9 @@
 
 int filesize(char *filePath) {
     struct stat details;
+    int status;
 
-    const int status = stat(filePath, &details);
+    status = stat(filePath, &details);
     if (status == 0)
         return details.st_size;
     makesurenot(status != 0);
@@ -30,16 +31,15 @@ int readInt( FILE *file,  int *intPointer) {
 
 
 colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
+    int edgeNeighborIndex;
+    colLinkedList* primary;
+    colLinkedList* current;
     if(verticesLeft==0)
         return NULL;
-    int edgeNeighborIndex;
     edgeNeighborIndex = 0;
     readInt(file, &edgeNeighborIndex);
     verticesLeft--;
-
-    colLinkedList* primary;
     primary=newColLinkedList(edgeNeighborIndex, NULL);
-    colLinkedList* current;
     current=primary;
     while (verticesLeft > 0) {
         readInt(file, &edgeNeighborIndex);
@@ -54,13 +54,13 @@ colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
 rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
 
     int vertexIndex;
-    vertexIndex= 0;
     rowLinkedList* holder,/* holder won't be returned*/
-            *returned;
-    holder = newRowLinkedList(-1,NULL,NULL);
+    *returned;
     rowLinkedList* current;
-    current = holder;
     int edgeRowIndex;
+    vertexIndex= 0;
+    holder = newRowLinkedList(-1,NULL,NULL);
+    current = holder;
     edgeRowIndex= 0;
     while (edgeRowIndex < networkStat->vertices) {
         int verticesLeft;
@@ -81,16 +81,17 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 communitiesList*  readInputFile(char *filePath) {
     rowLinkedList* graphData;
     communitiesList* returned;
-    const fileLengthInBytes;
-    fileLengthInBytes= filesize(filePath);
+    int fileLengthInBytes;
     FILE *file;
+    networkStatsSet* networkStat;
+    communityDescription *firstCommunity;
+
+    fileLengthInBytes = filesize(filePath);
     file = fopen(filePath, "r");
     makesurenot(file != NULL);
-    networkStatsSet* networkStat;
     networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
-    communityDescription *firstCommunity;
     firstCommunity = newCommunityDescription(networkStat, graphData);
     returned=algo3(firstCommunity);
     fclose(file);
@@ -108,12 +109,11 @@ int getVertices( FILE *file) {
 
 
 int main(int argc,char** argv) {
+    communitiesList * divisionResults;
     if(argc!=3)
     {
         error(3,"too few argument");
     }
-
-    communitiesList * divisionResults;
     divisionResults=readInputFile(argv[1]);
     output(divisionResults,argv[2]);
     freeThemAll();
