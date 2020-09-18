@@ -1,6 +1,4 @@
-//
-// Created by eran on 01/09/2020.
-//
+
 typedef int bool;
 #define true 1
 #define false 0
@@ -21,17 +19,21 @@ struct _eigen{
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
-    //@todo check me!!!
-    double bilinearValue = 0;
-     int M = AgStat->degreeSum;
+    double bilinearValue;
+    bilinearValue = 0;
+    int M;
+    M =  = AgStat->degreeSum;
     rowLinkedList *AgCurrent = Ag;
     int rowIndex, colIndex;
-// all matrices are symmetrical.
+/* all matrices are symmetrical.*/
     for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
-        bool isRowExists = AgCurrent->rowIndex == rowIndex ? 1 : 0;
+        bool isRowExists;
+        isRowExists = AgCurrent->rowIndex == rowIndex ? 1 : 0;
 
-        double sum = 0;
-        colLinkedList *AgCurrentCol = AgCurrent->colList;
+        double sum;
+        sum = 0;
+        colLinkedList *AgCurrentCol;
+        AgCurrent = AgCurrent->colList;
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
             double B_ij = 0;
@@ -41,7 +43,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
             B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
                     M;
             if (isCellExists) {
-                B_ij++;//Add 1 exists
+                B_ij++;/*Add 1 exists*/
                 AgCurrentCol = AgCurrentCol->next;
             }
             eigenVectorApproximationWrite[rowIndex] = (shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
@@ -59,8 +61,10 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
 }
 
 double norm(double *vector, int len) {
-    double sum = 0;
-    int i = 0;
+    double sum;
+    sum = 0;
+    int i;
+    i = 0;
     for (; i < len; i++)
         sum += vector[i] * vector[i];
 
@@ -68,8 +72,10 @@ double norm(double *vector, int len) {
 }
 
 double vectorMultipication(double *a, double *b, int vectorLength) {
-    double sum = 0;
-     double *end = b + vectorLength;
+    double sum;
+    sum = 0;
+    double *end;
+    end = b + vectorLength;
     for (; b < end; b++, a++)
         sum += (*a) * (*b);
 
@@ -77,16 +83,20 @@ double vectorMultipication(double *a, double *b, int vectorLength) {
 }
 
 void normalizeVector(double *vec, int vecLength) {
-    double vecNorm = norm(vec, vecLength);
-    int i = 0;
+    double vecNorm;
+    vecNorm = norm(vec, vecLength);
+    int i;
+    i = 0;
     if (vecNorm != 0)
         for (; i < vecLength; i++)
             vec[i] /= vecNorm;
 }
 
 double diff( double *vec1,  double *vec2, int vectorLength) {
-     double *vectorEnd = vec1 + vectorLength;
-    double sum = 0;
+    double *vectorEnd;
+    vectorEnd = vec1 + vectorLength;
+    double sum;
+    sum = 0;
     for (; vectorEnd != vec1; vec1++, vec2++) {
         sum += pow(*vec1 - *vec2, 2);
     }
@@ -97,16 +107,20 @@ double diff( double *vec1,  double *vec2, int vectorLength) {
 double
 billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
                           volatile  int vectorLength,  double *vec1,  double *vec2) {
-    double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
-    double bAb = vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
+    double *ab;
+    ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
+    double bAb;
+    bAb = vectorMultipication(ab, vec2, vectorLength);/* vector cross matrix cross vector*/
     return bAb;
 }
 
 double
 billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgStat,
                                      volatile  int vectorLength,  double *vec1) {
-    double *vec2 = memory(sizeof(double), vectorLength);
-    double returned = billinearMultipicationOfB(Ag, AgStat,
+    double *vec2;
+    vec2 = memory(sizeof(double), vectorLength);
+    double returned;
+    returned = billinearMultipicationOfB(Ag, AgStat,
                                                 vectorLength, vec1, vec2);
     free(vec2);
     return returned;
@@ -116,12 +130,16 @@ billinearMultipicationOfBUnoptimized( rowLinkedList *Ag,  networkStatsSet *AgSta
 
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
-    int shift=norm1(Ag);
+    int shift;
+    shift =norm1(Ag);
     srand(2);
-     volatile vectorLength = AgStat->vertices;
-    double currentDiff = 1;
+    volatile vectorLength;
+    vectorLength = AgStat->vertices;
+    double currentDiff;
+    currentDiff = 1;
     double *vec1, *vec2;
-    int volatile i = 0;
+    int volatile i;
+    i = 0;
     vec1 = memory(sizeof(double), vectorLength);
     vec2 = memory(sizeof(double), vectorLength);
     eigen returned;
@@ -131,7 +149,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
 
     }
-    int left=5*AgStat->vertices;
+    int left;
+    left =5*AgStat->vertices;
     while (IS_POSITIVE(currentDiff)&&left>0) {
         //@todo think about reflection cases
         double *swap1, *swap2;
@@ -147,7 +166,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     returned.vector = vec1;
 
-    double bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
+    double bAb;
+    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
     returned.value = bAb / vectorMultipication(vec2, vec2, vectorLength)-shift;
     free(vec2);
     return returned;
@@ -155,7 +175,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 }
 
 void makeVectorDiscrete(double *vector, int vectorLength) {
-    double* end = vector + vectorLength;
+    double* end;
+    end = vector + vectorLength;
     for (; vector < end; vector++)
         *vector = (*vector > 0) ? 1 : -1;
 }
@@ -166,7 +187,8 @@ divisionResults * returnError(divisionResults *returned, int errorNum) {
     return (returned);
 }
 divisionResults * returnSuccess(tuple2* communitiesAfterDivision) {
-    divisionResults *result=smemory(sizeof(divisionResults),1);
+    divisionResults *result;
+    result =smemory(sizeof(divisionResults),1);
     result->errorNum=0;
     result->value=communitiesAfterDivision;
     return result;
@@ -175,9 +197,11 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
 
-        int colIndex = currentCol->next->colIndex;
+        int colIndex;
+        colIndex = currentCol->next->colIndex;
         if (BELONGS_TO_2ND_COMMUNITY(splitter[colIndex]) != isRowIn2ndGroup) {
-             colLinkedList *nodeTodelete=currentCol->next;
+            colLinkedList *nodeTodelete;
+            nodeTodelete =currentCol->next;
             currentCol->next= currentCol->next->next;
             //free(nodeTodelete);
             currentCol=currentCol->next;
@@ -259,7 +283,8 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
 divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     divisionResults returned;
     communityDescription currentCommunity;
-    int vectorLength = AgStat->vertices;
+    int vectorLength;
+    vectorLength = AgStat->vertices;
     currentCommunity.networkStat = AgStat;
     currentCommunity.graph = Ag;
 
@@ -268,15 +293,17 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
         return returnError(&returned, 1);
     }
     //makeVectorDiscrete(division.vector, vectorLength);
-    double sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
+    double sBs;
+    sBs = billinearMultipicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
     if (sBs < 0) {
         return returnError(&returned, 2);
 
     }
 
-    tuple2 *communtiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
+    tuple2 *communitiesAfterSplitting;
+    communitiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
     free(division.vector);
-return returnSuccess(communtiesAfterSplitting);
+return returnSuccess(communitiesAfterSplitting);
 }
 
 void test(rowLinkedList *graphData, networkStatsSet networkStat) {

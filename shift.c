@@ -3,7 +3,8 @@
 #include "float.h"
 int counter(colLinkedList* col)
 {
-    int counter=0;
+    int counter;
+    counter=0;
     while(col!=NULL)
     {
         counter++;
@@ -13,10 +14,12 @@ int counter(colLinkedList* col)
 
 }int norm1(rowLinkedList* rowLinkedList1)
 {
-    double maximum=-DBL_MAX;
+    double maximum;
+    maximum=-DBL_MAX;
     while(rowLinkedList1!=NULL)
     {
-        int numberOfNodes=counter(rowLinkedList1->colList);
+        int numberOfNodes;
+        numberOfNodes=counter(rowLinkedList1->colList);
         maximum=numberOfNodes>maximum?numberOfNodes:maximum;
 
         rowLinkedList1=rowLinkedList1->nextRow;

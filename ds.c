@@ -1,6 +1,3 @@
-//
-// Created by eran on 29/08/2020.
-//
 
 #include "networkStats.h"
 
@@ -146,6 +143,6 @@ struct _tuple2{
 } typedef tuple2;
 
 struct _divisionResults{
-    int errorNum; //whereas 0 stands for no error
+    int errorNum; /*whereas 0 stands for no error*/
     tuple2 * value;
 } typedef divisionResults;
