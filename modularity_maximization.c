@@ -21,7 +21,9 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
     double DeltaQ;
     int n_g;
     int *indices;
-    int *improve;
+    double *improve;
+    int i_tag;
+    double max_value;
 
     i=0;
     k=0;
@@ -60,8 +62,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             int j_tag;
             double maxModularity;
             rowLinkedList *nodeFinder;
-            int i_tag;
-            double max_value;
+
 
             score = memory(sizeof(double), n_g);
             q0 = billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
@@ -81,7 +82,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                     /*arg maxs not in the purple*/
                 }
                 splitterIndex++;
-                unmovedPointer=unmovedPointer->nextRow;
+                unmovedPointer = unmovedPointer->nextRow;
             }
             splitter[j_tag] = -splitter[j_tag];
             indices[i] = j_tag;
@@ -94,8 +95,10 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             for (k = 0; k < j_tag; k++)
                 nodeFinder = nodeFinder->nextRow;
             /*@todo improve me- make me more efficient*/
+            free(score);
 
-
+        }
+        //*blue
             i_tag = -1;
             max_value = -DBL_MAX;
             for (k = 0; k < n_g; k++) {
@@ -116,8 +119,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                 DeltaQ = improve[i_tag];
             }
 
-            free(score);
-        }
+
         free(improve);
         free(indices);
     }

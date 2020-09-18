@@ -46,7 +46,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                 B_ij++;/*Add 1 exists*/
                 AgCurrentCol = AgCurrentCol->next;
             }
-            sum+=(shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
+            sum+=(shift+eigenVectorApproximationRead[colIndex ])* B_ij;
         }
 
         eigenVectorApproximationWrite[rowIndex] = sum;
@@ -110,7 +110,7 @@ billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
     double *ab;
     double bAb;
     ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
-    bAb = vectorMultipication(ab, vec2, vectorLength);/* vector cross matrix cross vector*/
+    bAb = vectorMultipication(ab, vec1, vectorLength);/* vector cross matrix cross vector*/
     return bAb;
 }
 
@@ -221,6 +221,46 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
     }
 }
 
+colLinkedList* cleanFromCrossEdges(rowLinkedList* list,networkStatsSet* ns)
+{
+    colLinkedList *clearedList;
+    rowLinkedList *listOfRowsOfGroup,*listToCompare;
+    colLinkedList *listToClean,*tempNode;
+    clearedList=smemory(sizeof(colLinkedList),1);
+    clearedList->colIndex=-1;
+    clearedList->next=NULL;
+    listOfRowsOfGroup=list;
+    while(listOfRowsOfGroup != NULL)
+    {
+        listToCompare=list;
+        listToClean=listOfRowsOfGroup->colList;
+        while(listToClean != NULL&&listToCompare!=NULL)
+        {
+            if(listToClean->colIndex > listToCompare->rowIndex)
+                listToCompare=listToCompare->nextRow;
+            else if(listToCompare->rowIndex == listToClean->colIndex&&listToClean->next!=NULL)
+            {
+                tempNode=listToClean;
+                clearedList->next=listToClean;
+                listToCompare=listToCompare->nextRow;
+                listToClean=listToClean->next;
+                tempNode->next=NULL;
+            }
+            else
+            {
+               /*/ ns->vertexDegreeArray[listToClean->colIndex]=listToClean->colIndex-1;*/
+                ns->degreeSum-=2;
+
+
+                listToClean=listToClean->next;
+            }
+        }
+        listOfRowsOfGroup->colList=clearedList->next;
+        listOfRowsOfGroup=listOfRowsOfGroup->nextRow;
+    }
+return clearedList->next;
+}
+
 tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holder1, holder2;
     networkStatsSet community1NetworkStats, community2NetworkStas;
@@ -272,16 +312,22 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
         {
             shouldContinue=1;
         }
-        deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);
+        /*deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);*/
         current1->colList=currentCol->next;
-        community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
-        community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;
+       /* community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
+        community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;*/
         if(shouldContinue)
             current1=current1->nextRow;
 
         spliterIndex++;
 
         }
+
+        cleanFromCrossEdges(holder1.nextRow,&community1NetworkStats);
+        cleanFromCrossEdges(holder2.nextRow,&community2NetworkStas);
+
+
+
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
     communityDescriptionArr->first->networkStat=smemory(sizeof(networkStatsSet),1);
