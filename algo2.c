@@ -165,7 +165,7 @@ divisionResults * returnError(divisionResults *returned, int errorNum) {
     return (returned);
 }
 divisionResults * returnSuccess(tuple2* communitiesAfterDivision) {
-    divisionResults *result=memory(sizeof(divisionResults),1);
+    divisionResults *result=smemory(sizeof(divisionResults),1);
     result->errorNum=0;
     result->value=communitiesAfterDivision;
     return result;
@@ -178,7 +178,7 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
         if (BELONGS_TO_2ND_COMMUNITY(splitter[colIndex]) != isRowIn2ndGroup) {
              colLinkedList *nodeTodelete=currentCol->next;
             currentCol->next= currentCol->next->next;
-            free(nodeTodelete);
+            //free(nodeTodelete);
             currentCol=currentCol->next;
 
         } else {
@@ -204,9 +204,9 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     networkStatsSet community1NetworkStats = *communityToSplit.networkStat, community2NetworkStas = emptyNetworkstats();
     rowLinkedList *current1 = holder1.nextRow, *current2 = &holder2;
     rowLinkedList *newGraphsArr[2];
-    tuple2 *communityDescriptionArr=memory(sizeof(tuple2),1);
-    communityDescriptionArr->first=memory(sizeof(communityDescription), 1);
-    communityDescriptionArr->second=memory(sizeof(communityDescription), 1);
+    tuple2 *communityDescriptionArr=smemory(sizeof(tuple2),1);
+    communityDescriptionArr->first=smemory(sizeof(communityDescription), 1);
+    communityDescriptionArr->second=smemory(sizeof(communityDescription), 1);
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
     int shouldContinue=0;
@@ -244,10 +244,10 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
         }
     newGraphsArr[0] = holder1.nextRow;
     newGraphsArr[1] = holder2.nextRow;
-    communityDescriptionArr->first->networkStat=memory(sizeof(networkStatsSet),1);
+    communityDescriptionArr->first->networkStat=smemory(sizeof(networkStatsSet),1);
     memcpy(communityDescriptionArr->first->networkStat,&community1NetworkStats,sizeof(networkStatsSet));
     communityDescriptionArr->first->graph = newGraphsArr[0];
-    communityDescriptionArr->second->networkStat=memory(sizeof(networkStatsSet),1);
+    communityDescriptionArr->second->networkStat=smemory(sizeof(networkStatsSet),1);
     memcpy(communityDescriptionArr->second->networkStat,&community2NetworkStas,sizeof(networkStatsSet));
     communityDescriptionArr->second->graph = newGraphsArr[1];
     return communityDescriptionArr;

@@ -26,12 +26,12 @@ void releaseNetworkStat(networkStatsSet *networkStat) { free((*networkStat).vert
 
 networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
 
-    networkStatsSet* networkStat=memory(sizeof(networkStatsSet),1);
+    networkStatsSet* networkStat=smemory(sizeof(networkStatsSet),1);
     int verticesNum = getVertices(file);
     const int edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat->vertices = verticesNum;
     networkStat->edges = edgesNum;
-    networkStat->vertexDegreeArray = (int *) memory(networkStat->vertices , sizeof(int));
+    networkStat->vertexDegreeArray = (int *) smemory(networkStat->vertices , sizeof(int));
      networkStat->degreeSum=0; // only initing not setting
     return networkStat;
 

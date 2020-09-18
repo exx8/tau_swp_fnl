@@ -36,7 +36,7 @@ void deleteNextCol(colLinkedList* l){
 
 rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
-    rowLinkedList* returned=memory(sizeof(rowLinkedList),1);
+    rowLinkedList* returned=smemory(sizeof(rowLinkedList),1);
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;
@@ -48,7 +48,7 @@ rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* 
 
 colLinkedList* newColLinkedList(int index,colLinkedList* next)
 {
-    colLinkedList* returned=memory(sizeof(colLinkedList),1);
+    colLinkedList* returned=smemory(sizeof(colLinkedList),1);
     returned->colIndex=index;
     returned->next=next;
     return returned;
@@ -110,7 +110,7 @@ struct _communityDescription{
 
 communityDescription * newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
 {
-    communityDescription *returned=memory(sizeof(communityDescription),1);
+    communityDescription *returned=smemory(sizeof(communityDescription),1);
 
             returned->networkStat=ns;
             returned->graph=graph;

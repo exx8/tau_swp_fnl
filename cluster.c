@@ -63,7 +63,6 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 
     }
     returned=holder->nextRow;
-    free(holder);
     return returned;
 
 }
@@ -100,5 +99,7 @@ int main(int argc,char** argv) {
 
     communitiesList * divisionResults=readInputFile(argv[1]);
     output(divisionResults,argv[2]);
+    freeThemAll();
+
     return 0;
 }
