@@ -36,13 +36,14 @@ communitiesList *algo3(communityDescription* community) {
     while (groupP != NULL) {
         communitiesList *groupToDivide;
         divisionResults *algo2Results;
+        tuple2 *divisionResult;
         int firstGroupVerticesNum;
         int secondGroupVerticesNum;
 
         groupToDivide = groupP;
         algo2Results = divideGroup(groupToDivide);
         groupP = groupP->next;
-        tuple2 *divisionResult = algo2Results->value;
+        divisionResult = algo2Results->value;
         firstGroupVerticesNum = divisionResult->first->networkStat->vertices;
         secondGroupVerticesNum= divisionResult->second->networkStat->vertices;
 

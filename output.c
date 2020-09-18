@@ -14,6 +14,8 @@ char *where
 
 communitiesList *listHolder = list;
 int counter;
+FILE *file;
+communitiesList *writerList;
 counter= 0;
 while(listHolder!=NULL)
 {
@@ -22,12 +24,10 @@ listHolder = listHolder->next;
 }
 
 
-FILE *file;
 file = fopen(where, "w");
 makesurenot(file != NULL);
 writeInt(counter, file
 );
-communitiesList *writerList;
 writerList = list;
 while(writerList!=NULL)
 {

@@ -133,12 +133,13 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
 //Ag==A[g]
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     int shift;
-    volatile vectorLength;
+    volatile int vectorLength;
     double currentDiff;
     double *vec1, *vec2;
     int volatile i;
     int left;
     double bAb;
+    eigen returned;
 
     shift =norm1(Ag);
     srand(2);
@@ -147,7 +148,6 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     i = 0;
     vec1 = memory(sizeof(double), vectorLength);
     vec2 = memory(sizeof(double), vectorLength);
-    eigen returned;
     for (; i < vectorLength; i++) {
         vec1[i] = (double) rand();
         vec2[i] = (double) rand();
