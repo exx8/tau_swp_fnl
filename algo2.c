@@ -19,11 +19,9 @@ typedef struct _eigen{
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
-    double bilinearValue;
     int M;
     int rowIndex, colIndex;
     rowLinkedList *AgCurrent;
-    bilinearValue = 0;
     M = AgStat->degreeSum;
     AgCurrent = Ag;
 /* all matrices are symmetrical.*/
@@ -33,7 +31,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
         colLinkedList *AgCurrentCol;
         isRowExists = AgCurrent->rowIndex == rowIndex ? 1 : 0;
         sum = 0;
-        AgCurrent = AgCurrent->colList;
+        AgCurrentCol = AgCurrent->colList;
 
         for (colIndex = 0; colIndex < vectorLength; colIndex++) {
             double B_ij;
@@ -130,7 +128,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
 }
 
 
-//Ag==A[g]
+/*Ag==A[g]*/
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     int shift;
     volatile int vectorLength;
@@ -156,7 +154,6 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     left =5*AgStat->vertices;
     while (IS_POSITIVE(currentDiff)&&left>0) {
-        //@todo think about reflection cases
         double *swap1, *swap2;
         swap1 = vec1;
         swap2 = vec2;
@@ -203,10 +200,8 @@ void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList 
         int colIndex;
         colIndex = currentCol->next->colIndex;
         if (BELONGS_TO_2ND_COMMUNITY(splitter[colIndex]) != isRowIn2ndGroup) {
-            colLinkedList *nodeTodelete;
-            nodeTodelete =currentCol->next;
+
             currentCol->next= currentCol->next->next;
-            //free(nodeTodelete);
             currentCol=currentCol->next;
 
         } else {
@@ -245,7 +240,7 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     communityDescriptionArr->first=smemory(sizeof(communityDescription), 1);
     communityDescriptionArr->second=smemory(sizeof(communityDescription), 1);
     community1NetworkStats.edges = 0;
-    community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray; //they are in the same universe
+    community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray;
 
     shouldContinue = 0;
     spliterIndex=0;
@@ -257,7 +252,7 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
             colLinkedList colHolder, *currentCol;
             isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[spliterIndex]);
             currentCol= &colHolder;
-            colHolder.colIndex=-1; //@todo delete me
+            colHolder.colIndex=-1;
             colHolder.next = current1->colList;
 
         if (isRowIn2ndGroup) {
@@ -313,7 +308,6 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     if (division.value < 0) {
         return returnError(&returned, 1);
     }
-    //makeVectorDiscrete(division.vector, vectorLength);
     sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
     if (sBs < 0) {
         return returnError(&returned, 2);

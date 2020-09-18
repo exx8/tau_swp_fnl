@@ -25,9 +25,7 @@ void deleteNextRow(rowLinkedList* l){
 }
 
 void deleteNextCol(colLinkedList* l){
-    colLinkedList* lNext;
     l->next=l->next->next;
-    free(lNext);
 
 }
 

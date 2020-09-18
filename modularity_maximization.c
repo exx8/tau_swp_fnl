@@ -95,7 +95,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             nodeFinder = &holder1;
             for (k = 0; k < j_tag; k++)
                 nodeFinder = nodeFinder->nextRow;
-            //@todo improve me- make me more efficient
+            /*@todo improve me- make me more efficient*/
 
 
             i_tag = -1;
