@@ -5,35 +5,34 @@
 #include <sys/stat.h>
 #include <stdio.h>
 
-struct _colLinkedList {
+typedef struct _colLinkedList {
     int colIndex;
     struct _colLinkedList* next;
-} typedef colLinkedList;
-struct _rowLinkedList {
+}colLinkedList;
+typedef struct _rowLinkedList {
     int rowIndex;
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
     int side;
     int marked;
-} typedef rowLinkedList;
+}rowLinkedList;
+
 void deleteNextRow(rowLinkedList* l){
     rowLinkedList* lNext= l->nextRow;
     if(lNext!=NULL)
     l->nextRow=l->nextRow->nextRow;
     free(lNext);
-
 }
 
 void deleteNextCol(colLinkedList* l){
-    colLinkedList* lNext;
     l->next=l->next->next;
-    free(lNext);
 
 }
 
 rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* colList)
 {
-    rowLinkedList* returned=smemory(sizeof(rowLinkedList),1);
+    rowLinkedList* returned;
+    returned=smemory(sizeof(rowLinkedList),1);
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;
@@ -45,7 +44,8 @@ rowLinkedList* newRowLinkedList(int index,rowLinkedList* nextRow,colLinkedList* 
 
 colLinkedList* newColLinkedList(int index,colLinkedList* next)
 {
-    colLinkedList* returned=smemory(sizeof(colLinkedList),1);
+    colLinkedList* returned;
+    returned=smemory(sizeof(colLinkedList),1);
     returned->colIndex=index;
     returned->next=next;
     return returned;
@@ -68,23 +68,24 @@ void freeGraph(rowLinkedList* list)
     free(list);
 }
 
-struct _colLinkedListSparseMatrix {
+typedef struct _colLinkedListSparseMatrix {
     int colIndex;
     double value;
     struct _colLinkedListSparseMatrix* next;
-} typedef colLinkedListSparseMatrix;
+}colLinkedListSparseMatrix;
 
 /*shiftAmount indicates the maximum column sum which is added in the matrix shifting algorithm*/
-struct _rowLinkedListSparseMatrix {
+typedef struct _rowLinkedListSparseMatrix {
     int rowIndex;
     int shiftAmount;
     struct _rowLinkedListSparseMatrix* nextRow;
     struct _colLinkedListSparseMatrix* colList;
-} typedef rowLinkedListSparseMatrix;
+}rowLinkedListSparseMatrix;
 
 rowLinkedListSparseMatrix* newRowLinkedListSparseMatrix(int index,rowLinkedListSparseMatrix* nextRow,colLinkedListSparseMatrix* colList)
 {
-    rowLinkedListSparseMatrix * returned=memory(sizeof(rowLinkedListSparseMatrix),1);
+    rowLinkedListSparseMatrix * returned;
+    returned=memory(sizeof(rowLinkedListSparseMatrix),1);
     returned->rowIndex=index;
     returned->nextRow=nextRow;
     returned->colList=colList;
@@ -94,34 +95,31 @@ rowLinkedListSparseMatrix* newRowLinkedListSparseMatrix(int index,rowLinkedListS
 
 colLinkedListSparseMatrix* newColLinkedListSparseMatrix(int index,colLinkedListSparseMatrix* next)
 {
-    colLinkedListSparseMatrix* returned=memory(sizeof(colLinkedList),1);
+    colLinkedListSparseMatrix* returned;
+    returned=memory(sizeof(colLinkedList),1);
     returned->colIndex=index;
     returned->next=next;
     return returned;
 
 }
-struct _communityDescription{
+typedef struct _communityDescription{
     networkStatsSet* networkStat;
     rowLinkedList* graph;
-} typedef communityDescription;
+}communityDescription;
 
 communityDescription * newCommunityDescription(networkStatsSet *ns,rowLinkedList* graph)
 {
-    communityDescription *returned=smemory(sizeof(communityDescription),1);
+    communityDescription *returned;
+    returned=smemory(sizeof(communityDescription),1);
 
             returned->networkStat=ns;
             returned->graph=graph;
     return returned;
 }
-struct _communitiesList {
+typedef struct _communitiesList {
     communityDescription *communityInfo;
     struct _communitiesList* next;
-} typedef communitiesList;
-
-
-
-
-
+}communitiesList;
 
 
 void freeNested(communitiesList * d)
@@ -136,18 +134,19 @@ free(d->communityInfo);
 
 void freeCommunitiesList(communitiesList * d)
 {
-    int *vertexDegreeArray = d->communityInfo->networkStat->vertexDegreeArray;
+    int *vertexDegreeArray;
+    vertexDegreeArray = d->communityInfo->networkStat->vertexDegreeArray;
     free(vertexDegreeArray);
     freeNested(d->next);
     free(d);
 }
 
-struct _tuple2{
+typedef struct _tuple2{
     communityDescription* first;
     communityDescription* second;
-} typedef tuple2;
+}tuple2;
 
-struct _divisionResults{
+typedef struct _divisionResults{
     int errorNum; /*whereas 0 stands for no error*/
     tuple2 * value;
-} typedef divisionResults;
+}divisionResults;

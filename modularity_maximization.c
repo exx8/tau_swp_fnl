@@ -2,32 +2,45 @@
 #include "float.h"
 
 double
-billinearMultipicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
-                                     volatile int vectorLength, double *vec1);
+billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
+                                      volatile int vectorLength, double *vec1);
 
 void splitterDiscrete(double *splitter, int splitterLen) {
-    int i = 0;
+    int i;
+    i = 0;
     for (; i < splitterLen; i++)
         splitter[i] = splitter[i] ? 1 : -1;
 }
 
 void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *list, networkStatsSet *communityStat) {
-    int i = 0;
-    int k = 0, k2 = 0,k3=0;
+    int i;
+    int k, k2, k3;
     rowLinkedList holder1, unmovedHolder;
+    rowLinkedList *rowPointer;
+    rowLinkedList *unmovedcurrent;
+    double DeltaQ;
+    int n_g;
+    int *indices;
+    int *improve;
+
+    i=0;
+    k=0;
+    k2=0;
+    k3=0;
     holder1.nextRow = list;
     holder1.rowIndex = -1;
     unmovedHolder.rowIndex = -1;
     unmovedHolder.nextRow=NULL;
     splitterDiscrete(splitter, splitterLen);
 
-    rowLinkedList *rowPointer = holder1.nextRow;
-    rowLinkedList *unmovedcurrent = &unmovedHolder;
-    double DeltaQ = 1;
+    rowPointer= holder1.nextRow;
+    unmovedcurrent= &unmovedHolder;
+    DeltaQ = 1;
 
     while (IS_POSITIVE(DeltaQ)) {
         while (rowPointer != NULL)  {
-            int rowIndex = rowPointer->rowIndex;
+            int rowIndex;
+            rowIndex = rowPointer->rowIndex;
             rowPointer->side = splitter[k3];
             unmovedcurrent->nextRow = memory(sizeof(rowLinkedList), 1);
             unmovedcurrent->rowIndex=rowIndex;
@@ -35,23 +48,34 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             rowPointer=rowPointer->nextRow;
             k3++;
         }
-        int n_g = communityStat->vertices;
-        int *indices = memory(sizeof(double), n_g);
-        int *improve = memory(sizeof(double), n_g);
+        n_g = communityStat->vertices;
+        indices = memory(sizeof(double), n_g);
+        improve = memory(sizeof(double), n_g);
 
         for (; i < n_g; i++) {/*green*/
-            double *score = memory(sizeof(double), n_g);
+            double *score;
+            double q0;
+            rowLinkedList *unmovedPointer;
+            int splitterIndex;
+            int j_tag;
+            double maxModularity;
+            rowLinkedList *nodeFinder;
+            int i_tag;
+            double max_value;
 
-            double q0 = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
-            rowLinkedList *unmovedPointer = unmovedHolder.nextRow;
-            int splitterIndex = 0;
-            int j_tag = 0;
-            double maxModularity = -DBL_MAX;
+            score = memory(sizeof(double), n_g);
+            q0 = billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
+            unmovedPointer = unmovedHolder.nextRow;
+            splitterIndex = 0;
+            j_tag = 0;
+            maxModularity = -DBL_MAX;
             while (unmovedPointer != NULL) {/*purple*/
-                int rowIndex = unmovedPointer->rowIndex;
+                int rowIndex;
+                rowIndex = unmovedPointer->rowIndex;
                 splitter[splitterIndex] = -splitter[splitterIndex];
-                score[splitterIndex] = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
-                                                                            splitter) - q0;
+                score[splitterIndex] =
+                        billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
+                                                              splitter) - q0;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 if (score[splitterIndex] > maxModularity) {
                     maxModularity = score[splitterIndex];
@@ -68,14 +92,14 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             } else {
                 improve[i] = improve[i - 1] + score[j_tag];
             }
-            rowLinkedList *nodeFinder = &holder1;
+            nodeFinder = &holder1;
             for (k = 0; k < j_tag; k++)
                 nodeFinder = nodeFinder->nextRow;
-            //@todo improve me- make me more efficient
+            /*@todo improve me- make me more efficient*/
 
 
-            int i_tag = -1;
-            double max_value = -DBL_MAX;
+            i_tag = -1;
+            max_value = -DBL_MAX;
             for (k = 0; k < n_g; k++) {
                 if (improve[k] > max_value) {
                     i_tag = k;
@@ -83,7 +107,8 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                 }
             }
             for (k2 = n_g - 1; k2 > i_tag; k2--) {
-                int j = indices[k2];
+                int j;
+                j = indices[k2];
                 splitter[j] = -splitter[j];
             }
 

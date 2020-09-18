@@ -13,7 +13,10 @@ char *where
 {
 
 communitiesList *listHolder = list;
-int counter = 0;
+int counter;
+FILE *file;
+communitiesList *writerList;
+counter= 0;
 while(listHolder!=NULL)
 {
 counter++;
@@ -21,15 +24,16 @@ listHolder = listHolder->next;
 }
 
 
-FILE *file = fopen(where, "w");
+file = fopen(where, "w");
 makesurenot(file != NULL);
 writeInt(counter, file
 );
-communitiesList *writerList = list;
+writerList = list;
 while(writerList!=NULL)
 {
 if(writerList->communityInfo){
-rowLinkedList *indicesList = writerList->communityInfo->graph;
+rowLinkedList *indicesList;
+indicesList = writerList->communityInfo->graph;
 writeInt(writerList->communityInfo->networkStat->vertices,file);
 while(indicesList!=NULL)
 {
