@@ -1,7 +1,7 @@
 typedef struct _linkedList{
     void* address;
-    struct linkedList* next;
-} linkedList;
+    struct _linkedList* next;
+} linkedlist;
 
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -19,7 +19,7 @@ void makesurenot(int condition)
     if(!condition)
         error(5,"assert condition failed");
 }
-static linkedList* memoryList=NULL;
+static linkedlist* memoryList=NULL;
 void *memory(int sizeOfCell, size_t numberOfCell) {
     void *buffer;
     buffer = calloc(sizeOfCell, numberOfCell);
@@ -31,8 +31,8 @@ void *smemory(int sizeOfCell, size_t numberOfCell)
 {
     void* value;
     value=memory(sizeOfCell,numberOfCell);
-    linkedList* newNode;
-    newNode =memory(sizeof(linkedList), 1);
+    linkedlist* newNode;
+    newNode =memory(sizeof(linkedlist),1);
     newNode->next=memoryList;
     newNode->address=value;
     memoryList=newNode;
@@ -42,7 +42,7 @@ void freeThemAll()
 {
     while(memoryList!=NULL)
     {
-        struct linkedList *next;
+        linkedlist *next;
         next= memoryList->next;
         free(memoryList->address);
         free(memoryList);
