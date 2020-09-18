@@ -24,7 +24,7 @@ listHolder = listHolder->next;
 
 
 FILE *file = fopen(where, "w");
-makesure(file != NULL);
+makesurenot(file != NULL);
 writeInt(counter, file
 );
 communitiesList *writerList = list;

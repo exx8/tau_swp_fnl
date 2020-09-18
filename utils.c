@@ -16,15 +16,15 @@ void error(int errorID,char* errorReason)
     printf("Error:%s",errorReason);
     exit(errorID);
 }
-makesure(int condition)
+makesurenot(int condition)
 {
-    if(condition)
+    if(!condition)
         error(5,"assert condition failed");
 }
 static liknedList* memoryList=NULL;
 void *memory(int sizeOfCell, size_t numberOfCell) {
     void *buffer = calloc(sizeOfCell, numberOfCell);
-    makesure(buffer != NULL);
+    makesurenot(buffer != NULL);
     return buffer;
 
 }

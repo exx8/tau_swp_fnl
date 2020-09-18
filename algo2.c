@@ -20,7 +20,7 @@ struct _eigen{
 
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
-                         int vectorLength,shift) {
+                         int vectorLength,double shift) {
     //@todo check me!!!
     double bilinearValue = 0;
      int M = AgStat->degreeSum;
@@ -97,7 +97,7 @@ double diff( double *vec1,  double *vec2, int vectorLength) {
 double
 billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
                           volatile  int vectorLength,  double *vec1,  double *vec2) {
-    double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength);
+    double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
     double bAb = vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
     return bAb;
 }

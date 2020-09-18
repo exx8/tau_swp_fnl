@@ -17,13 +17,13 @@ int filesize(char *filePath) {
     const int status = stat(filePath, &details);
     if (status == 0)
         return details.st_size;
-    makesure(status != 0);
+    makesurenot(status != 0);
     return -1;
 }
 
 int readInt( FILE *file,  int *intPointer) {
     int numRead =fread(intPointer,intsize,1,file);
-    makesure(numRead==1);
+    makesurenot(numRead == 1);
 }
 
 
@@ -74,7 +74,7 @@ communitiesList*  readInputFile(char *filePath) {
     communitiesList* returned;
     const fileLengthInBytes = filesize(filePath);
     FILE *file = fopen(filePath, "r");
-    makesure(file!=NULL);
+    makesurenot(file != NULL);
     networkStatsSet* networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
