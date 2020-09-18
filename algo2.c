@@ -46,7 +46,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                 B_ij++;/*Add 1 exists*/
                 AgCurrentCol = AgCurrentCol->next;
             }
-            eigenVectorApproximationWrite[rowIndex] = (shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
+            sum+=(shift+eigenVectorApproximationRead[rowIndex ])* B_ij;
         }
 
         eigenVectorApproximationWrite[rowIndex] = sum;
@@ -171,7 +171,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
     dominator = vectorMultipication(vec2, vec2, vectorLength);
-    returned.value = bAb / dominator - shift;
+    returned.value = dominator!=0?(bAb / dominator ):0- shift;
     free(vec2);
     return returned;
 
