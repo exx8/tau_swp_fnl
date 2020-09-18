@@ -18,14 +18,14 @@ int filesize(char *filePath) {
     status = stat(filePath, &details);
     if (status == 0)
         return details.st_size;
-    makesurenot(status != 0);
+    makesure(status != 0);
     return -1;
 }
 
 int readInt( FILE *file,  int *intPointer) {
     int numRead;
     numRead = fread(intPointer,intsize,1,file);
-    makesurenot(numRead == 1);
+    makesure(numRead == 1);
     return numRead;
 }
 
@@ -88,7 +88,7 @@ communitiesList*  readInputFile(char *filePath) {
 
     fileLengthInBytes = filesize(filePath);
     file = fopen(filePath, "r");
-    makesurenot(file != NULL);
+    makesure(file != NULL);
     networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 

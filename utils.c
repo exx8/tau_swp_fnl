@@ -14,7 +14,7 @@ void error(int errorID,char* errorReason)
     printf("Error:%s",errorReason);
     exit(errorID);
 }
-void makesurenot(int condition)
+void makesure(int condition)
 {
     if(!condition)
         error(5,"assert condition failed");
@@ -23,7 +23,7 @@ static linkedlist* memoryList=NULL;
 void *memory(int sizeOfCell, size_t numberOfCell) {
     void *buffer;
     buffer = calloc(sizeOfCell, numberOfCell);
-    makesurenot(buffer != NULL);
+    makesure(buffer != NULL);
     return buffer;
 
 }

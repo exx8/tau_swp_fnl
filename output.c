@@ -25,7 +25,7 @@ listHolder = listHolder->next;
 
 
 file = fopen(where, "w");
-makesurenot(file != NULL);
+    makesure(file != NULL);
 writeInt(counter, file
 );
 writerList = list;
