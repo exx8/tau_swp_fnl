@@ -296,7 +296,7 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
 }
 
 divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
-    divisionResults returned;
+
     communityDescription currentCommunity;
     int vectorLength;
     eigen division;

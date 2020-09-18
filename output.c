@@ -6,46 +6,38 @@ void writeInt(int k, FILE *file) {
     fwrite(&k, sizeof(int), 1, file);
 }
 
-void output(communitiesList
-* list,
-char *where
-)
-{
+void output(communitiesList *list,char *where) {
 
-communitiesList *listHolder = list;
-int counter;
-FILE *file;
-communitiesList *writerList;
-counter= 0;
-while(listHolder!=NULL)
-{
-counter++;
-listHolder = listHolder->next;
-}
+    communitiesList *listHolder = list;
+    int counter;
+    FILE *file;
+    communitiesList *writerList;
+    counter = 0;
+    while (listHolder != NULL) {
+        counter++;
+        listHolder = listHolder->next;
+    }
 
 
-file = fopen(where, "w");
+    file = fopen(where, "wb");
     makesure(file != NULL);
-writeInt(counter, file
-);
-writerList = list;
-while(writerList!=NULL)
-{
-if(writerList->communityInfo){
-rowLinkedList *indicesList;
-indicesList = writerList->communityInfo->graph;
-writeInt(writerList->communityInfo->networkStat->vertices,file);
-while(indicesList!=NULL)
-{
-writeInt(indicesList->rowIndex,file);
-indicesList = indicesList->nextRow;
-}
+    writeInt(counter, file);
+    writerList = list;
+    while (writerList != NULL) {
+        if (writerList->communityInfo) {
+            rowLinkedList *indicesList;
+            indicesList = writerList->communityInfo->graph;
+            writeInt(writerList->communityInfo->networkStat->vertices, file);
+            while (indicesList != NULL) {
+                writeInt(indicesList->rowIndex, file);
+                indicesList = indicesList->nextRow;
+            }
 
-}
-writerList = writerList->next;
+        }
+        writerList = writerList->next;
 
-}
-fclose(file);
+    }
+    fclose(file);
 
 
 }

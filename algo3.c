@@ -27,7 +27,7 @@ communitiesList *algo3(communityDescription* community) {
 
     groupP = smemory(sizeof(communitiesList ), 1);
     groupP->next=NULL;
-    groupO=smemory(sizeof(communitiesList ), 1);
+    groupO=NULL;
     groupP->communityInfo = community;
 
     while (groupP != NULL) {
