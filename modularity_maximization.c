@@ -51,7 +51,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
                 int rowIndex = unmovedPointer->rowIndex;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 score[splitterIndex] = billinearMultipicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,
-                                                                            splitter);
+                                                                            splitter) - q0;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 if (score[splitterIndex] > maxModularity) {
                     maxModularity = score[splitterIndex];
