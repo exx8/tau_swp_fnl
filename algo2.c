@@ -130,6 +130,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
 
 /*Ag==A[g]*/
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
+    double dominator;
     int shift;
     volatile int vectorLength;
     double currentDiff;
@@ -137,6 +138,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     int volatile i;
     int left;
     double bAb;
+    double *swap1, *swap2;
+
     eigen returned;
 
     shift =norm1(Ag);
@@ -154,7 +157,6 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     left =5*AgStat->vertices;
     while (IS_POSITIVE(currentDiff)&&left>0) {
-        double *swap1, *swap2;
         swap1 = vec1;
         swap2 = vec2;
         vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,shift);
@@ -168,7 +170,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     returned.vector = vec1;
 
     bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
-    returned.value = bAb / vectorMultipication(vec2, vec2, vectorLength)-shift;
+    dominator = vectorMultipication(vec2, vec2, vectorLength);
+    returned.value = bAb / dominator - shift;
     free(vec2);
     return returned;
 
