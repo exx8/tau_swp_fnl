@@ -302,21 +302,28 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     eigen division;
     double sBs;
     tuple2 *communitiesAfterSplitting;
+    int isindivisible;
+    int k=0;
 
     vectorLength = AgStat->vertices;
     currentCommunity.networkStat = AgStat;
     currentCommunity.graph = Ag;
+    isindivisible=0;
 
     division = powerIterationOnB(Ag, AgStat);
     if (division.value < 0) {
-        return returnError(&returned, 1);
+       isindivisible=1;
     }
     sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
     if (sBs < 0) {
-        return returnError(&returned, 2);
+        isindivisible=1;
 
     }
-
+    if(isindivisible)
+    {
+        for(k=0;k<vectorLength;k++)
+            division.vector[k]=1;
+    }
     communitiesAfterSplitting = splitCommunities(currentCommunity, division.vector);
     free(division.vector);
 return returnSuccess(communitiesAfterSplitting);

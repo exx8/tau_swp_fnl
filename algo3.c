@@ -16,10 +16,7 @@ communitiesList * addNodeToBeginning(communityDescription *communityInfo, commun
 divisionResults *divideGroup(const communitiesList *groupToDivide) {
     divisionResults * algo2Results;
     algo2Results = algo2(groupToDivide->communityInfo->graph, (groupToDivide->communityInfo->networkStat));
-    if(algo2Results->errorNum!=0)
-    {
-        error(algo2Results->errorNum,"division failed");
-    }
+
     return algo2Results;
 }
 
