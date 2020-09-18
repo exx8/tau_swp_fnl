@@ -95,7 +95,7 @@ double
 billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
                           volatile  int vectorLength,  double *vec1,  double *vec2) {
     double *ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
-    double bAb = vectorMultipication(ab, vec2, vectorLength);// vector cross matrix cross vector
+    double bAb = vectorMultipication(ab, vec2, vectorLength);/* vector cross matrix cross vector*/
     return bAb;
 }
 
