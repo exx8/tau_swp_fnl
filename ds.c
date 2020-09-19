@@ -13,6 +13,7 @@ typedef struct _rowLinkedList {
     int rowIndex;
     struct _rowLinkedList* nextRow;
     struct _colLinkedList* colList;
+    int numOfCols;
     int side;
     int marked;
 }rowLinkedList;

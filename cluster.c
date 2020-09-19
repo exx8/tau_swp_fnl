@@ -50,6 +50,17 @@ colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
     }
     return  primary;
 }
+double countColLIst(colLinkedList* col)
+{
+    double counter;
+    counter=0;
+    while(col!=NULL)
+    {
+        counter++;
+    col=col->next;
+    }
+    return counter;
+}
 
 rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
 
@@ -69,6 +80,7 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
         current=current->nextRow;
         updateNetworkStat(networkStat, vertexIndex, verticesLeft);
         current->colList=copyVertexNeighbor(file, verticesLeft);
+        current->numOfCols=countColLIst(current->colList);
         edgeRowIndex++;
         vertexIndex++;
 

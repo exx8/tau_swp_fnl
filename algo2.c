@@ -16,44 +16,40 @@ typedef struct _eigen{
     double value;
 }eigen;
 
+double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns)
+{
+    double result;
+    colLinkedList *col;
+    double M=0;
+    result=0;
+    col=currentRow->colList;
+    M=ns->degreeSum;
+    while(col!=NULL)
+    {
+        result+=s[col->colIndex]
+        -(col->colIndex*currentRow->rowIndex)/M
+        -currentRow->numOfCols;
+        col=col->next;
+    }
+    return result;
+}
+
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
     int M;
     int rowIndex, colIndex;
     rowLinkedList *AgCurrent;
-    M = AgStat->degreeSum;
+    double* end;
     AgCurrent = Ag;
 /* all matrices are symmetrical.*/
-    for (rowIndex = 0; rowIndex < vectorLength; rowIndex++) {
-        bool isRowExists;
-        double sum;
-        colLinkedList *AgCurrentCol;
-        isRowExists = AgCurrent->rowIndex == rowIndex ? 1 : 0;
-        sum = 0;
-        AgCurrentCol = AgCurrent->colList;
-
-        for (colIndex = 0; colIndex < vectorLength; colIndex++) {
-            double B_ij;
-             bool isColExists, isCellExists;
-             B_ij  = 0;
-             isColExists = AgCurrentCol ? (AgCurrentCol->colIndex == colIndex ? 1 : 0) : 0;
-             isCellExists = isRowExists && isColExists;
-
-            B_ij -= ((double) AgStat->vertexDegreeArray[rowIndex] * AgStat->vertexDegreeArray[colIndex]) /
-                    M;
-            if (isCellExists) {
-                B_ij++;/*Add 1 exists*/
-                AgCurrentCol = AgCurrentCol->next;
-            }
-            sum+=(shift+eigenVectorApproximationRead[colIndex ])* B_ij;
-        }
-
-        eigenVectorApproximationWrite[rowIndex] = sum;
-        if (rowIndex == AgCurrent->rowIndex) {
-            AgCurrent = AgCurrent->nextRow;
-        }
+    memset(eigenVectorApproximationWrite,0,vectorLength);
+    while(AgCurrent!=NULL)
+    {
+        eigenVectorApproximationWrite[AgCurrent->rowIndex]=multipicationOfBofRow(Ag,eigenVectorApproximationRead,AgStat);
+        AgCurrent=AgCurrent->nextRow;
     }
+
 
 
     return eigenVectorApproximationWrite;
