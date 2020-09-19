@@ -274,7 +274,7 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     holder2.nextRow=NULL;
     holder1.rowIndex=-1;
     holder2.rowIndex=-1;
-    community1NetworkStats = *communityToSplit.networkStat;
+    community1NetworkStats = emptyNetworkstats();
     community2NetworkStas = emptyNetworkstats();
     current1= holder1.nextRow;
     current2 = &holder2;
@@ -291,33 +291,11 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
 
         while (current1&&current1->nextRow != NULL) {
-            int isRowIn2ndGroup;
-            colLinkedList colHolder, *currentCol;
-            isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[spliterIndex]);
-            currentCol= &colHolder;
-            colHolder.colIndex=-1;
-            colHolder.next = current1->colList;
+            if(splitter[current1->nextRow])
+            {
 
-        if (isRowIn2ndGroup) {
-            current2->nextRow = current1->nextRow;
-            current1->nextRow = current1->nextRow->nextRow;
-            current2 = current2->nextRow;
-            current2->nextRow = NULL;
-            community1NetworkStats.vertices--;
-            community2NetworkStas.vertices++;
+            }
 
-
-        }
-        else
-        {
-            shouldContinue=1;
-        }
-        /*deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);*/
-        current1->colList=currentCol->next;
-       /* community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
-        community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;*/
-        if(shouldContinue)
-            current1=current1->nextRow;
 
         spliterIndex++;
 
