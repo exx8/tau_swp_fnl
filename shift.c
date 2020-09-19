@@ -1,26 +1,35 @@
 
 #include "ds.h"
 #include "float.h"
-int counter(colLinkedList* col)
+double sum(colLinkedList* col, networkStatsSet* ns)
 {
-    int counter;
-    counter=0;
-    while(col!=NULL)
+    double sum;
+    int k;
+    sum=0;
+    for(k=0;k<ns->vertices;k++)
     {
-        counter++;
-        col=col->next;
+        int exists;
+        exists=0;
+        if(col&&col->colIndex==k)
+        {
+            exists=1;
+            col=col->next;
+        }
+        sum+=fabs(exists-(double)ns->vertexDegreeArray[k]*ns->vertexDegreeArray[k]/ns->degreeSum);
     }
-    return counter;
 
-}int norm1(rowLinkedList* rowLinkedList1)
+
+    return sum;
+
+}int norm1(rowLinkedList* rowLinkedList1,networkStatsSet* ns)
 {
     double maximum;
     maximum=-DBL_MAX;
     while(rowLinkedList1!=NULL)
     {
-        int numberOfNodes;
-        numberOfNodes=counter(rowLinkedList1->colList);
-        maximum=numberOfNodes>maximum?numberOfNodes:maximum;
+        double sumOfNodes;
+        sumOfNodes= sum(rowLinkedList1->colList, ns);
+        maximum= sumOfNodes > maximum ? sumOfNodes : maximum;
 
         rowLinkedList1=rowLinkedList1->nextRow;
     }

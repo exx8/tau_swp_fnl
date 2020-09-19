@@ -16,7 +16,7 @@ typedef struct _eigen{
     double value;
 }eigen;
 
-double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns)
+double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns,double shift)
 {
     double result;
     colLinkedList *col;
@@ -28,7 +28,8 @@ double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsS
     {
         result+=s[col->colIndex]
         -(col->colIndex*currentRow->rowIndex)/M
-        -currentRow->numOfCols;
+        -currentRow->numOfCols
+        +shift*s[col->colIndex];
         col=col->next;
     }
     return result;
@@ -43,7 +44,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
     memset(eigenVectorApproximationWrite,0,vectorLength);
     while(AgCurrent!=NULL)
     {
-        eigenVectorApproximationWrite[AgCurrent->rowIndex]=multipicationOfBofRow(Ag,eigenVectorApproximationRead,AgStat);
+        eigenVectorApproximationWrite[AgCurrent->rowIndex]=multipicationOfBofRow(Ag,eigenVectorApproximationRead,AgStat,shift);
         AgCurrent=AgCurrent->nextRow;
     }
 
@@ -135,7 +136,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     eigen returned;
 
-    shift =norm1(Ag);
+    shift =norm1(Ag,AgStat);
     srand(2);
     vectorLength = AgStat->vertices;
     currentDiff = 1;
