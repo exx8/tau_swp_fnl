@@ -97,7 +97,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             free(score);
 
         }
-        //*blue
+        /*blue*/
             i_tag = -1;
             max_value = -DBL_MAX;
             for (k = 0; k < n_g; k++) {

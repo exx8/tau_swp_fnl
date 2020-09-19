@@ -37,10 +37,7 @@ double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsS
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
-    int M;
-    int rowIndex, colIndex;
     rowLinkedList *AgCurrent;
-    double* end;
     AgCurrent = Ag;
 /* all matrices are symmetrical.*/
     memset(eigenVectorApproximationWrite,0,vectorLength);
@@ -146,12 +143,12 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     vec1 = memory(sizeof(double), vectorLength);
     vec2 = memory(sizeof(double), vectorLength);
     for (; i < vectorLength; i++) {
-        vec1[i] = (double) i;
-        vec2[i] = (double) i;
+        vec1[i] = (double) rand();
+        vec2[i] = (double) rand();
 
 
     }
-    left =5*AgStat->vertices;
+    left =500*AgStat->vertices;
     while (IS_POSITIVE(currentDiff)&&left>0) {
         swap1 = vec1;
         swap2 = vec2;
@@ -263,7 +260,6 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     rowLinkedList *originalList, *currentMinusGroup,*currentPlusGroup;
     rowLinkedList *newGraphsArr[2];
     tuple2 *communityDescriptionArr;
-    int shouldContinue;
     int spliterIndex;
 
     holderCurrentGroup.nextRow = communityToSplit.graph;
