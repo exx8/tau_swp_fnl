@@ -131,7 +131,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
 /*Ag==A[g]*/
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     double dominator;
-    int shift;
+    double shift;
     volatile int vectorLength;
     double currentDiff;
     double *vec1, *vec2;
@@ -150,8 +150,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     vec1 = memory(sizeof(double), vectorLength);
     vec2 = memory(sizeof(double), vectorLength);
     for (; i < vectorLength; i++) {
-        vec1[i] = (double) rand();
-        vec2[i] = (double) rand();
+        vec1[i] = (double) i;
+        vec2[i] = (double) i;
 
 
     }
@@ -285,51 +285,17 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     community1NetworkStats.edges = 0;
     community2NetworkStas.vertexDegreeArray = community1NetworkStats.vertexDegreeArray;
 
-    shouldContinue = 0;
-    spliterIndex=0;
-
-    modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
-
-        while (current1&&current1->nextRow != NULL) {
-            int isRowIn2ndGroup;
-            colLinkedList colHolder, *currentCol;
-            isRowIn2ndGroup = BELONGS_TO_2ND_COMMUNITY(splitter[spliterIndex]);
-            currentCol= &colHolder;
-            colHolder.colIndex=-1;
-            colHolder.next = current1->colList;
-
-        if (isRowIn2ndGroup) {
-            current2->nextRow = current1->nextRow;
-            current1->nextRow = current1->nextRow->nextRow;
-            current2 = current2->nextRow;
-            current2->nextRow = NULL;
-            community1NetworkStats.vertices--;
-            community2NetworkStas.vertices++;
-
-
-        }
-        else
-        {
-            shouldContinue=1;
-        }
-        /*deleteCrossRelation(splitter, isRowIn2ndGroup, currentCol, &community1NetworkStats, &community2NetworkStas);*/
-        current1->colList=currentCol->next;
-       /* community1NetworkStats.edges = community1NetworkStats.degreeSum / 2;
-        community2NetworkStas.edges = community2NetworkStas.degreeSum / 2;*/
-        if(shouldContinue)
-            current1=current1->nextRow;
-
-        spliterIndex++;
-
-        }
-
-        cleanFromCrossEdges(holder1.nextRow,&community1NetworkStats);
-        cleanFromCrossEdges(holder2.nextRow,&community2NetworkStas);
 
 
 
-    newGraphsArr[0] = holder1.nextRow;
-    newGraphsArr[1] = holder2.nextRow;
+
+        cleanFromCrossEdges(holderCurrentGroup.nextRow, &community1NetworkStats);
+        cleanFromCrossEdges(holderMinusGroup.nextRow, &community2NetworkStas);
+
+
+
+    newGraphsArr[0] = holderCurrentGroup.nextRow;
+    newGraphsArr[1] = holderMinusGroup.nextRow;
     communityDescriptionArr->first->networkStat=smemory(sizeof(networkStatsSet),1);
     memcpy(communityDescriptionArr->first->networkStat,&community1NetworkStats,sizeof(networkStatsSet));
     communityDescriptionArr->first->graph = newGraphsArr[0];
