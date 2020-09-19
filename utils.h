@@ -6,3 +6,9 @@
 #define TAU_SWP_FNL_UTILS_H
 #include "utils.c"
 #endif /*TAU_SWP_FNL_UTILS_H*/
+
+/*
+ *
+ *
+ * General utils for the project
+ */

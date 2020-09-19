@@ -5,3 +5,8 @@
 #include "modularity_maximization.c"
 
 #endif
+/*
+ *
+ *
+ * This file implements Modularity Maximization
+ */

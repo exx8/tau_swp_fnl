@@ -4,7 +4,6 @@
 
 void writeInt(int k, FILE *file) {
     fwrite(&k, sizeof(int), 1, file);
-    printf("%d",k);
 }
 
 void output(communitiesList *list,char *where) {
