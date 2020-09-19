@@ -159,7 +159,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     while (IS_POSITIVE(currentDiff)&&left>0) {
         swap1 = vec1;
         swap2 = vec2;
-        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,shift);
+        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
         normalizeVector(vec2, vectorLength);
         vec1 = swap2;
         vec2 = swap1;
@@ -262,22 +262,45 @@ return clearedList->next;
 }
 
 tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter) {
-    rowLinkedList holder1, holder2;
+    rowLinkedList holderCurrentGroup, holderMinusGroup,holderPlusGroup;
     networkStatsSet community1NetworkStats, community2NetworkStas;
-    rowLinkedList *current1, *current2;
+    rowLinkedList *originalList, *currentMinusGroup,*currentPlusGroup;
     rowLinkedList *newGraphsArr[2];
     tuple2 *communityDescriptionArr;
     int shouldContinue;
     int spliterIndex;
 
-    holder1.nextRow = communityToSplit.graph;
-    holder2.nextRow=NULL;
-    holder1.rowIndex=-1;
-    holder2.rowIndex=-1;
-    community1NetworkStats = *communityToSplit.networkStat;
+    holderCurrentGroup.nextRow = communityToSplit.graph;
+    holderMinusGroup.nextRow=NULL;
+    holderCurrentGroup.rowIndex=-1;
+    holderMinusGroup.rowIndex=-1;
+    holderPlusGroup.rowIndex=-1;
+    currentMinusGroup=&holderMinusGroup;
+    currentPlusGroup=&holderPlusGroup;
+    originalList= communityToSplit.graph;
+    spliterIndex=0;
+
+    community1NetworkStats = emptyNetworkstats();
     community2NetworkStas = emptyNetworkstats();
-    current1= holder1.nextRow;
-    current2 = &holder2;
+    modularity_maximization( splitter, communityToSplit.networkStat->vertices, communityToSplit.graph, communityToSplit.networkStat);
+
+    while(originalList!=NULL)
+    {
+        if(splitter[spliterIndex]==1)
+        {
+            currentPlusGroup->nextRow=originalList;
+            currentPlusGroup=currentPlusGroup->nextRow;
+            originalList=originalList->nextRow;
+            currentPlusGroup->nextRow=NULL;
+        }
+        else
+        {
+            currentMinusGroup->nextRow=originalList;
+            currentMinusGroup=currentMinusGroup->nextRow;
+            originalList=originalList->nextRow;
+            currentMinusGroup->nextRow=NULL;
+        }
+    }
 
     communityDescriptionArr=smemory(sizeof(tuple2),1);
     communityDescriptionArr->first=smemory(sizeof(communityDescription), 1);
