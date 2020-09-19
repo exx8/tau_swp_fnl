@@ -9,7 +9,10 @@ void splitterDiscrete(double *splitter, int splitterLen) {
     int i;
     i = 0;
     for (; i < splitterLen; i++)
-        splitter[i] = splitter[i] ? 1 : -1;
+       if(splitter[i]>=0)
+           splitter[i]=1;
+       else
+           splitter[i]=-1;
 }
 
 void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *list, networkStatsSet *communityStat) {
