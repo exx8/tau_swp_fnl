@@ -88,7 +88,7 @@ void normalizeVector(double *vec, int vecLength) {
     i = 0;
     if (vecNorm != 0)
         for (; i < vecLength; i++)
-            vec[i] /= vecNorm;
+            vec[i] =vec[i]/ vecNorm;
 }
 
 double diff( double *vec1,  double *vec2, int vectorLength) {
@@ -104,8 +104,9 @@ double diff( double *vec1,  double *vec2, int vectorLength) {
 }
 
 double
-billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
-                          volatile  int vectorLength,  double *vec1,  double *vec2) {
+billinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength, double *vec1,
+                          double *vec2, double shift) {
+
     double *ab;
     double bAb;
     ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
@@ -114,13 +115,13 @@ billinearMultipicationOfB( rowLinkedList *Ag,  networkStatsSet *AgStat,
 }
 
 double
-billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
-                                      volatile  int vectorLength, double *vec1) {
+billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength,
+                                      double *vec1, double shift) {
     double *vec2;
     double returned;
     vec2 = memory(sizeof(double), vectorLength);
     returned = billinearMultipicationOfB(Ag, AgStat,
-                                                vectorLength, vec1, vec2);
+                                         vectorLength, vec1, vec2, 0);
     free(vec2);
     return returned;
 
@@ -158,7 +159,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     while (IS_POSITIVE(currentDiff)&&left>0) {
         swap1 = vec1;
         swap2 = vec2;
-        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
+
+        vec2 = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,shift);
         normalizeVector(vec2, vectorLength);
         vec1 = swap2;
         vec2 = swap1;
@@ -168,10 +170,10 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     returned.vector = vec1;
 
-    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
+    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, 0);
     dominator = vectorMultipication(vec2, vec2, vectorLength);
     returned.value = dominator!=0?(bAb / dominator ):0;
-    returned.value-=shift;
+    returned.value;
     free(vec2);
     return returned;
 
@@ -348,7 +350,7 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     if (division.value < 0) {
        isindivisible=1;
     }
-    sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector);
+    sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector, 0);
     if (sBs < 0) {
         isindivisible=1;
 

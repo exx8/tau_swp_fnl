@@ -1,9 +1,9 @@
 #include "algo2.h"
 #include "float.h"
-
+#include "shift.h"
 double
-billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat,
-                                      volatile int vectorLength, double *vec1);
+billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength,
+                                      double *vec1, double shift);
 
 void splitterDiscrete(double *splitter, int splitterLen) {
     int i;
@@ -24,6 +24,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
     double *improve;
     int i_tag;
     double max_value;
+    double shift;
 
     i=0;
     k=0;
@@ -34,11 +35,10 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
     unmovedHolder.rowIndex = -1;
     unmovedHolder.nextRow=NULL;
     splitterDiscrete(splitter, splitterLen);
-
     rowPointer= holder1.nextRow;
     unmovedcurrent= &unmovedHolder;
     DeltaQ = 1;
-
+    shift=norm1(list,communityStat);
     while (IS_POSITIVE(DeltaQ)) {
         while (rowPointer != NULL)  {
             int rowIndex;
@@ -65,7 +65,7 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
 
 
             score = memory(sizeof(double), n_g);
-            q0 = billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter);
+            q0 = billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter, shift);
             unmovedPointer = unmovedHolder.nextRow;
             splitterIndex = 0;
             j_tag = 0;
@@ -73,7 +73,8 @@ void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *l
             while (unmovedPointer != NULL) {/*purple*/
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 score[splitterIndex] =
-                        billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen,splitter) - q0;
+                        billinearMultiplicationOfBUnoptimized(holder1.nextRow, communityStat, splitterLen, splitter,
+                                                              0) - q0;
                 splitter[splitterIndex] = -splitter[splitterIndex];
                 if (score[splitterIndex] > maxModularity) {
                     maxModularity = score[splitterIndex];
