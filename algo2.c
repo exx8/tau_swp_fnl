@@ -172,7 +172,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     returned.vector = vec1;
 
-    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, 0);
+    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, shift);
     dominator = vectorMultipication(vec2, vec2, vectorLength);
     returned.value = dominator!=0?(bAb / dominator ):0;
     returned.value-=shift;
@@ -265,14 +265,39 @@ colLinkedList* cleanFromCrossEdges(rowLinkedList* list,networkStatsSet* ns)
 return clearedList->next;
 }
 
+void filterColumn(rowLinkedList *comparator, colLinkedList *listToFilter) {
+    while(listToFilter->next != NULL && listToFilter != NULL)
+    {
+        if(listToFilter->next->colIndex<comparator->rowIndex)
+        {
+            listToFilter->next=listToFilter->next->next;
+        }
+        else
+            if(listToFilter->next->colIndex==comparator->rowIndex)
+            {
+                listToFilter=listToFilter->next;
+                comparator=comparator->nextRow;
+            }
+            else
+            {
+                comparator=comparator->nextRow;
+            }
+
+    }
+}
+
 tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holderCurrentGroup, holderMinusGroup,holderPlusGroup;
     networkStatsSet community1NetworkStats, community2NetworkStas;
     rowLinkedList *originalList, *currentMinusGroup,*currentPlusGroup;
     rowLinkedList *newGraphsArr[2];
     tuple2 *communityDescriptionArr;
+    rowLinkedList* comparator;
     int spliterIndex;
+    colLinkedList * listToFilter=smemory(sizeof(colLinkedList),1);
+    colLinkedList * listToFilterHolder;
 
+    listToFilter->colIndex=-1;
     holderCurrentGroup.nextRow = communityToSplit.graph;
     holderMinusGroup.nextRow=NULL;
     holderCurrentGroup.rowIndex=-1;
@@ -303,6 +328,22 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
             originalList=originalList->nextRow;
             currentMinusGroup->nextRow=NULL;
         }
+    }
+
+    currentPlusGroup=holderPlusGroup.nextRow;
+    currentMinusGroup=holderMinusGroup.nextRow;
+
+    if(currentPlusGroup){
+        listToFilter->next=currentPlusGroup->colList;
+        listToFilterHolder=listToFilter;
+        comparator=currentPlusGroup;
+        filterColumn(comparator, listToFilter);
+    }
+    if(currentMinusGroup){
+        listToFilter->next=currentMinusGroup->colList;
+        listToFilterHolder=listToFilter;
+        comparator=currentMinusGroup;
+        filterColumn(comparator, listToFilter);
     }
 
     communityDescriptionArr=smemory(sizeof(tuple2),1);
