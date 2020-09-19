@@ -16,13 +16,15 @@ typedef struct _eigen{
     double value;
 }eigen;
 
+
 double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns,double shift,int vectorLength)
 {
     double result;
     colLinkedList *col;
     double M=0;
-    result=0;
     int k;
+
+    result=0;
     col=currentRow->colList;
     M=ns->degreeSum;
     while(col!=NULL)
@@ -109,7 +111,7 @@ billinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, volatile i
 
     double *ab;
     double bAb;
-    ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,0);
+    ab = multipicationOfB(Ag, AgStat, vec1, vec2, vectorLength,shift);
     bAb = vectorMultipication(ab, vec1, vectorLength);/* vector cross matrix cross vector*/
     return bAb;
 }
@@ -121,7 +123,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
     double returned;
     vec2 = memory(sizeof(double), vectorLength);
     returned = billinearMultipicationOfB(Ag, AgStat,
-                                         vectorLength, vec1, vec2, 0);
+                                         vectorLength, vec1, vec2, shift);
     free(vec2);
     return returned;
 
@@ -173,7 +175,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, 0);
     dominator = vectorMultipication(vec2, vec2, vectorLength);
     returned.value = dominator!=0?(bAb / dominator ):0;
-    returned.value;
+    returned.value-=shift;
     free(vec2);
     return returned;
 

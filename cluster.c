@@ -121,8 +121,6 @@ int getVertices( FILE *file) {
 
 
 int main(int argc,char** argv) {
-    double *arr=smemory(sizeof(int),5);
-    arr[0]=1;arr[1]=1;arr[2]=1;arr[3]=1;arr[4]=1;
     communitiesList * divisionResults;
     if(argc!=3)
     {
