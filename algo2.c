@@ -16,21 +16,26 @@ typedef struct _eigen{
     double value;
 }eigen;
 
-double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns,double shift)
+double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns,double shift,int vectorLength)
 {
     double result;
     colLinkedList *col;
     double M=0;
     result=0;
+    int k;
     col=currentRow->colList;
     M=ns->degreeSum;
     while(col!=NULL)
     {
         result+=s[col->colIndex]
-        -(col->colIndex*currentRow->rowIndex)/M
-        -currentRow->numOfCols
+       -currentRow->numOfCols*s[col->colIndex]
         +shift*s[col->colIndex];
         col=col->next;
+    }
+    col=currentRow->colList;
+
+    for(k=0;k<vectorLength;k++) {
+        result -= s[k] * (ns->vertexDegreeArray[k] * ns->vertexDegreeArray[currentRow->rowIndex]) / M;
     }
     return result;
 }
@@ -44,7 +49,7 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
     memset(eigenVectorApproximationWrite,0,vectorLength);
     while(AgCurrent!=NULL)
     {
-        eigenVectorApproximationWrite[AgCurrent->rowIndex]=multipicationOfBofRow(Ag,eigenVectorApproximationRead,AgStat,shift);
+        eigenVectorApproximationWrite[AgCurrent->rowIndex]=multipicationOfBofRow(AgCurrent,eigenVectorApproximationRead,AgStat,shift,vectorLength);
         AgCurrent=AgCurrent->nextRow;
     }
 
@@ -165,7 +170,8 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2);
     dominator = vectorMultipication(vec2, vec2, vectorLength);
-    returned.value = dominator!=0?(bAb / dominator ):0- shift;
+    returned.value = dominator!=0?(bAb / dominator ):0;
+    returned.value-=shift;
     free(vec2);
     return returned;
 

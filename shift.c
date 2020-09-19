@@ -21,7 +21,7 @@ double sum(colLinkedList* col, networkStatsSet* ns)
 
     return sum;
 
-}int norm1(rowLinkedList* rowLinkedList1,networkStatsSet* ns)
+}double norm1(rowLinkedList* rowLinkedList1,networkStatsSet* ns)
 {
     double maximum;
     maximum=-DBL_MAX;
