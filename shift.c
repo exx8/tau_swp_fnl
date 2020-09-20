@@ -1,7 +1,7 @@
 
 #include "ds.h"
 #include "float.h"
-double sum(colLinkedList* col, networkStatsSet* ns)
+double sum(colLinkedList* col, networkStatsSet* ns,int rowIndex)
 {
     double sum;
     int k;
@@ -15,7 +15,7 @@ double sum(colLinkedList* col, networkStatsSet* ns)
             exists=1;
             col=col->next;
         }
-        sum+=fabs(exists-(double)ns->vertexDegreeArray[k]*ns->vertexDegreeArray[col->colIndex]/ns->degreeSum);
+        sum+=fabs(exists-(double)ns->vertexDegreeArray[k]*ns->vertexDegreeArray[rowIndex]/ns->degreeSum);
     }
 
 
@@ -28,7 +28,7 @@ double sum(colLinkedList* col, networkStatsSet* ns)
     while(rowLinkedList1!=NULL)
     {
         double sumOfNodes;
-        sumOfNodes= sum(rowLinkedList1->colList, ns);
+        sumOfNodes= sum(rowLinkedList1->colList, ns,rowLinkedList1->rowIndex);
         maximum= sumOfNodes > maximum ? sumOfNodes : maximum;
 
         rowLinkedList1=rowLinkedList1->nextRow;
