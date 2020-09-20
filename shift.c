@@ -1,6 +1,13 @@
 
 #include "ds.h"
 #include "float.h"
+/**
+ * sums B cols (or rows)
+ * @param col a  column to be summed
+ * @param ns B's networkstats
+ * @param rowIndex the row index of the row we sum
+ * @return
+ */
 double sum(colLinkedList* col, networkStatsSet* ns,int rowIndex)
 {
     double sum;
@@ -20,7 +27,9 @@ double sum(colLinkedList* col, networkStatsSet* ns,int rowIndex)
 
 
     return sum;
-
+/**
+ * returns the norm1 of a linkedlist of a row.
+ */
 }double norm1(rowLinkedList* rowLinkedList1,networkStatsSet* ns)
 {
     double maximum;
