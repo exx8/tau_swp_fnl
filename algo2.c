@@ -180,7 +180,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     eigen returned;
 
     shift =norm1(Ag,AgStat);
-    srand(2);
+    srand(time(NULL));
     vectorLength = AgStat->vertices;
     currentDiff = 1;
     i = 0;

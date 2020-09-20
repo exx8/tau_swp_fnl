@@ -1,6 +1,5 @@
 FLAGS = -ansi -Wall -Wextra -Werror -pedantic-errors
 LIBS = -lm
-
 all: cluster
 clean:
 	rm -rf *.o cluster

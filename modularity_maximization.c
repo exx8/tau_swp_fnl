@@ -5,6 +5,11 @@ double
 billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength,
                                       double *vec1, double shift);
 
+/**
+ * given a double array convert it to a discrete version
+ * @param splitter array of a  double type
+ * @param splitterLen the length of the array
+ */
 void splitterDiscrete(double *splitter, int splitterLen) {
     int i;
     i = 0;
@@ -14,7 +19,13 @@ void splitterDiscrete(double *splitter, int splitterLen) {
        else
            splitter[i]=-1;
 }
-
+/**
+ * implements modularity maximization
+ * @param splitter the array to split accordingly
+ * @param splitterLen the length of the split array
+ * @param list of rows  
+ * @param communityStat
+ */
 void modularity_maximization(double *splitter, int splitterLen, rowLinkedList *list, networkStatsSet *communityStat) {
     int i;
     int k, k2, k3;
