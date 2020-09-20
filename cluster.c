@@ -131,7 +131,7 @@ communitiesList*  getACluster(char *filePath) {
     makesure(file != NULL,8,"couldn't open file. Has it been opened with a different process?");
     networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
-
+    makesure(graphData!=NULL,10,"found no vertex, therefore I quit.");
     firstCommunity = newCommunityDescription(networkStat, graphData);
     returned=algo3(firstCommunity);
     fclose(file);
