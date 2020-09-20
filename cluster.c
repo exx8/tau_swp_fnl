@@ -113,6 +113,13 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
     return returned;
 
 }
+
+void checkValidity(const networkStatsSet ns) {
+    makesure(ns.vertices!=0, 10, "found no vertex, therefore I quit.");
+    makesure(ns.edges!=0, 11, "found no edges, therefore I quit.");
+
+}
+
 /**
  * given a binary file returns a cluster. the most important function in the program
  * @param filePath a file path
@@ -131,7 +138,7 @@ communitiesList*  getACluster(char *filePath) {
     makesure(file != NULL,8,"couldn't open file. Has it been opened with a different process?");
     networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
-    makesure(graphData!=NULL,10,"found no vertex, therefore I quit.");
+    checkValidity(networkStat);
     firstCommunity = newCommunityDescription(networkStat, graphData);
     returned=algo3(firstCommunity);
     fclose(file);
