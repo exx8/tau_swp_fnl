@@ -14,16 +14,16 @@ void error(int errorID,char* errorReason)
     printf("Error:%s",errorReason);
     exit(errorID);
 }
-void makesure(int condition)
+void makesure(int condition,int errorID,char* str)
 {
     if(!condition)
-        error(5,"assert condition failed");
+        error(5,str);
 }
 static linkedlist* memoryList=NULL;
 void *memory(int sizeOfCell, size_t numberOfCell) {
     void *buffer;
     buffer = calloc(sizeOfCell, numberOfCell);
-    makesure(buffer != NULL);
+    makesure(buffer != NULL,5,"couldn't allocate memory");
     return buffer;
 
 }

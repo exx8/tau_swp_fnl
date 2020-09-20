@@ -20,7 +20,7 @@ void output(communitiesList *list,char *where) {
 
 
     file = fopen(where, "wb");
-    makesure(file != NULL);
+    makesure(file != NULL,9,"couldn't write to file. has it being used by a different process?");
     writeInt(counter, file);
     writerList = list;
     while (writerList != NULL) {

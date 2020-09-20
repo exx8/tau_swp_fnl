@@ -142,7 +142,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
     double returned;
     vec2 = memory(sizeof(double), vectorLength);
     returned = billinearMultipicationOfB(Ag, AgStat,
-                                         vectorLength, vec1, vec2, shift);
+                                         vectorLength, vec1, vec2, 0);
     free(vec2);
     return returned;
 

@@ -18,14 +18,14 @@ int filesize(char *filePath) {
     status = stat(filePath, &details);
     if (status == 0)
         return details.st_size;
-    makesure(status != 0);
+    makesure(status != 0,6,"couldn't read file stats");
     return -1;
 }
 
 int readInt( FILE *file,  int *intPointer) {
     int numRead;
     numRead = fread(intPointer,intsize,1,file);
-    makesure(numRead == 1);
+    makesure(numRead == 1,7,"expected to read a number. no number was found.");
     return numRead;
 }
 
@@ -100,7 +100,7 @@ communitiesList*  readInputFile(char *filePath) {
 
     fileLengthInBytes = filesize(filePath);
     file = fopen(filePath, "r");
-    makesure(file != NULL);
+    makesure(file != NULL,8,"couldn't open file. Has it been opened with a different process?");
     networkStat = getNetworkStats(file, fileLengthInBytes);
     graphData=loadAdjacencyMatrixDataStructures(file, networkStat);
 
