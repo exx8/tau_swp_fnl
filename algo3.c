@@ -4,7 +4,12 @@
 #include "time.h"
 #include "algo2.h"
 
-
+/**
+ * add a node to the end of a list
+ * @param communityInfo a community to be added in the end
+ * @param list list of existing communities that gets such addition
+ * @return the list with its addition
+ */
 communitiesList * addNodeToBeginning(communityDescription *communityInfo, communitiesList *list) {
     communitiesList *newGroup;
     newGroup =smemory(sizeof(communitiesList),1);
@@ -12,7 +17,11 @@ communitiesList * addNodeToBeginning(communityDescription *communityInfo, commun
     newGroup->next = list;
     return newGroup;
 }
-
+/**
+ * divides a group
+ * @param groupToDivide
+ * @return
+ */
 divisionResults *divideGroup(const communitiesList *groupToDivide) {
     divisionResults * algo2Results;
     algo2Results = algo2(groupToDivide->communityInfo->graph, (groupToDivide->communityInfo->networkStat));
@@ -20,6 +29,11 @@ divisionResults *divideGroup(const communitiesList *groupToDivide) {
     return algo2Results;
 }
 
+/**
+ * implements algorithm 3
+ * @param community a community to be split in to clusters
+ * @return a cluster- list of communities
+ */
 communitiesList *algo3(communityDescription* community) {
 
     communitiesList *groupP;

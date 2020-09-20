@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include "utils.h"
-int getVertices( FILE *file);
+int getVerticesNum(FILE *file);
 
 typedef struct _networkStats {
     int vertices;
@@ -27,7 +27,7 @@ networkStatsSet* getNetworkStats(FILE *file, int fileLengthInBytes) {
     int verticesNum;
     int edgesNum;
     networkStat=smemory(sizeof(networkStatsSet),1);
-    verticesNum= getVertices(file);
+    verticesNum= getVerticesNum(file);
     edgesNum = ((fileLengthInBytes)/4-verticesNum-1)/2;
     networkStat->vertices = verticesNum;
     networkStat->edges = edgesNum;

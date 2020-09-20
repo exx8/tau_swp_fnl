@@ -9,7 +9,11 @@
 #include "output.h"
 #define intsize 4
 
-
+/**
+ * get a file's size
+ * @param filePath
+ * @return the size in bits.
+ */
 
 int filesize(char *filePath) {
     struct stat details;
@@ -21,7 +25,12 @@ int filesize(char *filePath) {
     makesure(status != 0,6,"couldn't read file stats");
     return -1;
 }
-
+/**
+ * reads a single bit
+ * @param file a file pointer
+ * @param intPointer the pointer to write into.
+ * @return 1 always.
+ */
 int readInt( FILE *file,  int *intPointer) {
     int numRead;
     numRead = fread(intPointer,intsize,1,file);
@@ -29,7 +38,12 @@ int readInt( FILE *file,  int *intPointer) {
     return numRead;
 }
 
-
+/**
+ * builds a graph's vertex col list
+ * @param file - file to read
+ * @param verticesLeft - how much vertices there are to read from file
+ * @return collinkedlist of the read ones.
+ */
 colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
     int edgeNeighborIndex;
     colLinkedList* primary;
@@ -50,6 +64,11 @@ colLinkedList* copyVertexNeighbor(FILE *file, int verticesLeft) {
     }
     return  primary;
 }
+/**
+ * dount the number of cols in a row
+ * @param col collinkedlist
+ * @return the number of edges in the set.
+ */
 double countColLIst(colLinkedList* col)
 {
     double counter;
@@ -61,7 +80,12 @@ double countColLIst(colLinkedList* col)
     }
     return counter;
 }
-
+/**
+ * given a binary file loads the main ds that describes a graph
+ * @param file- a file pointer
+ * @param networkStat - stats of the network
+ * @return a matrix represented by its first row
+ */
 rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *networkStat) {
 
     int vertexIndex;
@@ -89,8 +113,12 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
     return returned;
 
 }
-
-communitiesList*  readInputFile(char *filePath) {
+/**
+ * given a binary file returns a cluster. the most important function in the program
+ * @param filePath a file path
+ * @return a cluster.
+ */
+communitiesList*  getACluster(char *filePath) {
     rowLinkedList* graphData;
     communitiesList* returned;
     int fileLengthInBytes;
@@ -110,15 +138,24 @@ communitiesList*  readInputFile(char *filePath) {
     return returned;
 }
 
-
-int getVertices( FILE *file) {
+/**
+ * given a file returns the number of vertices
+ * @param file
+ * @return
+ */
+int getVerticesNum(FILE *file) {
     int verticesNum;
     verticesNum = 0;
     readInt(file, &verticesNum);
     return verticesNum;
 }
 
-
+/**
+ * main function
+ * @param argc must be 3: the program path, input and output otherwise stops
+ * @param argv a one dimension array
+ * @return 0 if succeed, or a positive error id on failure
+ */
 
 int main(int argc,char** argv) {
     communitiesList * divisionResults;
@@ -126,7 +163,7 @@ int main(int argc,char** argv) {
     {
         error(3,"too few argument");
     }
-    divisionResults=readInputFile(argv[1]);
+    divisionResults= getACluster(argv[1]);
     output(divisionResults,argv[2]);
     freeThemAll();
 
