@@ -114,9 +114,9 @@ rowLinkedList* loadAdjacencyMatrixDataStructures(FILE *file, networkStatsSet *ne
 
 }
 
-void checkValidity(const networkStatsSet ns) {
-    makesure(ns.vertices!=0, 10, "found no vertex, therefore I quit.");
-    makesure(ns.edges!=0, 11, "found no edges, therefore I quit.");
+void checkValidity(const  networkStatsSet* ns) {
+    makesure(ns->vertices!=0, 10, "found no vertex, therefore I quit.");
+    makesure(ns->edges!=0, 11, "found no edges, therefore I quit.");
 
 }
 
