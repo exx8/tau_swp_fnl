@@ -391,7 +391,7 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     isindivisible=0;
     shift=norm1(Ag,AgStat);
     division = powerIterationOnB(Ag, AgStat);
-    if (division.value < 0) {
+    if (billinearMultiplicationOfBUnoptimized(Ag,AgStat,vectorLength,division.vector,shift) < 0) {
        isindivisible=1;
     }
     sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector, shift);
