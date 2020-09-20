@@ -6,5 +6,5 @@
 
 /*
  *
- * ths fle implements the shift function on the matrix and the norm1
+ * this file implements the shift function on the matrix and the norm1
  */
