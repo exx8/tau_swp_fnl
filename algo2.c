@@ -142,7 +142,7 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
     double returned;
     vec2 = memory(sizeof(double), vectorLength);
     returned = billinearMultipicationOfB(Ag, AgStat,
-                                         vectorLength, vec1, vec2, 0);
+                                         vectorLength, vec1, vec2, shift);
     free(vec2);
     return returned;
 
@@ -169,14 +169,12 @@ double eigenValue(rowLinkedList *Ag, networkStatsSet *AgStat,
  */
 /*Ag==A[g]*/
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
-    double dominator;
     double shift;
     volatile int vectorLength;
     double currentDiff;
     double *vec1, *vec2;
     int volatile i;
     int left;
-    double bAb;
     double *swap1, *swap2;
 
     eigen returned;

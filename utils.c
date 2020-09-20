@@ -17,7 +17,7 @@ void error(int errorID,char* errorReason)
 void makesure(int condition,int errorID,char* str)
 {
     if(!condition)
-        error(5,str);
+        error(errorID,str);
 }
 static linkedlist* memoryList=NULL;
 void *memory(int sizeOfCell, size_t numberOfCell) {
