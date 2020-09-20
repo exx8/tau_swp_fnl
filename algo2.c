@@ -207,10 +207,6 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     returned.vector = vec1;
 
-    /*bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, shift);
-    dominator = sqrt(vectorMultipication(vec2, vec2, vectorLength));
-    returned.value = dominator!=0?(bAb / dominator ):0;
-    returned.value-=shift;*/
     returned.value=eigenValue(Ag,AgStat,vec1,vectorLength,shift);
 
     free(vec2);
@@ -218,7 +214,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
 }
 /*
- * convert a double arry to int array
+ * convert a double array to an int array discreted
  */
 void makeVectorDiscrete(double *vector, int vectorLength) {
     double* end;
@@ -242,7 +238,7 @@ divisionResults * returnSuccess(tuple2* communitiesAfterDivision) {
     return result;
 }
 /*
- * update network stats acording to the split
+ * update network stats according to the split
  * @deprecated
  */
 void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList *currentCol,
@@ -297,7 +293,6 @@ colLinkedList* cleanFromCrossEdges(rowLinkedList* list,networkStatsSet* ns)
             }
             else
             {
-               /*/ ns->vertexDegreeArray[listToClean->colIndex]=listToClean->colIndex-1;*/
                 ns->degreeSum-=2;
 
 
@@ -330,7 +325,12 @@ void filterColumn(rowLinkedList *comparator, colLinkedList *listToFilter) {
 
     }
 }
-
+/**
+ *  splits a community into to two
+ * @param communityToSplit -the community that we are to spit
+ * @param splitter the array of accordingly we split by
+ * @return a tuple of (see ds.c) 2 of which one must contain a community.
+ */
 tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter) {
     rowLinkedList holderCurrentGroup, holderMinusGroup,holderPlusGroup;
     networkStatsSet community1NetworkStats, community2NetworkStas;
@@ -416,7 +416,12 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
 
 
 }
-
+/**
+ * implements the algo2 which has been described in specification. main function of the file.
+ * @param Ag - a linked list of rows representing an A matrix
+ * @param AgStat stats of A
+ * @return results of diviison, in an object. used to contain an error safeguard but it was dropped as it was not required.
+ */
 divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
 
     communityDescription currentCommunity;
