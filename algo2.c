@@ -16,7 +16,9 @@ typedef struct _eigen{
     double value;
 }eigen;
 
-
+/*
+ * this function accepts rows of a B matrix and a vector s, and outputs theirs multiplications
+ */
 double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsSet* ns,double shift,int vectorLength)
 {
     double result;
@@ -41,7 +43,9 @@ double multipicationOfBofRow(rowLinkedList  *currentRow, double *s,networkStatsS
     }
     return result;
 }
-
+/*
+ * This function multiplies B by vector s
+ */
 double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
                          double *eigenVectorApproximationRead, double *eigenVectorApproximationWrite,
                          int vectorLength,double shift) {
@@ -60,7 +64,9 @@ double *multipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat,
     return eigenVectorApproximationWrite;
 
 }
-
+/*
+ * this function calculates the norm of a vector (Euclidean)
+ */
 double norm(double *vector, int len) {
     double sum;
     int i;
@@ -71,7 +77,10 @@ double norm(double *vector, int len) {
 
     return sqrt(sum);
 }
-
+/*
+ *
+ * this function calculate the dot multiplication of a and b
+ */
 double vectorMultipication(double *a, double *b, int vectorLength) {
     double sum;
     double *end;
@@ -82,7 +91,9 @@ double vectorMultipication(double *a, double *b, int vectorLength) {
 
     return sum;
 }
-
+/*
+ * This function normalizes given vec
+ */
 void normalizeVector(double *vec, int vecLength) {
     double vecNorm;
     int i;
@@ -92,7 +103,9 @@ void normalizeVector(double *vec, int vecLength) {
         for (; i < vecLength; i++)
             vec[i] =vec[i]/ vecNorm;
 }
-
+/*
+ * returns the dif of two vector, vec1,vec2
+ */
 double diff( double *vec1,  double *vec2, int vectorLength) {
     double *vectorEnd;
     double sum;
@@ -105,6 +118,9 @@ double diff( double *vec1,  double *vec2, int vectorLength) {
     return sum;
 }
 
+/*
+ * calculate s^TBs where s is a given vector.
+ */
 double
 billinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength, double *vec1,
                           double *vec2, double shift) {
@@ -116,6 +132,9 @@ billinearMultipicationOfB(rowLinkedList *Ag, networkStatsSet *AgStat, volatile i
     return bAb;
 }
 
+/*
+ * calculate bilinear multipication of B with a vec, vec1 via the previous functions.
+ */
 double
 billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat, volatile int vectorLength,
                                       double *vec1, double shift) {
@@ -128,8 +147,26 @@ billinearMultiplicationOfBUnoptimized(rowLinkedList *Ag, networkStatsSet *AgStat
     return returned;
 
 }
+/*
+ * calculate the eigen value of an eigen vector
+ */
+double eigenValue(rowLinkedList *Ag, networkStatsSet *AgStat,
+               double *eigenVectorApproximationRead,
+               int vectorLength,double shift)
+{
+    int k=0;
+    double *eigenVectorApproximationWrite=smemory(sizeof(double *),vectorLength);
 
+    multipicationOfB( Ag,  AgStat,eigenVectorApproximationRead,eigenVectorApproximationWrite,vectorLength,shift);
+    for(;k<vectorLength;k++)
+        if(eigenVectorApproximationRead[k]!=0)
+    return eigenVectorApproximationWrite[k]/eigenVectorApproximationRead[k];
+    return 0;
 
+}
+/*
+ * calculate the eigen vector via power iterations
+ */
 /*Ag==A[g]*/
 eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     double dominator;
@@ -172,22 +209,28 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     }
     returned.vector = vec1;
 
-    bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, shift);
+    /*bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, shift);
     dominator = sqrt(vectorMultipication(vec2, vec2, vectorLength));
     returned.value = dominator!=0?(bAb / dominator ):0;
-    returned.value-=shift;
+    returned.value-=shift;*/
+    returned.value=eigenValue(Ag,AgStat,vec1,vectorLength,shift);
+
     free(vec2);
     return returned;
 
 }
-
+/*
+ * convert a double arry to int array
+ */
 void makeVectorDiscrete(double *vector, int vectorLength) {
     double* end;
     end = vector + vectorLength;
     for (; vector < end; vector++)
         *vector = (*vector > 0) ? 1 : -1;
 }
-
+/*
+ * returns error output
+ */
 divisionResults * returnError(divisionResults *returned, int errorNum) {
     (*returned).errorNum = errorNum;
     (*returned).value = NULL;
@@ -200,6 +243,10 @@ divisionResults * returnSuccess(tuple2* communitiesAfterDivision) {
     result->value=communitiesAfterDivision;
     return result;
 }
+/*
+ * update network stats acording to the split
+ * @deprecated
+ */
 void deleteCrossRelation( double *splitter,  int isRowIn2ndGroup, colLinkedList *currentCol,
                          networkStatsSet *community1NetworkStats, networkStatsSet *community2NetworkStas) {
     while (currentCol&&currentCol->next != NULL) {
@@ -295,14 +342,14 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
     rowLinkedList* comparator;
     int spliterIndex;
     colLinkedList * listToFilter=smemory(sizeof(colLinkedList),1);
-    colLinkedList * listToFilterHolder;
-
+    currentPlusGroup=smemory(sizeof(currentPlusGroup),1);
     listToFilter->colIndex=-1;
     holderCurrentGroup.nextRow = communityToSplit.graph;
     holderMinusGroup.nextRow=NULL;
     holderCurrentGroup.rowIndex=-1;
     holderMinusGroup.rowIndex=-1;
     holderPlusGroup.rowIndex=-1;
+    holderPlusGroup.nextRow=NULL;
     currentMinusGroup=&holderMinusGroup;
     currentPlusGroup=&holderPlusGroup;
     originalList= communityToSplit.graph;
@@ -335,13 +382,11 @@ tuple2 *splitCommunities(communityDescription communityToSplit, double *splitter
 
     if(currentPlusGroup){
         listToFilter->next=currentPlusGroup->colList;
-        listToFilterHolder=listToFilter;
         comparator=currentPlusGroup;
         filterColumn(comparator, listToFilter);
     }
     if(currentMinusGroup){
         listToFilter->next=currentMinusGroup->colList;
-        listToFilterHolder=listToFilter;
         comparator=currentMinusGroup;
         filterColumn(comparator, listToFilter);
     }
@@ -391,7 +436,9 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     isindivisible=0;
     shift=norm1(Ag,AgStat);
     division = powerIterationOnB(Ag, AgStat);
-    if (billinearMultiplicationOfBUnoptimized(Ag,AgStat,vectorLength,division.vector,shift) < 0) {
+    if ( eigenValue(Ag, AgStat,
+                       division.vector,
+                        vectorLength, shift) < 0) {
        isindivisible=1;
     }
     sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector, shift);
