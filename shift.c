@@ -15,7 +15,7 @@ double sum(colLinkedList* col, networkStatsSet* ns)
             exists=1;
             col=col->next;
         }
-        sum+=fabs(exists-(double)ns->vertexDegreeArray[k]*ns->vertexDegreeArray[k]/ns->degreeSum);
+        sum+=fabs(exists-(double)ns->vertexDegreeArray[k]*ns->vertexDegreeArray[col->colIndex]/ns->degreeSum);
     }
 
 

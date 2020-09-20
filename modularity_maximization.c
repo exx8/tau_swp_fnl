@@ -9,7 +9,7 @@ void splitterDiscrete(double *splitter, int splitterLen) {
     int i;
     i = 0;
     for (; i < splitterLen; i++)
-       if(splitter[i]>=0)
+       if(IS_POSITIVE(splitter[i]))
            splitter[i]=1;
        else
            splitter[i]=-1;

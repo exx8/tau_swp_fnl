@@ -173,7 +173,7 @@ eigen powerIterationOnB(rowLinkedList *Ag, networkStatsSet *AgStat) {
     returned.vector = vec1;
 
     bAb = billinearMultipicationOfB(Ag, AgStat, vectorLength, vec1, vec2, shift);
-    dominator = vectorMultipication(vec2, vec2, vectorLength);
+    dominator = sqrt(vectorMultipication(vec2, vec2, vectorLength));
     returned.value = dominator!=0?(bAb / dominator ):0;
     returned.value-=shift;
     free(vec2);
@@ -382,18 +382,19 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
     double sBs;
     tuple2 *communitiesAfterSplitting;
     int isindivisible;
+    double shift;
     int k=0;
 
     vectorLength = AgStat->vertices;
     currentCommunity.networkStat = AgStat;
     currentCommunity.graph = Ag;
     isindivisible=0;
-
+    shift=norm1(Ag,AgStat);
     division = powerIterationOnB(Ag, AgStat);
     if (division.value < 0) {
        isindivisible=1;
     }
-    sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector, 0);
+    sBs = billinearMultiplicationOfBUnoptimized(Ag, AgStat, vectorLength, division.vector, shift);
     if (sBs < 0) {
         isindivisible=1;
 
