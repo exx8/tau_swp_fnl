@@ -459,8 +459,3 @@ divisionResults* algo2(rowLinkedList *Ag, networkStatsSet *AgStat) {
 return returnSuccess(communitiesAfterSplitting);
 }
 
-void test(rowLinkedList *graphData, networkStatsSet networkStat) {
-
-
-    algo2(graphData, &networkStat);
-}
